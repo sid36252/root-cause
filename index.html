@@ -1,0 +1,1041 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="What 25 years of Test cricket looks like through Wins Above Replacement.">
+<title>Root Cause</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --paper: #eef0e4;
+    --paper-raised: #f6f7ee;
+    --ink: #1c2b1f;
+    --ink-soft: #445243;
+    --ink-faint: #7a8577;
+    --gold: #9c7419;
+    --gold-strong: #7d5c12;
+    --pitch: #2f5233;
+    --pitch-soft: #e2e8dc;
+    --leather: #8b3a2f;
+    --leather-soft: #f3e4e1;
+    --line: rgba(28, 43, 31, 0.16);
+    --line-strong: rgba(28, 43, 31, 0.32);
+    --shadow: rgba(28, 43, 31, 0.1);
+
+    /* chart marks -- validated: light-mode pair passes lightness/chroma/CVD/contrast checks */
+    --chart-bat: #a8721f;
+    --chart-bowl: #2158a3;
+    --chart-grid: rgba(28, 43, 31, 0.14);
+    --chart-axis: rgba(28, 43, 31, 0.5);
+
+    --font-display: "Fraunces", Georgia, "Times New Roman", serif;
+    --font-body: "Source Serif 4", Georgia, "Times New Roman", serif;
+    --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Consolas, monospace;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #131d16;
+      --paper-raised: #192417;
+      --ink: #e9e6d8;
+      --ink-soft: #b9c2b0;
+      --ink-faint: #7e8a78;
+      --gold: #d9ac3f;
+      --gold-strong: #eec564;
+      --pitch: #6a9c74;
+      --pitch-soft: #1e3322;
+      --leather: #d3806f;
+      --leather-soft: #3a211e;
+      --line: rgba(233, 230, 216, 0.14);
+      --line-strong: rgba(233, 230, 216, 0.28);
+      --shadow: rgba(0, 0, 0, 0.35);
+      --chart-bat: #b8862c;
+      --chart-bowl: #4a89cf;
+      --chart-grid: rgba(233, 230, 216, 0.12);
+      --chart-axis: rgba(233, 230, 216, 0.45);
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --paper: #131d16;
+    --paper-raised: #192417;
+    --ink: #e9e6d8;
+    --ink-soft: #b9c2b0;
+    --ink-faint: #7e8a78;
+    --gold: #d9ac3f;
+    --gold-strong: #eec564;
+    --pitch: #6a9c74;
+    --pitch-soft: #1e3322;
+    --leather: #d3806f;
+    --leather-soft: #3a211e;
+    --line: rgba(233, 230, 216, 0.14);
+    --line-strong: rgba(233, 230, 216, 0.28);
+    --shadow: rgba(0, 0, 0, 0.35);
+    --chart-bat: #b8862c;
+    --chart-bowl: #4a89cf;
+    --chart-grid: rgba(233, 230, 216, 0.12);
+    --chart-axis: rgba(233, 230, 216, 0.45);
+  }
+
+  * { box-sizing: border-box; }
+  @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 18px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 4rem 1.5rem 6rem;
+  }
+
+  .masthead {
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+    padding-bottom: 2.4rem;
+    margin-bottom: 2.6rem;
+    border-bottom: 3px double var(--line-strong);
+  }
+
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gold-strong);
+    display: flex;
+    align-items: center;
+    gap: 0.6em;
+  }
+  .eyebrow::before {
+    content: "";
+    display: inline-block;
+    width: 1.6em;
+    height: 2px;
+    background: var(--gold-strong);
+  }
+
+  h1.title {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: clamp(2.2rem, 5.2vw, 3.1rem);
+    line-height: 1.06;
+    margin: 0;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+    color: var(--ink);
+  }
+
+  .tagline {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 500;
+    font-size: 1.05rem;
+    color: var(--gold-strong);
+    margin: 0.2rem 0 0;
+  }
+
+  .deck {
+    font-family: var(--font-body);
+    font-style: italic;
+    font-size: 1.2rem;
+    color: var(--ink-soft);
+    max-width: 34em;
+    text-wrap: balance;
+    margin: 0;
+  }
+
+  .byline {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--ink-faint);
+    display: flex;
+    gap: 1.2em;
+    flex-wrap: wrap;
+    margin-top: 0.4rem;
+  }
+  .byline b { color: var(--ink-soft); font-weight: 600; }
+
+  article h2 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1.7rem;
+    color: var(--ink);
+    margin: 3.2rem 0 1rem;
+    text-wrap: balance;
+    letter-spacing: -0.005em;
+  }
+
+  article h3 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1.22rem;
+    color: var(--ink);
+    margin: 2.2rem 0 0.8rem;
+  }
+
+  .section-mark {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    color: var(--gold-strong);
+    text-transform: uppercase;
+    margin: 0 0 0.35rem;
+  }
+
+  p { margin: 0 0 1.15rem; }
+  article p, article li { max-width: 62ch; }
+
+  a { color: var(--gold-strong); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+  a:hover { color: var(--leather); }
+  a:focus-visible, button:focus-visible { outline: 2px solid var(--gold-strong); outline-offset: 2px; }
+
+  strong { font-weight: 600; color: var(--ink); }
+
+  .stat-inline {
+    font-family: var(--font-mono);
+    font-weight: 500;
+    color: var(--pitch);
+  }
+
+  ul.plain, ol.plain { padding-left: 1.3em; margin: 0 0 1.15rem; }
+  ul.plain li, ol.plain li { margin-bottom: 0.5rem; }
+
+  hr.divider {
+    border: none;
+    height: 1px;
+    background: var(--line);
+    margin: 3rem 0;
+    position: relative;
+  }
+  hr.divider::after {
+    content: "❧";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background: var(--paper);
+    padding: 0 0.8em;
+    color: var(--gold);
+    font-size: 1rem;
+  }
+
+  /* callouts */
+  .callout {
+    border-left: 3px solid var(--gold);
+    background: var(--paper-raised);
+    padding: 1.1rem 1.3rem;
+    border-radius: 0 6px 6px 0;
+    margin: 1.6rem 0;
+  }
+  .callout.bug { border-left-color: var(--leather); }
+  .callout.finding { border-left-color: var(--pitch); }
+  .callout-label {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gold-strong);
+    margin-bottom: 0.45rem;
+    display: block;
+  }
+  .callout.bug .callout-label { color: var(--leather); }
+  .callout.finding .callout-label { color: var(--pitch); }
+  .callout p:last-child { margin-bottom: 0; }
+
+  /* version ledger */
+  .ledger {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin: 1.8rem 0 2.4rem;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    overflow: hidden;
+    background: var(--paper-raised);
+  }
+  .ledger-row {
+    display: grid;
+    grid-template-columns: 3.4rem 1fr;
+    gap: 1rem;
+    padding: 1rem 1.2rem;
+    border-bottom: 1px solid var(--line);
+  }
+  .ledger-row:last-child { border-bottom: none; }
+  .ledger-v {
+    font-family: var(--font-mono);
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--gold-strong);
+    padding-top: 0.15rem;
+  }
+  .ledger-body h4 {
+    margin: 0 0 0.3rem;
+    font-family: var(--font-display);
+    font-size: 1.03rem;
+    font-weight: 600;
+  }
+  .ledger-body p { margin: 0; font-size: 0.96rem; color: var(--ink-soft); }
+  .ledger-body .verdict {
+    display: inline-block;
+    margin-top: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 0.15rem 0.55rem;
+    border-radius: 3px;
+  }
+  .verdict.kept { background: var(--pitch-soft); color: var(--pitch); }
+  .verdict.fixed { background: var(--leather-soft); color: var(--leather); }
+  .verdict.shipped { background: var(--pitch-soft); color: var(--pitch); }
+
+  /* tables */
+  .table-wrap { overflow-x: auto; margin: 1.5rem 0 2rem; position: relative; }
+  .table-wrap.has-overflow::after {
+    content: "";
+    position: absolute;
+    top: 0; right: 0; bottom: 0;
+    width: 28px;
+    background: linear-gradient(to right, transparent, var(--paper) 88%);
+    pointer-events: none;
+  }
+  table {
+    width: 100%;
+    min-width: 480px;
+    border-collapse: collapse;
+    font-size: 0.92rem;
+  }
+  caption {
+    text-align: left;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 0.6rem;
+  }
+  th {
+    text-align: left;
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: 0.72rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    padding: 0.5rem 0.55rem;
+    border-bottom: 2px solid var(--line-strong);
+    white-space: nowrap;
+  }
+  td {
+    padding: 0.5rem 0.55rem;
+    border-bottom: 1px solid var(--line);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+  td.name { font-family: var(--font-body); font-weight: 600; white-space: normal; }
+  td.num, th.num { text-align: right; font-family: var(--font-mono); }
+  tr:last-child td { border-bottom: none; }
+  tbody tr:hover { background: var(--paper-raised); }
+  td.rank { color: var(--ink-faint); font-family: var(--font-mono); }
+
+  /* pull stat */
+  .pull-stat {
+    display: flex;
+    align-items: baseline;
+    gap: 0.9rem;
+    margin: 2rem 0;
+    padding: 1.3rem 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+  .pull-stat .num {
+    font-family: var(--font-display);
+    font-size: 2.6rem;
+    font-weight: 600;
+    color: var(--gold-strong);
+    line-height: 1;
+    flex-shrink: 0;
+  }
+  .pull-stat .cap { font-size: 0.96rem; color: var(--ink-soft); max-width: 38ch; }
+
+  /* TL;DR */
+  .tldr {
+    background: var(--paper-raised);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 1.3rem 1.5rem;
+    margin: 2rem 0 0;
+  }
+  .tldr-label {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gold-strong);
+    margin: 0 0 0.7rem;
+  }
+  .tldr ul { margin: 0; padding-left: 1.15em; }
+  .tldr li { margin-bottom: 0.45rem; font-size: 0.97rem; }
+  .tldr li:last-child { margin-bottom: 0; }
+  .tldr li::marker { color: var(--gold); }
+
+  /* charts */
+  .chart-block { margin: 1.8rem 0 2.2rem; }
+  .chart-title {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 0.7rem;
+  }
+  .chart-svg-wrap { overflow-x: auto; }
+  .chart-svg-wrap svg { display: block; width: 100%; height: auto; overflow: visible; }
+  .chart-axis-label {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    fill: var(--chart-axis);
+  }
+  .chart-value-label {
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    font-weight: 500;
+  }
+  .chart-legend {
+    display: flex;
+    gap: 1.4rem;
+    margin-top: 0.6rem;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--ink-soft);
+  }
+  .chart-legend span { display: inline-flex; align-items: center; gap: 0.45em; }
+  .chart-legend .swatch { width: 0.75em; height: 0.75em; border-radius: 2px; display: inline-block; }
+  .chart-note {
+    font-size: 0.86rem;
+    color: var(--ink-faint);
+    margin-top: 0.7rem;
+    font-style: italic;
+  }
+  .chart-tooltip-target { cursor: help; }
+
+  /* heatmap */
+  .heatmap-wrap { overflow-x: auto; }
+  table.heatmap { width: 100%; min-width: 360px; border-collapse: collapse; font-size: 0.92rem; }
+  table.heatmap th {
+    text-align: left;
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 0.88rem;
+    text-transform: none;
+    letter-spacing: normal;
+    color: var(--ink);
+    padding: 0.45rem 0.7rem;
+    border-bottom: 1px solid var(--line);
+  }
+  table.heatmap thead th {
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--ink-faint);
+    border-bottom: 2px solid var(--line-strong);
+  }
+  table.heatmap td {
+    text-align: right;
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+    padding: 0.45rem 0.9rem;
+    border-bottom: 1px solid var(--line);
+    color: var(--ink);
+  }
+  table.heatmap tr:last-child th, table.heatmap tr:last-child td { border-bottom: none; }
+
+  /* sortable leaderboard */
+  th.sortable { cursor: pointer; user-select: none; }
+  th.sortable:hover { color: var(--gold-strong); }
+  th.sortable:focus-visible { outline: 2px solid var(--gold-strong); outline-offset: 2px; }
+  th.sortable .arrow { display: inline-block; margin-left: 0.3em; opacity: 0.45; font-size: 0.85em; }
+  th.sortable.sorted .arrow { opacity: 1; color: var(--gold-strong); }
+  .table-hint {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--ink-faint);
+    margin: -0.8rem 0 0.9rem;
+  }
+
+  footer.colophon {
+    margin-top: 4rem;
+    padding-top: 1.6rem;
+    border-top: 1px solid var(--line);
+    font-family: var(--font-mono);
+    font-size: 0.76rem;
+    color: var(--ink-faint);
+    line-height: 1.8;
+  }
+
+  @media (max-width: 560px) {
+    body { font-size: 16.5px; }
+    .wrap { padding: 2.6rem 1.1rem 4rem; }
+    .ledger-row { grid-template-columns: 1fr; }
+    .pull-stat { flex-direction: column; gap: 0.2rem; }
+  }
+</style>
+
+</head>
+<body>
+<div class="wrap">
+
+  <header class="masthead">
+    <div class="eyebrow">Field Notes &middot; Sports Analytics</div>
+    <h1 class="title">Root Cause</h1>
+    <p class="tagline">What 25 years of Test cricket looks like through Wins Above Replacement</p>
+    <p class="deck">Basketball has Wins Above Replacement. Test cricket doesn't, so I built one from 25 years of ball-by-ball data.</p>
+    <div class="byline">
+      <span><b>Coverage</b> 2001&ndash;2026</span>
+      <span><b>Matches</b> 914</span>
+      <span><b>Deliveries</b> 1,762,524</span>
+      <span><b>Source</b> Cricsheet</span>
+    </div>
+  </header>
+
+  <div class="tldr">
+    <p class="tldr-label">In short</p>
+    <ul>
+      <li>Built Wins Above Replacement for Test cricket from 1.76m ball-by-ball deliveries, the closest thing this sport has to basketball's WAR.</li>
+      <li>Final leaderboard: <a href="#leaderboard">Joe Root leads it</a>, outright, ahead of Nathan Lyon, Steve Smith, and everyone else who's played Test cricket since 2001.</li>
+      <li>Batting leads bowling in total value produced, 64.7% to 35.3% &mdash; not a split the model was built to hit, just where a fair price for a wicket happens to land. It holds up on a direct test against real match outcomes too.</li>
+      <li>It can't see anything before 2001, or fielding at all &mdash; more on both below.</li>
+    </ul>
+  </div>
+
+  <article>
+
+    <p><strong>WAR (Wins Above Replacement) is the closest thing basketball and baseball have to a single number that answers "how good is this player, really?"</strong> It doesn't ask how many points or runs someone produced. It asks how many <em>wins</em> they added for their team, above what a freely-available replacement-level player would have added in the same games. Test cricket has never had a real version of this. Batting average and bowling average get you partway there, but they don't know who you were facing, what the pitch was doing, or whether the moment mattered.</p>
+
+    <p>So I built one. What follows is what it found, using the model as it stands today. There's a companion piece, <a href="https://claude.ai/code/artifact/eaf043cd-b86d-47df-8f5b-9b006c7a4a2e"><strong>Ten Versions</strong></a>, covering how it was built and tested, for anyone who wants that instead.</p>
+
+    <h2>The idea, in plain terms</h2>
+
+    <p>Imagine every Test team keeps a replacement player in reserve: not a star, just a solid domestic pro who'd slot in if someone got dropped. WAR asks one question: how many extra wins did this player earn their team, above what that replacement would have earned in the same matches?</p>
+
+    <p>Everything else is just being careful about what "the same matches" means:</p>
+
+    <ul class="plain">
+      <li><strong>Who you faced.</strong> A hundred against a full-strength attack should count for more than a hundred against a weak one.</li>
+      <li><strong>What the pitch was doing.</strong> Runs on a green seamer are harder to come by than runs on a flat road, and wickets on a raging turner are partly the surface's doing, not just the bowler.</li>
+      <li><strong>What a wicket is actually worth.</strong> Not a textbook bowling average, but the real, measured effect losing a batter has on a team's chances of winning.</li>
+      <li><strong>Whether the moment mattered.</strong> A wicket that breaks a nervy run chase is worth more than the same wicket in a match already decided.</li>
+      <li><strong>Turning all of that into wins</strong>, using the historical relationship between how big a team's run advantage was and how often that actually produced a win.</li>
+    </ul>
+
+    <h2>Is the data any good?</h2>
+
+    <p>Everything here comes from <a href="https://cricsheet.org" target="_blank" rel="noopener">Cricsheet</a>, a free ball-by-ball archive of international cricket. Test coverage starts in 2001 and runs to the present: 914 matches, <span class="stat-inline">1.76 million</span> individual deliveries, each one carrying the batter, the bowler, the runs, and the dismissal if there was one.</p>
+
+    <p>Before trusting any of it, I ran it against known history. Alastair Cook's career is closed. He retired in 2018, so his total is fixed forever, and summing his raw runs straight off the ball-by-ball data landed exactly on his real career tally of 12,472. The dismissal mix checked out too: 58.8% caught, 17.6% bowled, 16.8% lbw, the rest split across run outs, stumpings and oddities. And the era shows up honestly in the numbers: the draw rate has fallen from <span class="stat-inline">24.4%</span> of matches in 2000&ndash;04 to just <span class="stat-inline">7.0%</span> in 2025&ndash;26. Part of that is the well-documented shift toward more attacking Test cricket. Part of it, in the last five years especially, is the World Test Championship: bilateral series now feed a points table, and a draw is worth a lot less on that table than a win.</p>
+
+    <div class="chart-block">
+      <p class="chart-title">Share of matches ending in a draw, by five-year period</p>
+      <div class="chart-svg-wrap">
+        <svg viewBox="0 0 640 210" role="img" aria-label="Line chart: draw rate falls from 24.4% in 2000-04 to 7.0% in 2025-26">
+          <line x1="60" y1="170" x2="600" y2="170" stroke="var(--chart-grid)" stroke-width="1"/>
+          <line x1="60" y1="120" x2="600" y2="120" stroke="var(--chart-grid)" stroke-width="1"/>
+          <line x1="60" y1="70" x2="600" y2="70" stroke="var(--chart-grid)" stroke-width="1"/>
+          <line x1="60" y1="20" x2="600" y2="20" stroke="var(--chart-grid)" stroke-width="1"/>
+          <text x="52" y="174" text-anchor="end" class="chart-axis-label">0%</text>
+          <text x="52" y="124" text-anchor="end" class="chart-axis-label">10%</text>
+          <text x="52" y="74" text-anchor="end" class="chart-axis-label">20%</text>
+          <text x="52" y="24" text-anchor="end" class="chart-axis-label">30%</text>
+
+          <path d="M60,48 L168,37.5 L276,45 L384,94 L492,97.5 L600,135" fill="none" stroke="var(--gold-strong)" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"/>
+
+          <g class="chart-tooltip-target"><circle cx="60" cy="48" r="4" fill="var(--gold-strong)"/><title>2000&ndash;04: 24.4% of matches drawn</title></g>
+          <g class="chart-tooltip-target"><circle cx="168" cy="37.5" r="5" fill="var(--gold-strong)"/><title>2005&ndash;09: 26.5% of matches drawn</title></g>
+          <g class="chart-tooltip-target"><circle cx="276" cy="45" r="5" fill="var(--gold-strong)"/><title>2010&ndash;14: 25.0% of matches drawn</title></g>
+          <g class="chart-tooltip-target"><circle cx="384" cy="94" r="5" fill="var(--gold-strong)"/><title>2015&ndash;19: 15.2% of matches drawn</title></g>
+          <g class="chart-tooltip-target"><circle cx="492" cy="97.5" r="5" fill="var(--gold-strong)"/><title>2020&ndash;24: 14.5% of matches drawn</title></g>
+          <g class="chart-tooltip-target"><circle cx="600" cy="135" r="4" fill="var(--gold-strong)"/><title>2025&ndash;26: 7.0% of matches drawn</title></g>
+
+          <text x="60" y="32" text-anchor="middle" class="chart-value-label" fill="var(--gold-strong)">24.4%</text>
+          <text x="600" y="152" text-anchor="middle" class="chart-value-label" fill="var(--gold-strong)">7.0%</text>
+
+          <text x="60" y="195" text-anchor="middle" class="chart-axis-label">&rsquo;00&ndash;04</text>
+          <text x="168" y="195" text-anchor="middle" class="chart-axis-label">&rsquo;05&ndash;09</text>
+          <text x="276" y="195" text-anchor="middle" class="chart-axis-label">&rsquo;10&ndash;14</text>
+          <text x="384" y="195" text-anchor="middle" class="chart-axis-label">&rsquo;15&ndash;19</text>
+          <text x="492" y="195" text-anchor="middle" class="chart-axis-label">&rsquo;20&ndash;24</text>
+          <text x="600" y="195" text-anchor="middle" class="chart-axis-label">&rsquo;25&ndash;26</text>
+        </svg>
+      </div>
+      <p class="chart-note">Hover over any point without a printed number to see that period's exact draw rate. This era-by-era swing is the whole reason the model fits a separate runs-per-win rate for each five-year period rather than one flat rate across 25 years.</p>
+    </div>
+
+    <h2 id="leaderboard">The leaderboard</h2>
+
+    <p>Every adjustment applied at once, all measured in Runs Above Replacement (RAR, the raw currency that gets converted into wins at the very end): opposition quality, pitch difficulty measured separately for scoring rate and wicket-taking rate, country-specific conditions, batting position (all eleven individual slots), a wicket priced at its actual measured win-probability value rather than a textbook average, leverage weighting, season-level win conversion.</p>
+
+    <div class="pull-stat">
+      <div class="num">#1</div>
+      <div class="cap">Joe Root's rank.</div>
+    </div>
+
+    <div class="callout finding">
+      <span class="callout-label">For anyone who needs the context</span>
+      <p>Root debuted for England in 2012, captained the side for five years through 2022 (more Tests as captain than anyone else in English history), and became England's all-time leading Test run-scorer along the way. He's the one member of the "Fab Four" era &mdash; Root, Kohli, Smith, Williamson &mdash; still adding to his numbers at the top of his game deep into his thirties, essentially the same classical, orthodox technician he was at 21, just with a few more reverse-scoops added along the way.</p>
+    </div>
+
+    <p class="table-hint">Click a column heading to sort. Swipe or scroll sideways on a phone to see every column.</p>
+    <div class="table-wrap">
+      <table class="sortable-table" id="career-table">
+        <caption>Career WAR &middot; top 20 &middot; 2001&ndash;2026</caption>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Player</th>
+            <th>Team</th>
+            <th class="num sortable" data-type="num" tabindex="0" role="button" aria-label="Sort by batting WAR">Bat<span class="arrow">&#8645;</span></th>
+            <th class="num sortable" data-type="num" tabindex="0" role="button" aria-label="Sort by bowling WAR">Bowl<span class="arrow">&#8645;</span></th>
+            <th class="num sortable sorted" data-type="num" data-dir="desc" tabindex="0" role="button" aria-label="Sort by total WAR">Total<span class="arrow">&#8645;</span></th>
+            <th class="num sortable" data-type="num" tabindex="0" role="button" aria-label="Sort by Tests played">Tests<span class="arrow">&#8645;</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="rank">1</td><td class="name">JE Root</td><td>England</td><td class="num">16.35</td><td class="num">&minus;0.28</td><td class="num"><strong>16.07</strong></td><td class="num">166</td></tr>
+          <tr><td class="rank">2</td><td class="name">NM Lyon</td><td>Australia</td><td class="num">0.26</td><td class="num">14.13</td><td class="num"><strong>14.38</strong></td><td class="num">142</td></tr>
+          <tr><td class="rank">3</td><td class="name">SPD Smith</td><td>Australia</td><td class="num">13.89</td><td class="num">&minus;0.35</td><td class="num"><strong>13.54</strong></td><td class="num">123</td></tr>
+          <tr><td class="rank">4</td><td class="name">JM Anderson</td><td>England</td><td class="num">&minus;0.19</td><td class="num">13.20</td><td class="num"><strong>13.01</strong></td><td class="num">181</td></tr>
+          <tr><td class="rank">5</td><td class="name">SCJ Broad</td><td>England</td><td class="num">1.71</td><td class="num">10.29</td><td class="num"><strong>12.01</strong></td><td class="num">166</td></tr>
+          <tr><td class="rank">6</td><td class="name">AN Cook</td><td>England</td><td class="num">11.67</td><td class="num">0.04</td><td class="num"><strong>11.71</strong></td><td class="num">161</td></tr>
+          <tr><td class="rank">7</td><td class="name">V Kohli</td><td>India</td><td class="num">10.89</td><td class="num">&minus;0.12</td><td class="num"><strong>10.77</strong></td><td class="num">121</td></tr>
+          <tr><td class="rank">8</td><td class="name">KS Williamson</td><td>New Zealand</td><td class="num">10.69</td><td class="num">&minus;0.14</td><td class="num"><strong>10.55</strong></td><td class="num">110</td></tr>
+          <tr><td class="rank">9</td><td class="name">PJ Cummins</td><td>Australia</td><td class="num">1.02</td><td class="num">9.50</td><td class="num"><strong>10.52</strong></td><td class="num">73</td></tr>
+          <tr><td class="rank">10</td><td class="name">MA Starc</td><td>Australia</td><td class="num">1.25</td><td class="num">8.37</td><td class="num"><strong>9.62</strong></td><td class="num">106</td></tr>
+          <tr><td class="rank">11</td><td class="name">BA Stokes</td><td>England</td><td class="num">6.61</td><td class="num">2.92</td><td class="num"><strong>9.54</strong></td><td class="num">121</td></tr>
+          <tr><td class="rank">12</td><td class="name">RA Jadeja</td><td>India</td><td class="num">3.06</td><td class="num">6.28</td><td class="num"><strong>9.34</strong></td><td class="num">89</td></tr>
+          <tr><td class="rank">13</td><td class="name">TG Southee</td><td>New Zealand</td><td class="num">1.06</td><td class="num">8.21</td><td class="num"><strong>9.27</strong></td><td class="num">107</td></tr>
+          <tr><td class="rank">14</td><td class="name">DA Warner</td><td>Australia</td><td class="num">9.45</td><td class="num">&minus;0.19</td><td class="num"><strong>9.27</strong></td><td class="num">112</td></tr>
+          <tr><td class="rank">15</td><td class="name">R Ashwin</td><td>India</td><td class="num">2.51</td><td class="num">6.36</td><td class="num"><strong>8.87</strong></td><td class="num">105</td></tr>
+          <tr><td class="rank">16</td><td class="name">JR Hazlewood</td><td>Australia</td><td class="num">0.04</td><td class="num">7.66</td><td class="num"><strong>7.70</strong></td><td class="num">77</td></tr>
+          <tr><td class="rank">17</td><td class="name">HM Amla</td><td>South Africa</td><td class="num">7.35</td><td class="num">&minus;0.04</td><td class="num"><strong>7.31</strong></td><td class="num">121</td></tr>
+          <tr><td class="rank">18</td><td class="name">UT Khawaja</td><td>Australia</td><td class="num">6.82</td><td class="num">&minus;0.00</td><td class="num"><strong>6.82</strong></td><td class="num">87</td></tr>
+          <tr><td class="rank">19</td><td class="name">AB de Villiers</td><td>South Africa</td><td class="num">6.76</td><td class="num">0.02</td><td class="num"><strong>6.78</strong></td><td class="num">105</td></tr>
+          <tr><td class="rank">20</td><td class="name">KC Sangakkara</td><td>Sri Lanka</td><td class="num">6.81</td><td class="num">&minus;0.03</td><td class="num"><strong>6.78</strong></td><td class="num">84</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>Ten of the top 20 are batting-led, seven are bowling-led, and three (Stokes, Jadeja, Ashwin) are genuine two-way contributions &mdash; a properly mixed list. In aggregate, batting accounts for 64.7% of all value produced above replacement across the whole dataset, bowling 35.3%. Nothing in the model forces that split toward any particular target; it's simply where the numbers land.</p>
+
+    <p class="table-hint">WAR per game: same idea, different question. Career WAR rewards a long, durable career; WAR per game asks how much a player was worth <em>every time they took the field</em>, regardless of how many times that was. Minimum 35 Tests, to keep small samples from dominating.</p>
+    <div class="table-wrap">
+      <table class="sortable-table" id="rate-table">
+        <caption>WAR per game &middot; top 20 &middot; min. 35 Tests</caption>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Player</th>
+            <th>Team</th>
+            <th class="num sortable sorted" data-type="num" data-dir="desc" tabindex="0" role="button" aria-label="Sort by WAR per game">WAR/game<span class="arrow">&#8645;</span></th>
+            <th class="num sortable" data-type="num" tabindex="0" role="button" aria-label="Sort by total WAR">Total WAR<span class="arrow">&#8645;</span></th>
+            <th class="num sortable" data-type="num" tabindex="0" role="button" aria-label="Sort by Tests played">Tests<span class="arrow">&#8645;</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="rank">1</td><td class="name">PJ Cummins</td><td>Australia</td><td class="num"><strong>0.144</strong></td><td class="num">10.52</td><td class="num">73</td></tr>
+          <tr><td class="rank">2</td><td class="name">MJ Henry</td><td>New Zealand</td><td class="num"><strong>0.137</strong></td><td class="num">4.78</td><td class="num">35</td></tr>
+          <tr><td class="rank">3</td><td class="name">JJ Bumrah</td><td>India</td><td class="num"><strong>0.125</strong></td><td class="num">6.50</td><td class="num">52</td></tr>
+          <tr><td class="rank">4</td><td class="name">A Kumble</td><td>India</td><td class="num"><strong>0.115</strong></td><td class="num">4.71</td><td class="num">41</td></tr>
+          <tr><td class="rank">5</td><td class="name">SPD Smith</td><td>Australia</td><td class="num"><strong>0.110</strong></td><td class="num">13.54</td><td class="num">123</td></tr>
+          <tr><td class="rank">6</td><td class="name">M Muralitharan</td><td>Sri Lanka</td><td class="num"><strong>0.107</strong></td><td class="num">4.08</td><td class="num">38</td></tr>
+          <tr><td class="rank">7</td><td class="name">HC Brook</td><td>England</td><td class="num"><strong>0.105</strong></td><td class="num">4.00</td><td class="num">38</td></tr>
+          <tr><td class="rank">8</td><td class="name">RA Jadeja</td><td>India</td><td class="num"><strong>0.105</strong></td><td class="num">9.35</td><td class="num">89</td></tr>
+          <tr><td class="rank">9</td><td class="name">CR Woakes</td><td>England</td><td class="num"><strong>0.102</strong></td><td class="num">6.35</td><td class="num">62</td></tr>
+          <tr><td class="rank">10</td><td class="name">NM Lyon</td><td>Australia</td><td class="num"><strong>0.101</strong></td><td class="num">14.38</td><td class="num">142</td></tr>
+          <tr><td class="rank">11</td><td class="name">JR Hazlewood</td><td>Australia</td><td class="num"><strong>0.100</strong></td><td class="num">7.70</td><td class="num">77</td></tr>
+          <tr><td class="rank">12</td><td class="name">JE Root</td><td>England</td><td class="num"><strong>0.097</strong></td><td class="num">16.07</td><td class="num">166</td></tr>
+          <tr><td class="rank">13</td><td class="name">KS Williamson</td><td>New Zealand</td><td class="num"><strong>0.096</strong></td><td class="num">10.55</td><td class="num">110</td></tr>
+          <tr><td class="rank">14</td><td class="name">PL Harris</td><td>South Africa</td><td class="num"><strong>0.093</strong></td><td class="num">3.35</td><td class="num">36</td></tr>
+          <tr><td class="rank">15</td><td class="name">DL Vettori</td><td>New Zealand</td><td class="num"><strong>0.091</strong></td><td class="num">4.93</td><td class="num">54</td></tr>
+          <tr><td class="rank">16</td><td class="name">MA Starc</td><td>Australia</td><td class="num"><strong>0.091</strong></td><td class="num">9.62</td><td class="num">106</td></tr>
+          <tr><td class="rank">17</td><td class="name">V Kohli</td><td>India</td><td class="num"><strong>0.089</strong></td><td class="num">10.77</td><td class="num">121</td></tr>
+          <tr><td class="rank">18</td><td class="name">TG Southee</td><td>New Zealand</td><td class="num"><strong>0.087</strong></td><td class="num">9.27</td><td class="num">107</td></tr>
+          <tr><td class="rank">19</td><td class="name">GP Swann</td><td>England</td><td class="num"><strong>0.085</strong></td><td class="num">5.13</td><td class="num">60</td></tr>
+          <tr><td class="rank">20</td><td class="name">N Wagner</td><td>New Zealand</td><td class="num"><strong>0.085</strong></td><td class="num">5.45</td><td class="num">64</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="chart-note">A genuine mix here too: Smith, Brook, Root, Williamson and Kohli all sit inside the top 20 on rate, not just on career total. Kumble still cracks the top 5 from a career that, in this dataset, is only 41 Tests long &mdash; the last stretch of a much longer real one.</p>
+
+    <h3>The best individual seasons</h3>
+
+    <p>Career and per-game totals answer "who was the best player." This one answers a different question: what's the single best year anyone has had.</p>
+
+    <div class="table-wrap">
+      <table>
+        <caption>Single-season WAR &middot; top 15</caption>
+        <thead>
+          <tr><th>#</th><th>Player</th><th>Year</th><th>Team</th><th class="num">Total</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="rank">1</td><td class="name">JJ Bumrah</td><td>2024</td><td>India</td><td class="num"><strong>2.55</strong></td></tr>
+          <tr><td class="rank">2</td><td class="name">Harbhajan Singh</td><td>2008</td><td>India</td><td class="num"><strong>2.39</strong></td></tr>
+          <tr><td class="rank">3</td><td class="name">JE Root</td><td>2021</td><td>England</td><td class="num"><strong>2.32</strong></td></tr>
+          <tr><td class="rank">4</td><td class="name">SCJ Broad</td><td>2023</td><td>England</td><td class="num"><strong>2.31</strong></td></tr>
+          <tr><td class="rank">5</td><td class="name">MJ Henry</td><td>2024</td><td>New Zealand</td><td class="num"><strong>2.30</strong></td></tr>
+          <tr><td class="rank">6</td><td class="name">V Kohli</td><td>2018</td><td>India</td><td class="num"><strong>2.19</strong></td></tr>
+          <tr><td class="rank">7</td><td class="name">JE Root</td><td>2015</td><td>England</td><td class="num"><strong>2.14</strong></td></tr>
+          <tr><td class="rank">8</td><td class="name">YBK Jaiswal</td><td>2024</td><td>India</td><td class="num"><strong>2.10</strong></td></tr>
+          <tr><td class="rank">9</td><td class="name">KS Williamson</td><td>2015</td><td>New Zealand</td><td class="num"><strong>2.08</strong></td></tr>
+          <tr><td class="rank">10</td><td class="name">NM Lyon</td><td>2017</td><td>Australia</td><td class="num"><strong>2.06</strong></td></tr>
+          <tr><td class="rank">11</td><td class="name">V Kohli</td><td>2016</td><td>India</td><td class="num"><strong>1.98</strong></td></tr>
+          <tr><td class="rank">12</td><td class="name">JM Anderson</td><td>2021</td><td>England</td><td class="num"><strong>1.98</strong></td></tr>
+          <tr><td class="rank">13</td><td class="name">V Sehwag</td><td>2010</td><td>India</td><td class="num"><strong>1.98</strong></td></tr>
+          <tr><td class="rank">14</td><td class="name">RA Jadeja</td><td>2017</td><td>India</td><td class="num"><strong>1.97</strong></td></tr>
+          <tr><td class="rank">15</td><td class="name">NM Lyon</td><td>2018</td><td>Australia</td><td class="num"><strong>1.97</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>Bumrah's 2024 tops the whole dataset by a clear margin &mdash; 2.55 WAR against Harbhajan's 2.39 in second place. The underlying season is one of the more remarkable in the dataset's whole 2001&ndash;2026 window by raw numbers alone: 71 wickets at an average of 14.93 across 13 Tests, spread over five different away and home assignments in a single calendar year &mdash; South Africa in January, then home series against England, Bangladesh and New Zealand (the last of those India's shock 0&ndash;3 home whitewash, a series most of India's other bowlers had miserable figures in), before closing the year in Australia for the Border-Gavaskar series. What makes the model's own read on it interesting is what's <em>not</em> driving the number: opposition quality across those 13 Tests averaged almost exactly the dataset norm (0.999, against 1.0 for a perfectly average year of opponents), and leverage came in fractionally below average too (0.953&times;). This isn't a case of the model finding a soft year against weak sides in high-stakes moments; it's 13 Tests of essentially unadjusted, era-typical difficulty, with career-best output layered on top of it. The one dip in an otherwise dominant year came in the final match, the Boxing Day Test at the MCG (bowling value of &minus;39.6 runs above replacement, the only negative match of his season) &mdash; consistent with the back spasm he picked up during that Test, which would go on to rule him out of the series-deciding match in Sydney.</p>
+
+    <p>This list is a genuine mix of bat and ball &mdash; six of the fifteen are batting seasons. Michael Clarke's 2012 doesn't quite crack it, ranking #22 overall and 13th among pure-batting seasons, despite being one of the most dominant individual years in the sport's history by reputation &mdash; a 106.33 average and four double-centuries in a single calendar year, including an unbeaten 329 against India, a feat not even Don Bradman managed. Not for lack of runs or soft conditions either &mdash; his opposition and pitch factors that year were close to neutral. Two things explain the gap instead: leverage, since nearly two-thirds of his season's value came from three innings that all landed in matches already decided or heading for a draw (0.86&times; leverage against a season mean of 1.01&times;); and the era, since the model's runs-per-win rate for 2010&ndash;14 (632) sits well above the 513&ndash;520 that eleven of the other fourteen top-15 seasons were earned against. A standout knock simply buys more WAR today than it did in 2012.</p>
+
+    <div class="chart-block">
+      <p class="chart-title">Runs needed to buy one win's worth of probability, by five-year period</p>
+      <div class="chart-svg-wrap">
+        <svg viewBox="0 0 640 210" role="img" aria-label="Line chart: runs per win peaks at 687 in 2005-09, falls to 482 by 2025-26">
+          <line x1="60" y1="170" x2="600" y2="170" stroke="var(--chart-grid)" stroke-width="1"/>
+          <line x1="60" y1="120" x2="600" y2="120" stroke="var(--chart-grid)" stroke-width="1"/>
+          <line x1="60" y1="70" x2="600" y2="70" stroke="var(--chart-grid)" stroke-width="1"/>
+          <line x1="60" y1="20" x2="600" y2="20" stroke="var(--chart-grid)" stroke-width="1"/>
+          <text x="52" y="174" text-anchor="end" class="chart-axis-label">450</text>
+          <text x="52" y="124" text-anchor="end" class="chart-axis-label">550</text>
+          <text x="52" y="74" text-anchor="end" class="chart-axis-label">650</text>
+          <text x="52" y="24" text-anchor="end" class="chart-axis-label">750</text>
+
+          <path d="M60,107.3 L168,51.3 L276,78.8 L384,138.5 L492,134.9 L600,153.8" fill="none" stroke="var(--gold-strong)" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"/>
+
+          <g class="chart-tooltip-target"><circle cx="60" cy="107.3" r="5" fill="var(--gold-strong)"/><title>2000&ndash;04: 576 runs per win</title></g>
+          <g class="chart-tooltip-target"><circle cx="168" cy="51.3" r="5" fill="var(--gold-strong)"/><title>2005&ndash;09: 687 runs per win</title></g>
+          <g class="chart-tooltip-target"><circle cx="276" cy="78.8" r="5" fill="var(--gold-strong)"/><title>2010&ndash;14: 632 runs per win (Clarke's era)</title></g>
+          <g class="chart-tooltip-target"><circle cx="384" cy="138.5" r="5" fill="var(--gold-strong)"/><title>2015&ndash;19: 513 runs per win</title></g>
+          <g class="chart-tooltip-target"><circle cx="492" cy="134.9" r="5" fill="var(--gold-strong)"/><title>2020&ndash;24: 520 runs per win</title></g>
+          <g class="chart-tooltip-target"><circle cx="600" cy="153.8" r="4" fill="var(--gold-strong)"/><title>2025&ndash;26: 482 runs per win</title></g>
+
+          <text x="168" y="38" text-anchor="middle" class="chart-value-label" fill="var(--gold-strong)">687</text>
+          <text x="600" y="171" text-anchor="middle" class="chart-value-label" fill="var(--gold-strong)">482</text>
+
+          <text x="60" y="195" text-anchor="middle" class="chart-axis-label">&rsquo;00&ndash;04</text>
+          <text x="168" y="195" text-anchor="middle" class="chart-axis-label">&rsquo;05&ndash;09</text>
+          <text x="276" y="195" text-anchor="middle" class="chart-axis-label">&rsquo;10&ndash;14</text>
+          <text x="384" y="195" text-anchor="middle" class="chart-axis-label">&rsquo;15&ndash;19</text>
+          <text x="492" y="195" text-anchor="middle" class="chart-axis-label">&rsquo;20&ndash;24</text>
+          <text x="600" y="195" text-anchor="middle" class="chart-axis-label">&rsquo;25&ndash;26</text>
+        </svg>
+      </div>
+      <p class="chart-note">Fitted separately for each five-year period from team run differentials against match outcomes, the same era buckets behind the draw-rate chart above. A lower number means less scoring is needed to force a result, so a given RAR total converts to more WAR today than it did at the 2005&ndash;09 peak, or in Clarke's own 2010&ndash;14 window. Hover any point for its exact value.</p>
+    </div>
+
+    <h2>A few arguments this settles, sort of</h2>
+
+    <p>Every era of Test cricket has its pub arguments. A few of this one's biggest hold up cleanly enough in the numbers to be worth a look, though most don't come out quite as tidy as either side of the argument would like.</p>
+
+    <h3>Lyon vs Ashwin</h3>
+
+    <div class="table-wrap">
+      <table>
+        <caption>Head to head, the two leading spinners of the era</caption>
+        <thead>
+          <tr><th>Player</th><th>Team</th><th class="num">Tests</th><th class="num">Bat</th><th class="num">Bowl</th><th class="num">Total</th><th class="num">WAR/game</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="name">NM Lyon</td><td>Australia</td><td class="num">142</td><td class="num">0.26</td><td class="num">14.13</td><td class="num"><strong>14.38</strong></td><td class="num">0.101</td></tr>
+          <tr><td class="name">R Ashwin</td><td>India</td><td class="num">105</td><td class="num">2.51</td><td class="num">6.36</td><td class="num"><strong>8.87</strong></td><td class="num">0.085</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>Lyon sitting at #2 on the overall leaderboard, above every specialist batter bar Root and above bowlers like Anderson who get talked about as the greats of the era, might come as a surprise on its own. He's never really been discussed in the company of Warne or Murali the way this model now places him &mdash; a very good, honest, high-volume off-spinner by most reputations, not an all-time-great one.</p>
+
+    <p>Lyon leads Ashwin on both total value and rate, though, for a specific, checkable reason, and it's the same reason the model rates him this highly overall. Ashwin's numbers are excellent partly because he bowls a lot in India, where this model's own country-conditions data says spin is easier than almost anywhere else measured (factor 0.91). Lyon's are excellent despite bowling most of his cricket in Australia, which the same data says is the single hardest country for a spinner in world cricket (factor 1.26, well clear of anywhere else). Two spinners with outwardly similar reputations spent their careers in almost opposite conditions, and once that's priced in, it isn't close: Lyon is the best spinner this dataset has seen at succeeding on pitches that are historically brutal for spin.</p>
+
+    <div class="chart-block">
+      <p class="chart-title">How pace-friendly or spin-friendly each country's conditions have been, 2001&ndash;2026</p>
+      <div class="heatmap-wrap">
+        <table class="heatmap">
+          <thead>
+            <tr><th></th><th class="num">Pace</th><th class="num">Spin</th></tr>
+          </thead>
+          <tbody>
+            <tr><th>Ireland</th><td class="num" style="background: color-mix(in srgb, var(--chart-bowl) 43%, var(--paper-raised));">0.85</td><td class="num" style="background: color-mix(in srgb, var(--chart-bowl) 35%, var(--paper-raised));">0.87</td></tr>
+            <tr><th>South Africa</th><td class="num" style="background: color-mix(in srgb, var(--chart-bowl) 34%, var(--paper-raised));">0.88</td><td class="num" style="background: color-mix(in srgb, var(--chart-bat) 20%, var(--paper-raised));">1.07</td></tr>
+            <tr><th>West Indies</th><td class="num" style="background: color-mix(in srgb, var(--chart-bowl) 32%, var(--paper-raised));">0.89</td><td class="num" style="background: color-mix(in srgb, var(--chart-bat) 4%, var(--paper-raised));">1.01</td></tr>
+            <tr><th>Zimbabwe</th><td class="num" style="background: color-mix(in srgb, var(--chart-bowl) 15%, var(--paper-raised));">0.95</td><td class="num" style="background: color-mix(in srgb, var(--chart-bowl) 6%, var(--paper-raised));">0.98</td></tr>
+            <tr><th>England</th><td class="num" style="background: color-mix(in srgb, var(--chart-bowl) 5%, var(--paper-raised));">0.98</td><td class="num" style="background: color-mix(in srgb, var(--chart-bat) 17%, var(--paper-raised));">1.04</td></tr>
+            <tr><th>Australia</th><td class="num" style="background: var(--paper-raised);">1.00</td><td class="num" style="background: color-mix(in srgb, var(--chart-bat) 100%, var(--paper-raised));"><strong>1.26</strong></td></tr>
+            <tr><th>New Zealand</th><td class="num" style="background: color-mix(in srgb, var(--chart-bat) 5%, var(--paper-raised));">1.01</td><td class="num" style="background: color-mix(in srgb, var(--chart-bat) 60%, var(--paper-raised));">1.15</td></tr>
+            <tr><th>Bangladesh</th><td class="num" style="background: color-mix(in srgb, var(--chart-bat) 35%, var(--paper-raised));">1.10</td><td class="num" style="background: color-mix(in srgb, var(--chart-bowl) 28%, var(--paper-raised));">0.93</td></tr>
+            <tr><th>India</th><td class="num" style="background: color-mix(in srgb, var(--chart-bat) 49%, var(--paper-raised));">1.14</td><td class="num" style="background: color-mix(in srgb, var(--chart-bowl) 37%, var(--paper-raised));">0.91</td></tr>
+            <tr><th>Pakistan</th><td class="num" style="background: color-mix(in srgb, var(--chart-bat) 60%, var(--paper-raised));">1.17</td><td class="num" style="background: color-mix(in srgb, var(--chart-bat) 20%, var(--paper-raised));">1.05</td></tr>
+            <tr><th>Sri Lanka</th><td class="num" style="background: color-mix(in srgb, var(--chart-bat) 63%, var(--paper-raised));">1.18</td><td class="num" style="background: color-mix(in srgb, var(--chart-bowl) 38%, var(--paper-raised));">0.91</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="chart-legend">
+        <span><span class="swatch" style="background:var(--chart-bowl)"></span>Easier to bowl (below 1.0)</span>
+        <span><span class="swatch" style="background:var(--chart-bat)"></span>Harder to bowl (above 1.0)</span>
+      </div>
+      <p class="chart-note">Pooled across the full 2001&ndash;2026 window, for one clean summary picture; the model itself refits a separate reading for each five-year era, so a country's true reading for any specific year can sit meaningfully away from this pooled one. Australia's spin column is still the outlier that explains this whole section: nowhere else comes close to 1.26.</p>
+    </div>
+
+    <h3>The Fab Four</h3>
+
+    <p class="table-hint">This is a batting debate, so the table strips out bowling entirely &mdash; Root in particular has picked up real value from his part-time off-spin across his career that has nothing to do with the question being asked here.</p>
+    <div class="table-wrap">
+      <table>
+        <caption>Root, Smith, Kohli, Williamson &middot; batting only</caption>
+        <thead>
+          <tr><th>Player</th><th>Team</th><th class="num">Tests</th><th class="num">Bat WAR</th><th class="num">WAR/game</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="name">JE Root</td><td>England</td><td class="num">166</td><td class="num"><strong>16.35</strong></td><td class="num">0.098</td></tr>
+          <tr><td class="name">SPD Smith</td><td>Australia</td><td class="num">123</td><td class="num"><strong>13.89</strong></td><td class="num">0.113</td></tr>
+          <tr><td class="name">V Kohli</td><td>India</td><td class="num">121</td><td class="num"><strong>10.89</strong></td><td class="num">0.090</td></tr>
+          <tr><td class="name">KS Williamson</td><td>New Zealand</td><td class="num">110</td><td class="num"><strong>10.69</strong></td><td class="num">0.097</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>To be precise about what this table can and can't settle: this is the Fab Four debate in Tests specifically, not across every format. Kohli's case in particular leans heavily on white-ball numbers this can't speak to at all. Within Tests, Root and Smith sit a clear tier above Kohli and Williamson on career batting value &mdash; but that's mostly a function of Tests played, and it doesn't hold on rate. Per Test, Smith (0.113) is out in front of the other three; Root (0.098) and Williamson (0.097) are close enough to call a dead heat; Kohli (0.090) is the one who actually trails on a per-match basis. Career total and per-match rate tell different stories here, and flattening them into one tier would hide that.</p>
+
+    <p>Root and Smith are close enough to be the real argument, so it's worth narrowing to just the two of them.</p>
+
+    <div class="table-wrap">
+      <table>
+        <caption>Head to head &middot; batting only</caption>
+        <thead>
+          <tr><th>Player</th><th>Team</th><th class="num">Tests</th><th class="num">Bat WAR</th><th class="num">WAR/game</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="name">JE Root</td><td>England</td><td class="num">166</td><td class="num"><strong>16.35</strong></td><td class="num">0.098</td></tr>
+          <tr><td class="name">SPD Smith</td><td>Australia</td><td class="num">123</td><td class="num"><strong>13.89</strong></td><td class="num">0.113</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>Root leads by a wide margin on career batting value, but most of that gap is simply opportunity. The two debuted within two years of each other, at almost identical ages (Root actually the older debutant, at 21 years 11 months to Smith's 21 years 1 month). Smith, though, spent his first two seasons in and out of the side as a legspin-bowling allrounder, playing just 5 Tests in 2010&ndash;12 before establishing himself as a specialist batter from 2013. Root, picked as a batter from day one, had 64 Tests banked within five years of his debut to Smith's 38. Add a full 12-month ban from the 2018 ball-tampering scandal, landing in what should have been his peak years, and a busier England calendar (13.0 Tests a year to Australia's 10.4), and most of the remaining 43-Test gap explains itself without either player's batting coming into it. Per Test, the picture flips: Smith's WAR per game (0.113) edges Root's (0.098). Take the career total and Root is the clear answer; take value per match, and Smith comes out ahead. One hypothetical, heavily caveated: hold Smith's rate constant over Root's 166 Tests instead of his own 123, and he finishes with 18.7 batting WAR to Root's real 16.35. Not a fair comparison, since that rate was never actually tested across those extra Tests, but a useful sense of how large the opportunity gap was.</p>
+
+    <h3>Best modern allrounder</h3>
+
+    <div class="table-wrap">
+      <table>
+        <caption>Head to head</caption>
+        <thead>
+          <tr><th>Player</th><th>Team</th><th class="num">Tests</th><th class="num">Bat</th><th class="num">Bowl</th><th class="num">Total</th><th class="num">WAR/game</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="name">BA Stokes</td><td>England</td><td class="num">121</td><td class="num">6.61</td><td class="num">2.92</td><td class="num"><strong>9.54</strong></td><td class="num">0.079</td></tr>
+          <tr><td class="name">RA Jadeja</td><td>India</td><td class="num">89</td><td class="num">3.06</td><td class="num">6.28</td><td class="num"><strong>9.34</strong></td><td class="num">0.105</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>This is close enough now to go either way. Stokes leads on total career value (9.54 to 9.34, in 32 more Tests); Jadeja leads clearly on WAR per game (0.105 to 0.079, 33% higher) in a shorter one. The shape of each score is the more interesting story. For most of his career Jadeja was a bowler who could bat a bit, not a real second threat: his batting average sat at 31.5 through 2018, only catching up recently (42.4 since 2019, now good enough to be picked on runs alone). Even so, his value here is still overwhelmingly bowling-led, and like Ashwin above, a lot of that bowling comes in conditions this model rates as unusually kind to spin. Stokes' batting and bowling have stayed closer to level for most of his career, a rarer shape than a fine bowler whose batting caught up late. Who produced more across a career: Stokes, narrowly. Who's been more valuable per match: Jadeja, clearly.</p>
+
+    <p>One more angle on Stokes: some of that value is specifically match-winning, in a sense this model can actually check. Every performance here is leverage-weighted by how much was at stake when it happened, and stripping that weighting back out shows what each player would be worth on raw production alone. Take it out and Stokes' total drops by 5.1%, meaning leverage is a net positive for him &mdash; his output skews toward the moments that mattered. Take it out for Jadeja and his total <em>rises</em> by 17.7%, the opposite pattern: a meaningful share of his production came in matches that were already largely decided. That's Stokes' clutch reputation showing up as an actual number, not just a talking point.</p>
+
+    <div class="table-wrap">
+      <table>
+        <caption>Shakib and Kallis, for context</caption>
+        <thead>
+          <tr><th>Player</th><th>Team</th><th class="num">Tests</th><th class="num">Bat</th><th class="num">Bowl</th><th class="num">Total</th><th class="num">WAR/game</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="name">Shakib Al Hasan</td><td>Bangladesh</td><td class="num">68</td><td class="num">3.04</td><td class="num">2.55</td><td class="num"><strong>5.59</strong></td><td class="num">0.082</td></tr>
+          <tr><td class="name">JH Kallis</td><td>South Africa</td><td class="num">89</td><td class="num">4.76</td><td class="num">&minus;0.25</td><td class="num"><strong>4.51</strong></td><td class="num">0.051</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>Shakib Al Hasan belongs in this conversation too, even though he isn't rated as highly as either of these two in Test cricket specifically. A genuine two-way contributor like Stokes rather than a specialist like Jadeja, his WAR per game still edges Stokes' &mdash; but he falls short of both on total value, mostly for lack of Tests played (68, against Jadeja's 89 and Stokes' 121).</p>
+
+    <p>Jacques Kallis, the allrounder both of these two inevitably get measured against, barely registers here for two different reasons. The batting is mostly a data problem: this dataset only captures 89 of his 166 Tests, missing the first six years of an 18-year career that began in 1995, before Cricsheet's coverage starts, and what's captured is a fair cross-section of his prime (2007, 2010 and 2012 all rate among his best), so a full career would likely rate well above the 4.76 WAR shown. The bowling is a different case, and possibly a reputation problem rather than a data one: his wicket-taking record is genuinely good enough that he's often talked about as a near-frontline third seamer, not just a support option, but that reading may be doing some work it shouldn't. Nearly half of his captured bowling (49% of the balls) came in South Africa, which this model rates as one of the easier countries in the world for pace bowling (factor 0.88, the same discount applied to Steyn above), and home advantage on top of that. Once conditions and opposition are priced in the way they are for every other bowler here, it nets out to essentially zero across his captured career, mostly in low-leverage overs &mdash; a support seamer who filled overs and chipped in on helpful days, not a strike weapon. Judged against replacement level, that's exactly where a role like that should land.</p>
+
+    <h3>Anderson or Steyn?</h3>
+
+    <div class="table-wrap">
+      <table>
+        <caption>Head to head</caption>
+        <thead>
+          <tr><th>Player</th><th>Team</th><th class="num">Tests</th><th class="num">Bat</th><th class="num">Bowl</th><th class="num">Total</th><th class="num">WAR/game</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="name">JM Anderson</td><td>England</td><td class="num">181</td><td class="num">&minus;0.19</td><td class="num">13.20</td><td class="num"><strong>13.01</strong></td><td class="num">0.072</td></tr>
+          <tr><td class="name">DW Steyn</td><td>South Africa</td><td class="num">90</td><td class="num">0.17</td><td class="num">5.12</td><td class="num"><strong>5.29</strong></td><td class="num">0.059</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>The model doesn't just prefer Anderson here &mdash; it isn't especially close, more than double on total value (13.01 to 5.29), and ahead on WAR per game too. That's the hardest verdict in this piece to take at face value, because by the numbers most judges actually look at, Steyn's the better bowler: a bowling average of 22.95 against 26.45, at a faster strike rate, over a career many rate as the more fearsome of the two at its absolute peak.</p>
+
+    <p>Part of that is the same mechanism that discounted Ashwin and Jadeja: Steyn took 59% of his wickets in South Africa, which this model rates as one of the easier countries for pace bowling (factor 0.88), against Anderson's 65% in a much less forgiving England (0.98).</p>
+
+    <p>There's a cleaner explanation that doesn't need that caveat at all. Split Steyn's career at the end of his last fully fit season and the gap nearly disappears: 82 Tests of prime Steyn (2006&ndash;2016) produced 0.0722 bowling WAR per Test, within 1% of Anderson's whole-career rate of 0.0730. His last 8 Tests, played after multiple shoulder and heel surgeries, were actively bad (&minus;0.80 WAR), and that alone drags his career figure down to 5.29. At full health, this model rates them as the same bowler.</p>
+
+    <div class="table-wrap">
+      <table>
+        <caption>Steyn's bowling WAR, prime vs. injury-hit farewell</caption>
+        <thead>
+          <tr><th></th><th class="num">Tests</th><th class="num">Bowl WAR</th><th class="num">WAR/Test</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="name">Prime (2006&ndash;2016)</td><td class="num">82</td><td class="num">5.92</td><td class="num"><strong>0.0722</strong></td></tr>
+          <tr><td class="name">Injury comeback (2018&ndash;2019)</td><td class="num">8</td><td class="num">&minus;0.80</td><td class="num">&minus;0.0998</td></tr>
+          <tr><td class="name">Anderson, full career (for comparison)</td><td class="num">181</td><td class="num">13.20</td><td class="num"><strong>0.0730</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>What actually separates the final numbers, then, isn't peak quality &mdash; it's that Anderson's longevity is one of the most remarkable in the sport's history, and it deserves to be said plainly rather than just implied by a number. Twenty-one seasons in this dataset, debuting at 20 and still taking the new ball at 41, with only four of them landing below replacement level, mostly early, growing-pains years. Three of his four best seasons by this model's reckoning &mdash; 2017, 2021, and 2022 &mdash; all came after his 34th birthday, and the single best year of his entire career arrived at 39, well clear of anything he produced in his twenties or early thirties. Most fast bowlers are in visible decline a decade before that; Anderson somehow kept getting better. Steyn's body didn't get the chance to age the same way; his injured farewell Tests really were below replacement level, and the model is right to count them.</p>
+
+    <p>One flagged, unfixed pattern: Steyn took a higher share of his wickets against the tail than Anderson did (40.6% to 34.0%), and this model can't yet price a wicket differently depending on who it was.</p>
+
+    <h3>And Broad, for completeness</h3>
+
+    <div class="table-wrap">
+      <table>
+        <caption>Head to head</caption>
+        <thead>
+          <tr><th>Player</th><th>Team</th><th class="num">Tests</th><th class="num">Bat</th><th class="num">Bowl</th><th class="num">Total</th><th class="num">WAR/game</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="name">SCJ Broad</td><td>England</td><td class="num">166</td><td class="num">1.71</td><td class="num">10.29</td><td class="num"><strong>12.01</strong></td><td class="num">0.072</td></tr>
+          <tr><td class="name">JM Anderson</td><td>England</td><td class="num">181</td><td class="num">&minus;0.19</td><td class="num">13.20</td><td class="num"><strong>13.01</strong></td><td class="num">0.072</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>Broad and Anderson are close to a dead heat, both playing the bulk of their cricket in the same English conditions, so neither gets a discount the other doesn't. It's the tightest gap in this piece: Broad's WAR per game (0.0723) edges Anderson's (0.0719), well inside the margin that shouldn't be read as a real verdict. But it isn't a tie in what each of them did. Anderson is the better pure bowler by this model's reckoning, 13.20 bowling WAR at a higher rate per ball than Broad's 10.29. What closes the gap is batting: Broad's part-time returns earn credit as a genuinely useful lower-order bat by his slot's standard, though "useful" mostly describes the first half of his career (average 23.1 through 2015, 11.9 from 2016 on, a real decline). Anderson's own batting is worth essentially nothing across a whole career. So the honest read isn't that the two bowled equally well. Anderson was the better bowler, and Broad's bat closed the rest of the distance.</p>
+
+    <h2>Two more things worth knowing</h2>
+
+    <div class="callout finding">
+      <span class="callout-label">The model spotted a doctored pitch</span>
+      <p>R Ashwin's 12 wickets for 98 at Nagpur in 2015, on a pitch controversial enough that the ICC formally investigated it for excessive turn, is exactly the case a pitch-conditions adjustment should catch. Once the model accounted for how helpful that specific surface was to spin, his bowling value for that match dropped from <strong>0.71</strong> WAR to <strong>0.31</strong> &mdash; more than halved. It didn't know the pitch had made headlines. It just measured how a replacement spinner would have fared on the same surface, and reached the same conclusion cricket journalism did at the time.</p>
+    </div>
+
+    <div class="callout finding">
+      <span class="callout-label">Big moments count for more</span>
+      <p>Ben Stokes' unbeaten 135 at Headingley in 2019, England chasing 359 with the last pair at the crease, is worth noticeably more here than a similar score in a match already decided. The model weighs every performance by how much was genuinely at stake when it happened, which is a large part of why a player like Stokes, who has a habit of producing his best cricket in the tensest moments, rates well above what a flat runs-based average would say.</p>
+    </div>
+
+    <div class="pull-stat">
+      <div class="num">39</div>
+      <div class="cap">Anderson's age during the single best season of his entire career &mdash; three of his four best years came after turning 34.</div>
+    </div>
+
+    <h2>Where it still falls short</h2>
+
+    <h3>Anything before 2001 barely counts</h3>
+
+    <p>Cricsheet's ball-by-ball coverage starts in 2001, so anyone whose career peaked earlier gets badly undercounted. Jacques Kallis, above, is the clearest case in this piece, but he's far from alone: any bowler or batter whose best years fell in the 1990s is judged here on whatever was left of their career after 2001, not on their true peak.</p>
+
+    <h3>Not every team gets the same number of chances to build one</h3>
+
+    <p>Career WAR rewarding a long, consistently good career isn't a shortcoming to apologise for &mdash; that's exactly what a value-produced stat should do, the same way it works in baseball or basketball. What's worth flagging plainly, though, is that the chance to produce that volume isn't evenly shared. Root has played 166 Tests to Kane Williamson's 110, and a good chunk of that gap is national scheduling, not application or fitness: England have played 275 Tests in this window, New Zealand 169, 39% fewer. Williamson's WAR per game (0.097 in the Fab Four table above, batting only) is essentially tied with Root's (0.098), but he was never going to get the same number of chances to add to a career total, because his team simply doesn't play as much cricket. The same logic quietly favours England, Australia and India's stars over Sri Lanka's, New Zealand's and the West Indies', independent of who's actually better. Career WAR still honestly answers "how much value did you produce"; WAR per game answers "how much value per chance you got," which is the fairer lens when the question is really about ability rather than opportunity. The principle underneath both numbers is the same: a long career spent producing at a high level, like Anderson's or Root's, is real value and deserves to be credited as such, not treated as some lesser feat than a short, brilliant one. But a shorter one shouldn't be read as a lesser player just because their team's calendar never gave them the games to build the same total &mdash; Williamson isn't a smaller version of Root, he's a player with an almost identical rate who got 39% fewer chances to show it. Longevity earns its credit; a lack of opportunity shouldn't cost anyone theirs.</p>
+
+    <h3>Fielding isn't in here at all</h3>
+
+    <p>I looked hard at adding it, and stopped. Cricsheet records who took a catch, but not who dropped one, so there's no way to distinguish a player who was never given a chance from one who put down every chance they got. Ground fielding (the stops, the saved boundaries, the turned twos) is invisible entirely unless it happens to end in a run out. A player like Ravindra Jadeja, whose fielding reputation rests almost entirely on things this dataset can't see, would come out of a forced "fielding WAR" looking ordinary, which would be a worse outcome than leaving it out and saying so.</p>
+
+    <h3>The replacement bar is wide, not a single line</h3>
+
+    <p>Bangladesh and Zimbabwe bowlers dominate the bottom of the career table, and that's not a bug. It's the model correctly measuring performance against a <em>global</em> replacement level rather than each team's own bar. And the model has no way to see why a wicketkeeper was picked: a keeper-batter's real value is mostly in the gloves, and everything about that is invisible here, leaving only a modest batting record behind.</p>
+
+    <h3>What I'd fix next</h3>
+
+    <ul class="plain">
+      <li><strong>Team scheduling bias compounds the replacement-level issue above.</strong> Not only is the replacement bar global rather than team-relative, but which teams get to accumulate value at all is itself uneven, since the ICC's Full Members don't play remotely similar volumes of Test cricket against each other. I don't think this is fixable by changing the RAR formula &mdash; a team that plays less cricket genuinely has fewer chances to add to a career total, and that's real, not an error. WAR per game is the honest answer to it, not a correction to career WAR itself.</li>
+      <li><strong>The country-conditions factor is still fairly coarse, and I actually tested whether that matters.</strong> It's one number per country per bowling type per five-year era, which misses real variation between specific grounds within a country: Sydney's spin wicket rate genuinely does run above Australia's average, and the Gabba's runs below it, on samples big enough to trust (14&ndash;25 Tests each). Built a venue-level version anyway, and it made the model worse, not better, on held-out prediction. The reason turned out to be more interesting than "not enough data": Sydney's extra turn isn't there from ball one, it's almost entirely a 4th-innings effect, and a factor built at the venue level smears that flat across a whole match. Country, not venue, is still the right grain, now for a specific, tested reason rather than a guess about sample size. Full story in Ten Versions.</li>
+      <li><strong>Batting position deserves the same scrutiny wicket pricing just got.</strong> Separating how much easier a slot is from which players get sent there is worth doing properly. I've tried it once and the result didn't hold up well enough to trust, so it isn't reflected here yet.</li>
+      <li><strong>Bowling RAR doesn't know who got dismissed, and I tested fixing that too.</strong> A wicket is priced the same whether it's a recognised top-order batter or a number 11 swinging for the boundary, part of why Steyn's heavier share of tail wickets than Anderson's (40.6% to 34.0%) doesn't show up anywhere in either man's number. Built a version that priced each wicket by the dismissed batter's own quality, found and fixed a real bug in the first attempt (it was inflating almost every bowler's number instead of redistributing credit), and even the corrected version didn't predict real match outcomes any better than pricing every wicket the same. The signal is probably real but too weak, at this level of accuracy, to earn its place. Full story in Ten Versions.</li>
+      <li><strong>An allrounder's value to a team's overall balance probably isn't fully captured.</strong> Summing batting and bowling WAR for one player should, in principle, already measure how much better this player is in this slot than a replacement &mdash; but only if a real replacement could cover both jobs as easily as the model assumes. I've checked this for a handful of recognised allrounders and found a clean effect for one of them and nothing consistent for the rest, which isn't enough to build a fix from yet. It still feels like a gap rather than a closed question.</li>
+    </ul>
+
+    <hr class="divider">
+
+    <h2 id="methodology">More on how this was built</h2>
+
+    <p>Ten rebuilds, three real bugs caught and fixed, twelve plausible ideas tested against held-out data and correctly rejected, and one still genuinely open. It's a companion piece rather than a section here, since it's a different kind of read: <a href="https://claude.ai/code/artifact/eaf043cd-b86d-47df-8f5b-9b006c7a4a2e"><strong>Ten Versions</strong></a>.</p>
+
+  </article>
+
+  <footer class="colophon">
+    <div>Data &middot; Cricsheet ball-by-ball archive, Test matches 2001&ndash;2026 (914 matches, 1,762,524 deliveries)</div>
+    <div>Model &middot; opposition-, pitch-, country- and position-adjusted RAR (eleven individual batting slots, decomposed economy/wicket-rate bowling pitch factor, wickets priced at their win-probability-validated value), leverage weighting, season-level win conversion &mdash; no cross-discipline calibration</div>
+    <div>Known gaps &middot; pre-2001 careers undercounted &middot; fielding excluded &middot; replacement level is global, not team-relative</div>
+  </footer>
+
+</div>
+
+<script>
+  function markOverflow() {
+    document.querySelectorAll('.table-wrap').forEach(function (wrap) {
+      wrap.classList.toggle('has-overflow', wrap.scrollWidth > wrap.clientWidth + 2);
+    });
+  }
+  markOverflow();
+  window.addEventListener('resize', markOverflow);
+
+  document.querySelectorAll('.sortable-table').forEach(function (table) {
+    var tbody = table.querySelector('tbody');
+    table.querySelectorAll('th.sortable').forEach(function (th) {
+      function doSort() {
+        var headers = Array.prototype.slice.call(th.parentElement.children);
+        var colIndex = headers.indexOf(th);
+        var currentlyDesc = th.classList.contains('sorted') && th.dataset.dir === 'desc';
+        var nextDir = currentlyDesc ? 'asc' : 'desc';
+
+        headers.forEach(function (h) { h.classList.remove('sorted'); h.removeAttribute('data-dir'); });
+        th.classList.add('sorted');
+        th.dataset.dir = nextDir;
+
+        var rows = Array.prototype.slice.call(tbody.querySelectorAll('tr'));
+        rows.sort(function (a, b) {
+          var av = a.children[colIndex].textContent.replace(/[,&minus;]/g, function (m) { return m === '&minus;' ? '-' : ''; }).trim();
+          var bv = b.children[colIndex].textContent.replace(/[,&minus;]/g, function (m) { return m === '&minus;' ? '-' : ''; }).trim();
+          var an = parseFloat(av), bn = parseFloat(bv);
+          var cmp = (isNaN(an) || isNaN(bn)) ? av.localeCompare(bv) : an - bn;
+          return nextDir === 'asc' ? cmp : -cmp;
+        });
+        rows.forEach(function (r) { tbody.appendChild(r); });
+
+        var rankCol = headers.findIndex(function (h) { return h.textContent.trim() === '#'; });
+        if (rankCol > -1) {
+          rows.forEach(function (r, i) { r.children[rankCol].textContent = i + 1; });
+        }
+      }
+      th.addEventListener('click', doSort);
+      th.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); doSort(); }
+      });
+    });
+  });
+</script>
+</body>
+</html>
