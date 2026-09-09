@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -527,7 +527,7 @@
 
     <p><strong>WAR (Wins Above Replacement) is the closest thing basketball and baseball have to a single number that answers "how good is this player, really?"</strong> It doesn't ask how many points or runs someone produced. It asks how many <em>wins</em> they added for their team, above what a freely-available replacement-level player would have added in the same games. Test cricket has never had a real version of this. Batting average and bowling average get you partway there, but they don't know who you were facing, what the pitch was doing, or whether the moment mattered.</p>
 
-    <p>So I built one. What follows is what it found, using the model as it stands today. There's a companion piece, <a href="https://claude.ai/code/artifact/eaf043cd-b86d-47df-8f5b-9b006c7a4a2e"><strong>Ten Versions</strong></a>, covering how it was built and tested, for anyone who wants that instead.</p>
+    <p>So I built one. What follows is what it found, using the model as it stands today. There's a companion piece, <a href="https://claude.ai/code/artifact/eaf043cd-b86d-47df-8f5b-9b006c7a4a2e"><strong>Measure Twice</strong></a>, covering how it was built and tested, for anyone who wants that instead.</p>
 
     <h2>The idea, in plain terms</h2>
 
@@ -971,9 +971,9 @@
 
     <ul class="plain">
       <li><strong>Team scheduling bias compounds the replacement-level issue above.</strong> Not only is the replacement bar global rather than team-relative, but which teams get to accumulate value at all is itself uneven, since the ICC's Full Members don't play remotely similar volumes of Test cricket against each other. I don't think this is fixable by changing the RAR formula &mdash; a team that plays less cricket genuinely has fewer chances to add to a career total, and that's real, not an error. WAR per game is the honest answer to it, not a correction to career WAR itself.</li>
-      <li><strong>The country-conditions factor is still fairly coarse, and I actually tested whether that matters.</strong> It's one number per country per bowling type per five-year era, which misses real variation between specific grounds within a country: Sydney's spin wicket rate genuinely does run above Australia's average, and the Gabba's runs below it, on samples big enough to trust (14&ndash;25 Tests each). Built a venue-level version anyway, and it made the model worse, not better, on held-out prediction. The reason turned out to be more interesting than "not enough data": Sydney's extra turn isn't there from ball one, it's almost entirely a 4th-innings effect, and a factor built at the venue level smears that flat across a whole match. Country, not venue, is still the right grain, now for a specific, tested reason rather than a guess about sample size. Full story in Ten Versions.</li>
+      <li><strong>The country-conditions factor is still fairly coarse, and I actually tested whether that matters.</strong> It's one number per country per bowling type per five-year era, which misses real variation between specific grounds within a country: Sydney's spin wicket rate genuinely does run above Australia's average, and the Gabba's runs below it, on samples big enough to trust (14&ndash;25 Tests each). Built a venue-level version anyway, and it made the model worse, not better, on held-out prediction. The reason turned out to be more interesting than "not enough data": Sydney's extra turn isn't there from ball one, it's almost entirely a 4th-innings effect, and a factor built at the venue level smears that flat across a whole match. Country, not venue, is still the right grain, now for a specific, tested reason rather than a guess about sample size. Full story in Measure Twice.</li>
       <li><strong>Batting position deserves the same scrutiny wicket pricing just got.</strong> Separating how much easier a slot is from which players get sent there is worth doing properly. I've tried it once and the result didn't hold up well enough to trust, so it isn't reflected here yet.</li>
-      <li><strong>Bowling RAR doesn't know who got dismissed, and I tested fixing that too.</strong> A wicket is priced the same whether it's a recognised top-order batter or a number 11 swinging for the boundary, part of why Steyn's heavier share of tail wickets than Anderson's (40.6% to 34.0%) doesn't show up anywhere in either man's number. Built a version that priced each wicket by the dismissed batter's own quality, found and fixed a real bug in the first attempt (it was inflating almost every bowler's number instead of redistributing credit), and even the corrected version didn't predict real match outcomes any better than pricing every wicket the same. The signal is probably real but too weak, at this level of accuracy, to earn its place. Full story in Ten Versions.</li>
+      <li><strong>Bowling RAR doesn't know who got dismissed, and I tested fixing that too.</strong> A wicket is priced the same whether it's a recognised top-order batter or a number 11 swinging for the boundary, part of why Steyn's heavier share of tail wickets than Anderson's (40.6% to 34.0%) doesn't show up anywhere in either man's number. Built a version that priced each wicket by the dismissed batter's own quality, found and fixed a real bug in the first attempt (it was inflating almost every bowler's number instead of redistributing credit), and even the corrected version didn't predict real match outcomes any better than pricing every wicket the same. The signal is probably real but too weak, at this level of accuracy, to earn its place. Full story in Measure Twice.</li>
       <li><strong>An allrounder's value to a team's overall balance probably isn't fully captured.</strong> Summing batting and bowling WAR for one player should, in principle, already measure how much better this player is in this slot than a replacement &mdash; but only if a real replacement could cover both jobs as easily as the model assumes. I've checked this for a handful of recognised allrounders and found a clean effect for one of them and nothing consistent for the rest, which isn't enough to build a fix from yet. It still feels like a gap rather than a closed question.</li>
     </ul>
 
@@ -981,7 +981,7 @@
 
     <h2 id="methodology">More on how this was built</h2>
 
-    <p>Ten rebuilds, three real bugs caught and fixed, twelve plausible ideas tested against held-out data and correctly rejected, and one still genuinely open. It's a companion piece rather than a section here, since it's a different kind of read: <a href="https://claude.ai/code/artifact/eaf043cd-b86d-47df-8f5b-9b006c7a4a2e"><strong>Ten Versions</strong></a>.</p>
+    <p>Ten rebuilds, three real bugs caught and fixed, twelve plausible ideas tested against held-out data and correctly rejected, and one still genuinely open. It's a companion piece rather than a section here, since it's a different kind of read: <a href="https://claude.ai/code/artifact/eaf043cd-b86d-47df-8f5b-9b006c7a4a2e"><strong>Measure Twice</strong></a>.</p>
 
   </article>
 
