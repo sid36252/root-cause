@@ -1,10 +1,3 @@
-<!doctype html>
-<html lang="en">
-<head>
-
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="What 25 years of Test cricket looks like through Wins Above Replacement.">
 <title>Root Cause</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -496,8 +489,6 @@
     .pull-stat { flex-direction: column; gap: 0.2rem; }
   }
 </style>
-</head>
-<body>
 
 <div class="wrap">
 
@@ -508,8 +499,8 @@
     <p class="deck">Basketball has Wins Above Replacement. Test cricket doesn't, so I built one from 25 years of ball-by-ball data.</p>
     <div class="byline">
       <span><b>Coverage</b> 2001&ndash;2026</span>
-      <span><b>Matches</b> 914</span>
-      <span><b>Deliveries</b> 1,762,524</span>
+      <span><b>Matches</b> 890</span>
+      <span><b>Deliveries</b> 1,715,773</span>
       <span><b>Source</b> Cricsheet</span>
     </div>
   </header>
@@ -518,42 +509,42 @@
     <p class="tldr-label">In short</p>
     <ul>
       <li><strong>WAR (Wins Above Replacement)</strong> is one number for how many extra wins a player earned their team, above what a replacement-level player would have earned in the same matches. Basketball and baseball have had it for years; Test cricket hasn't, until now.</li>
-      <li>Built it from 1.76 million ball-by-ball deliveries, adjusted for opposition, conditions, and how much each moment mattered.</li>
+      <li>Built it from 1.72 million ball-by-ball deliveries, adjusted for opposition, conditions, and how much each moment mattered.</li>
       <li><a href="#leaderboard">Joe Root comes out on top</a>, worth roughly 16 extra wins to England across his career, more than anyone else since 2001.</li>
-      <li>Nathan Lyon rates as the #2 most valuable player of the era, which will surprise a lot of people. More on why below.</li>
+      <li>James Anderson comes second, and like Root he had a long, successful career for a team that plays more Tests than almost anyone. Nathan Lyon rates third, which suggests he's underrated, and will surprise a lot of people. More on why below.</li>
     </ul>
   </div>
 
   <article>
 
-    <p><strong>WAR (Wins Above Replacement) is the closest thing basketball and baseball have to a single number that answers "how good is this player, really?"</strong> It doesn't ask how many points or runs someone produced. It asks how many <em>wins</em> they added for their team, above what a freely-available replacement-level player would have added in the same games. Test cricket has never had a real version of this. Batting average and bowling average get you partway there, but they don't know who you were facing, what the pitch was doing, or whether the moment mattered.</p>
+    <p><strong>WAR (Wins Above Replacement) is the closest thing basketball and baseball have to a single number that answers "how good is this player, really?"</strong> It doesn't ask how many points or runs someone produced. It asks how many <em>wins</em> they added for their team, above what a freely-available replacement-level player would have added in the same games. Batting average and bowling average get you partway there, but they don't know who you were facing, what the pitch was doing, or whether the moment mattered.</p>
 
-    <p>I built a metric to measure it for Test cricket. What follows is what it found, using the model as it stands today. There's a companion piece, <a href="https://sid36252.github.io/measure-twice/"><strong>Measure Twice</strong></a>, covering how it was built and tested, for anyone interested in seeing how the model got to where it is now.</p>
+    <p>I built a metric to measure it for Test cricket, and I keep testing and revising it. Everything below comes from the model as it stands today. The companion piece, <a href="https://sid36252.github.io/measure-twice/"><strong>Measure Twice</strong></a>, covers how it was built and tested.</p>
 
     <h2>The idea, in plain terms</h2>
 
-    <p>Imagine every Test team keeps a replacement player in reserve. Not a star, just a solid domestic pro who'd slot in if someone got dropped. WAR asks one question. How many extra wins did this player earn their team, above what that replacement would have earned in the same matches?</p>
+    <p>Imagine every Test team keeps a replacement player in reserve. Not a star, just a solid domestic pro who'd slot in if someone got dropped. WAR asks how many extra wins a player earned their team over that replacement, in the same matches.</p>
 
-    <p>Everything else is just being careful about what "the same matches" means:</p>
+    <p>The rest is about defining &ldquo;the same matches&rdquo; carefully.</p>
 
     <ul class="plain">
-      <li><strong>Who you faced.</strong> A hundred against a full-strength attack should count for more than a hundred against a weak one.</li>
+      <li><strong>Who you faced.</strong> A hundred against a strong attack should count for more than a hundred against a weak one.</li>
       <li><strong>What the pitch was doing.</strong> Runs on a green seamer are harder to come by than runs on a flat road, and wickets on a raging turner are partly the surface's doing, not just the bowler.</li>
-      <li><strong>What a wicket is really worth.</strong> Not a textbook bowling average, but the real, measured effect losing a batter has on a team's chances of winning.</li>
+      <li><strong>What a wicket is worth.</strong> Not a textbook bowling average, but the measured effect that losing a batter has on a team's chances of winning.</li>
       <li><strong>Whether the moment mattered.</strong> A wicket that breaks a nervy run chase is worth more than the same wicket in a match already decided.</li>
       <li><strong>Turning all of that into wins</strong>, using the historical relationship between how big a team's run advantage was and how often that produced a win.</li>
     </ul>
 
     <h2>Is the data any good?</h2>
 
-    <p>Everything here comes from <a href="https://cricsheet.org" target="_blank" rel="noopener">Cricsheet</a>, a free ball-by-ball archive of international cricket. Test coverage starts in 2001 and runs to the present, 914 matches, <span class="stat-inline">1.76 million</span> individual deliveries, each one carrying the batter, the bowler, the runs, and the dismissal if there was one.</p>
+    <p>Everything here comes from <a href="https://cricsheet.org" target="_blank" rel="noopener">Cricsheet</a>, a free ball-by-ball archive of international cricket. Coverage starts in 2001 and runs to the present. The raw archive holds 914 matches, but 24 are women&rsquo;s Tests, so the analysis uses the 890 men&rsquo;s Tests. That is <span class="stat-inline">1.72 million</span> deliveries, each with the batter, the bowler, the runs and the dismissal if there was one.</p>
 
-    <p>Before trusting any of it, I ran it against known history. Alastair Cook's career is closed. He retired in 2018, so his total is fixed forever, and summing his raw runs straight off the ball-by-ball data landed exactly on his real career tally of 12,472. The dismissal mix checked out too, 58.8% caught, 17.6% bowled, 16.8% lbw, the rest split across run outs, stumpings and oddities. And the era shows up honestly in the numbers. The draw rate has fallen from <span class="stat-inline">24.4%</span> of matches in 2000&ndash;04 to just <span class="stat-inline">7.0%</span> in 2025&ndash;26. Part of that is the well-documented shift toward more attacking Test cricket. Part of it, in the last five years especially, is the World Test Championship. Bilateral series now feed a points table, and a draw is worth a lot less on that table than a win.</p>
+    <p>Before trusting any of it, I checked it against known history. Alastair Cook&rsquo;s career is closed, so his total is fixed. Summing his raw runs from the ball-by-ball data gave exactly his real tally of 12,472. The dismissal mix was right too, 59.2% caught, 17.5% bowled and 16.5% lbw, with the rest split across run outs, stumpings and oddities. The shift in trends across eras shows up in the numbers as well. The draw rate fell from <span class="stat-inline">22.5%</span> of matches in 2000&ndash;04 to <span class="stat-inline">7.4%</span> in 2025&ndash;26, partly because of the shift toward more attacking Test cricket and partly because of the World Test Championship, where bilateral series now feed a points table.</p>
 
     <div class="chart-block">
       <p class="chart-title">Share of matches ending in a draw, by five-year period</p>
       <div class="chart-svg-wrap">
-        <svg viewBox="0 0 640 210" role="img" aria-label="Line chart: draw rate falls from 24.4% in 2000-04 to 7.0% in 2025-26">
+        <svg viewBox="0 0 640 210" role="img" aria-label="Line chart: draw rate falls from 22.5% in 2000-04 to 7.4% in 2025-26">
           <line x1="60" y1="170" x2="600" y2="170" stroke="var(--chart-grid)" stroke-width="1"/>
           <line x1="60" y1="120" x2="600" y2="120" stroke="var(--chart-grid)" stroke-width="1"/>
           <line x1="60" y1="70" x2="600" y2="70" stroke="var(--chart-grid)" stroke-width="1"/>
@@ -563,17 +554,17 @@
           <text x="52" y="74" text-anchor="end" class="chart-axis-label">20%</text>
           <text x="52" y="24" text-anchor="end" class="chart-axis-label">30%</text>
 
-          <path d="M60,48 L168,37.5 L276,45 L384,94 L492,97.5 L600,135" fill="none" stroke="var(--gold-strong)" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M60,57.5 L168,40 L276,45.5 L384,97.5 L492,104 L600,133" fill="none" stroke="var(--gold-strong)" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"/>
 
-          <g class="chart-tooltip-target"><circle cx="60" cy="48" r="4" fill="var(--gold-strong)"/><title>2000&ndash;04: 24.4% of matches drawn</title></g>
-          <g class="chart-tooltip-target"><circle cx="168" cy="37.5" r="5" fill="var(--gold-strong)"/><title>2005&ndash;09: 26.5% of matches drawn</title></g>
-          <g class="chart-tooltip-target"><circle cx="276" cy="45" r="5" fill="var(--gold-strong)"/><title>2010&ndash;14: 25.0% of matches drawn</title></g>
-          <g class="chart-tooltip-target"><circle cx="384" cy="94" r="5" fill="var(--gold-strong)"/><title>2015&ndash;19: 15.2% of matches drawn</title></g>
-          <g class="chart-tooltip-target"><circle cx="492" cy="97.5" r="5" fill="var(--gold-strong)"/><title>2020&ndash;24: 14.5% of matches drawn</title></g>
-          <g class="chart-tooltip-target"><circle cx="600" cy="135" r="4" fill="var(--gold-strong)"/><title>2025&ndash;26: 7.0% of matches drawn</title></g>
+          <g class="chart-tooltip-target"><circle cx="60" cy="57.5" r="4" fill="var(--gold-strong)"/><title>2000&ndash;04: 22.5% of matches drawn</title></g>
+          <g class="chart-tooltip-target"><circle cx="168" cy="40" r="5" fill="var(--gold-strong)"/><title>2005&ndash;09: 26.0% of matches drawn</title></g>
+          <g class="chart-tooltip-target"><circle cx="276" cy="45.5" r="5" fill="var(--gold-strong)"/><title>2010&ndash;14: 24.9% of matches drawn</title></g>
+          <g class="chart-tooltip-target"><circle cx="384" cy="97.5" r="5" fill="var(--gold-strong)"/><title>2015&ndash;19: 14.5% of matches drawn</title></g>
+          <g class="chart-tooltip-target"><circle cx="492" cy="104" r="5" fill="var(--gold-strong)"/><title>2020&ndash;24: 13.2% of matches drawn</title></g>
+          <g class="chart-tooltip-target"><circle cx="600" cy="133" r="4" fill="var(--gold-strong)"/><title>2025&ndash;26: 7.4% of matches drawn</title></g>
 
-          <text x="60" y="32" text-anchor="middle" class="chart-value-label" fill="var(--gold-strong)">24.4%</text>
-          <text x="600" y="152" text-anchor="middle" class="chart-value-label" fill="var(--gold-strong)">7.0%</text>
+          <text x="60" y="42" text-anchor="middle" class="chart-value-label" fill="var(--gold-strong)">22.5%</text>
+          <text x="600" y="150" text-anchor="middle" class="chart-value-label" fill="var(--gold-strong)">7.4%</text>
 
           <text x="60" y="195" text-anchor="middle" class="chart-axis-label">&rsquo;00&ndash;04</text>
           <text x="168" y="195" text-anchor="middle" class="chart-axis-label">&rsquo;05&ndash;09</text>
@@ -583,12 +574,12 @@
           <text x="600" y="195" text-anchor="middle" class="chart-axis-label">&rsquo;25&ndash;26</text>
         </svg>
       </div>
-      <p class="chart-note">Hover over any point without a printed number to see that period's exact draw rate. This era-by-era swing is the whole reason the model fits a separate runs-per-win rate for each five-year period rather than one flat rate across 25 years.</p>
+      <p class="chart-note">Hover over any point without a printed number for that period's exact draw rate. This swing is why the model fits a separate runs-per-win rate for each five-year period.</p>
     </div>
 
     <h2 id="leaderboard">The leaderboard</h2>
 
-    <p>This is every player ranked with all of the adjustments from above applied at once (who they faced, the conditions, what a wicket was really worth, how much the moment mattered), then converted into wins. The full list of what goes into it, for anyone who wants the detail, is in the <a href="https://sid36252.github.io/measure-twice/"><strong>Measure Twice</strong></a> companion piece.</p>
+    <p>Here is every player ranked with all of those adjustments applied at once and converted into wins. The full detail of what goes into it is in the <a href="https://sid36252.github.io/measure-twice/"><strong>Measure Twice</strong></a> companion piece.</p>
 
     <div class="pull-stat">
       <div class="num">#1</div>
@@ -597,10 +588,15 @@
 
     <div class="callout finding">
       <span class="callout-label">For anyone who needs the context</span>
-      <p>Root debuted for England in 2012, captained the side for five years through 2022 (more Tests as captain than anyone else in English history), and became England's all-time leading Test run-scorer along the way. He's the one member of the "Fab Four" era (Root, Kohli, Smith, Williamson) still adding to his numbers at the top of his game deep into his thirties, essentially the same classical, orthodox technician he was at 21, just with a few more reverse-scoops added along the way.</p>
+      <p>Root debuted for England in 2012 and captained the side for five years through 2022, more Tests as captain than anyone in English history. He is England's all-time leading Test run-scorer. He is still adding to his numbers in his mid-thirties, the same classical, orthodox technician he was at 21 with a few reverse-scoops added.</p>
     </div>
 
-    <p class="table-hint">Click a column heading to sort. Swipe or scroll sideways on a phone to see every column.</p>
+    <div class="callout bug">
+      <span class="callout-label">Before reading career totals as rankings</span>
+      <p>Teams play very different volumes of Test cricket. England have played 275 Tests in this window and New Zealand 169, which is 39% fewer, so a career total here rewards opportunity as well as ability. The rate table further down corrects for that. More in "Not every team gets the same number of chances to build one," in the limitations section below.</p>
+    </div>
+
+    <p class="table-hint">Click a column heading to sort. Swipe or scroll sideways on a phone to see every column. A name marked <sup>&dagger;</sup> includes Tests from the 2001&ndash;2008 coverage gap scored from ESPNcricinfo scorecards rather than ball-by-ball data &mdash; see "Coverage isn't complete until 2009" below.</p>
     <div class="table-wrap">
       <table class="sortable-table" id="career-table">
         <caption>Career WAR &middot; top 20 &middot; 2001&ndash;2026</caption>
@@ -616,33 +612,35 @@
           </tr>
         </thead>
         <tbody>
-          <tr><td class="rank">1</td><td class="name">JE Root</td><td>England</td><td class="num">16.35</td><td class="num">&minus;0.28</td><td class="num"><strong>16.07</strong></td><td class="num">166</td></tr>
-          <tr><td class="rank">2</td><td class="name">NM Lyon</td><td>Australia</td><td class="num">0.26</td><td class="num">14.13</td><td class="num"><strong>14.38</strong></td><td class="num">142</td></tr>
-          <tr><td class="rank">3</td><td class="name">SPD Smith</td><td>Australia</td><td class="num">13.89</td><td class="num">&minus;0.35</td><td class="num"><strong>13.54</strong></td><td class="num">123</td></tr>
-          <tr><td class="rank">4</td><td class="name">JM Anderson</td><td>England</td><td class="num">&minus;0.19</td><td class="num">13.20</td><td class="num"><strong>13.01</strong></td><td class="num">181</td></tr>
-          <tr><td class="rank">5</td><td class="name">SCJ Broad</td><td>England</td><td class="num">1.71</td><td class="num">10.29</td><td class="num"><strong>12.01</strong></td><td class="num">166</td></tr>
-          <tr><td class="rank">6</td><td class="name">AN Cook</td><td>England</td><td class="num">11.67</td><td class="num">0.04</td><td class="num"><strong>11.71</strong></td><td class="num">161</td></tr>
-          <tr><td class="rank">7</td><td class="name">V Kohli</td><td>India</td><td class="num">10.89</td><td class="num">&minus;0.12</td><td class="num"><strong>10.77</strong></td><td class="num">121</td></tr>
-          <tr><td class="rank">8</td><td class="name">KS Williamson</td><td>New Zealand</td><td class="num">10.69</td><td class="num">&minus;0.14</td><td class="num"><strong>10.55</strong></td><td class="num">110</td></tr>
-          <tr><td class="rank">9</td><td class="name">PJ Cummins</td><td>Australia</td><td class="num">1.02</td><td class="num">9.50</td><td class="num"><strong>10.52</strong></td><td class="num">73</td></tr>
-          <tr><td class="rank">10</td><td class="name">MA Starc</td><td>Australia</td><td class="num">1.25</td><td class="num">8.37</td><td class="num"><strong>9.62</strong></td><td class="num">106</td></tr>
-          <tr><td class="rank">11</td><td class="name">BA Stokes</td><td>England</td><td class="num">6.61</td><td class="num">2.92</td><td class="num"><strong>9.54</strong></td><td class="num">121</td></tr>
-          <tr><td class="rank">12</td><td class="name">RA Jadeja</td><td>India</td><td class="num">3.06</td><td class="num">6.28</td><td class="num"><strong>9.34</strong></td><td class="num">89</td></tr>
-          <tr><td class="rank">13</td><td class="name">TG Southee</td><td>New Zealand</td><td class="num">1.06</td><td class="num">8.21</td><td class="num"><strong>9.27</strong></td><td class="num">107</td></tr>
-          <tr><td class="rank">14</td><td class="name">DA Warner</td><td>Australia</td><td class="num">9.45</td><td class="num">&minus;0.19</td><td class="num"><strong>9.27</strong></td><td class="num">112</td></tr>
-          <tr><td class="rank">15</td><td class="name">R Ashwin</td><td>India</td><td class="num">2.51</td><td class="num">6.36</td><td class="num"><strong>8.87</strong></td><td class="num">105</td></tr>
-          <tr><td class="rank">16</td><td class="name">JR Hazlewood</td><td>Australia</td><td class="num">0.04</td><td class="num">7.66</td><td class="num"><strong>7.70</strong></td><td class="num">77</td></tr>
-          <tr><td class="rank">17</td><td class="name">HM Amla</td><td>South Africa</td><td class="num">7.35</td><td class="num">&minus;0.04</td><td class="num"><strong>7.31</strong></td><td class="num">121</td></tr>
-          <tr><td class="rank">18</td><td class="name">UT Khawaja</td><td>Australia</td><td class="num">6.82</td><td class="num">&minus;0.00</td><td class="num"><strong>6.82</strong></td><td class="num">87</td></tr>
-          <tr><td class="rank">19</td><td class="name">AB de Villiers</td><td>South Africa</td><td class="num">6.76</td><td class="num">0.02</td><td class="num"><strong>6.78</strong></td><td class="num">105</td></tr>
-          <tr><td class="rank">20</td><td class="name">KC Sangakkara</td><td>Sri Lanka</td><td class="num">6.81</td><td class="num">&minus;0.03</td><td class="num"><strong>6.78</strong></td><td class="num">84</td></tr>
+          <tr><td class="rank">1</td><td class="name">JE Root</td><td>England</td><td class="num">16.41</td><td class="num">&minus;0.28</td><td class="num"><strong>16.13</strong></td><td class="num">166</td></tr>
+          <tr><td class="rank">2</td><td class="name">JM Anderson<sup class="sc-flag" title="includes Tests scored from ESPNcricinfo scorecards, not ball-by-ball data (2001-2008 coverage gap) -- see Measure Twice">&dagger;</sup></td><td>England</td><td class="num">&minus;0.11</td><td class="num">14.20</td><td class="num"><strong>14.09</strong></td><td class="num">187</td></tr>
+          <tr><td class="rank">3</td><td class="name">NM Lyon</td><td>Australia</td><td class="num">0.26</td><td class="num">13.81</td><td class="num"><strong>14.07</strong></td><td class="num">142</td></tr>
+          <tr><td class="rank">4</td><td class="name">SPD Smith</td><td>Australia</td><td class="num">13.92</td><td class="num">&minus;0.44</td><td class="num"><strong>13.49</strong></td><td class="num">123</td></tr>
+          <tr><td class="rank">5</td><td class="name">AN Cook</td><td>England</td><td class="num">12.59</td><td class="num">0.04</td><td class="num"><strong>12.63</strong></td><td class="num">161</td></tr>
+          <tr><td class="rank">6</td><td class="name">SCJ Broad</td><td>England</td><td class="num">1.76</td><td class="num">10.48</td><td class="num"><strong>12.24</strong></td><td class="num">166</td></tr>
+          <tr><td class="rank">7</td><td class="name">M Muralitharan<sup class="sc-flag" title="includes Tests scored from ESPNcricinfo scorecards, not ball-by-ball data (2001-2008 coverage gap) -- see Measure Twice">&dagger;</sup></td><td>Sri Lanka</td><td class="num">0.14</td><td class="num">11.49</td><td class="num"><strong>11.63</strong></td><td class="num">75</td></tr>
+          <tr><td class="rank">8</td><td class="name">V Kohli</td><td>India</td><td class="num">10.90</td><td class="num">&minus;0.13</td><td class="num"><strong>10.77</strong></td><td class="num">121</td></tr>
+          <tr><td class="rank">9</td><td class="name">JH Kallis<sup class="sc-flag" title="includes Tests scored from ESPNcricinfo scorecards, not ball-by-ball data (2001-2008 coverage gap) -- see Measure Twice">&dagger;</sup></td><td>South Africa</td><td class="num">9.41</td><td class="num">1.29</td><td class="num"><strong>10.70</strong></td><td class="num">123</td></tr>
+          <tr><td class="rank">10</td><td class="name">KS Williamson</td><td>New Zealand</td><td class="num">10.68</td><td class="num">&minus;0.20</td><td class="num"><strong>10.49</strong></td><td class="num">110</td></tr>
+          <tr><td class="rank">11</td><td class="name">KC Sangakkara<sup class="sc-flag" title="includes Tests scored from ESPNcricinfo scorecards, not ball-by-ball data (2001-2008 coverage gap) -- see Measure Twice">&dagger;</sup></td><td>Sri Lanka</td><td class="num">10.48</td><td class="num">&minus;0.07</td><td class="num"><strong>10.40</strong></td><td class="num">129</td></tr>
+          <tr><td class="rank">12</td><td class="name">PJ Cummins</td><td>Australia</td><td class="num">1.03</td><td class="num">9.29</td><td class="num"><strong>10.32</strong></td><td class="num">73</td></tr>
+          <tr><td class="rank">13</td><td class="name">BA Stokes</td><td>England</td><td class="num">6.64</td><td class="num">2.96</td><td class="num"><strong>9.61</strong></td><td class="num">121</td></tr>
+          <tr><td class="rank">14</td><td class="name">A Kumble<sup class="sc-flag" title="includes Tests scored from ESPNcricinfo scorecards, not ball-by-ball data (2001-2008 coverage gap) -- see Measure Twice">&dagger;</sup></td><td>India</td><td class="num">0.47</td><td class="num">8.97</td><td class="num"><strong>9.43</strong></td><td class="num">71</td></tr>
+          <tr><td class="rank">15</td><td class="name">MA Starc</td><td>Australia</td><td class="num">1.26</td><td class="num">8.09</td><td class="num"><strong>9.35</strong></td><td class="num">106</td></tr>
+          <tr><td class="rank">16</td><td class="name">RA Jadeja</td><td>India</td><td class="num">3.07</td><td class="num">6.24</td><td class="num"><strong>9.31</strong></td><td class="num">89</td></tr>
+          <tr><td class="rank">17</td><td class="name">DA Warner</td><td>Australia</td><td class="num">9.48</td><td class="num">&minus;0.18</td><td class="num"><strong>9.29</strong></td><td class="num">112</td></tr>
+          <tr><td class="rank">18</td><td class="name">Younis Khan<sup class="sc-flag" title="includes Tests scored from ESPNcricinfo scorecards, not ball-by-ball data (2001-2008 coverage gap) -- see Measure Twice">&dagger;</sup></td><td>Pakistan</td><td class="num">9.23</td><td class="num">0.01</td><td class="num"><strong>9.24</strong></td><td class="num">109</td></tr>
+          <tr><td class="rank">19</td><td class="name">TG Southee</td><td>New Zealand</td><td class="num">1.07</td><td class="num">8.10</td><td class="num"><strong>9.17</strong></td><td class="num">107</td></tr>
+          <tr><td class="rank">20</td><td class="name">R Ashwin</td><td>India</td><td class="num">2.52</td><td class="num">5.92</td><td class="num"><strong>8.44</strong></td><td class="num">105</td></tr>
         </tbody>
       </table>
     </div>
 
-    <p>Ten of the top 20 are batting-led, seven are bowling-led, and three (Stokes, Jadeja, Ashwin) are true allrounders. It's a properly mixed list. Add up everyone in the dataset rather than just the top 20, and batting has generated almost twice as much value as bowling overall. That wasn't a target the model was built to hit. It falls out naturally once a wicket is priced at what it's really worth in win-probability terms, about 33 runs, rather than the higher figure an old-fashioned bowling average would suggest, which means bowlers earn less credit per wicket than cruder methods would give them. It's a real pattern rather than a modelling quirk too. Teams that win the batting battle by this kind of margin do go on to win the match more often, checked directly against real results rather than just assumed.</p>
+    <p>Nine of the top 20 are batting-led, eight are bowling-led and three (Stokes, Jadeja and Ashwin) are allrounders. Bowling still dominates right at the top. Anderson and Lyon, in second and third, are both bowlers, with Root the only batter ahead of them. Across everyone in the dataset, not just the top 20, batting has generated about 2.0 times as much value as bowling. That split comes from how a wicket is priced. The model values a wicket at how much it moves a team's chance of winning. That is worth between about 31 and 41 runs depending on the era, and averages about 34. To check that the split holds up, I tested whether each team's combined batting and bowling value predicts who wins a match, using matches the model was not fitted on. It picked the winner in 95% of those matches.</p>
 
-    <p>That's the career picture, showing who produced the most across their whole time in the side. Flip the question to "who was most valuable every time they played" and the answer changes. Joe Root's still up there, but it's Pat Cummins who tops the list on a per-match basis, despite a much shorter career.</p>
+    <p>The top three are closer than the table suggests. Root and Anderson finish first and second partly because both had long, successful careers for a team that has played more Tests in this window than almost any other. England have played 275. Lyon is third on total value with 24 fewer Tests than Root and 45 fewer than Anderson, and per Test he is worth more than either, 0.099 against Root's 0.097 and Anderson's 0.075. That is why the model suggests he is underrated. Anderson's lead over Lyon on career total is real but tiny, 14.09 to 14.07, and it shrinks or reverses if the replacement cut-off moves, which the limitations section covers.</p>
+
+    <p>That is the career picture. Ask instead who was most valuable every time they played and the answer changes. Root drops to fifteenth, and Pat Cummins leads on a per-match basis despite a much shorter career.</p>
 
     <p class="table-hint">Career WAR rewards a long, durable career; WAR per game asks how much a player was worth <em>every time they took the field</em>, regardless of how many times that was. Minimum 35 Tests, to keep small samples from dominating.</p>
     <div class="table-wrap">
@@ -659,34 +657,34 @@
           </tr>
         </thead>
         <tbody>
-          <tr><td class="rank">1</td><td class="name">PJ Cummins</td><td>Australia</td><td class="num"><strong>0.144</strong></td><td class="num">10.52</td><td class="num">73</td></tr>
-          <tr><td class="rank">2</td><td class="name">MJ Henry</td><td>New Zealand</td><td class="num"><strong>0.137</strong></td><td class="num">4.78</td><td class="num">35</td></tr>
-          <tr><td class="rank">3</td><td class="name">JJ Bumrah</td><td>India</td><td class="num"><strong>0.125</strong></td><td class="num">6.50</td><td class="num">52</td></tr>
-          <tr><td class="rank">4</td><td class="name">A Kumble</td><td>India</td><td class="num"><strong>0.115</strong></td><td class="num">4.71</td><td class="num">41</td></tr>
-          <tr><td class="rank">5</td><td class="name">SPD Smith</td><td>Australia</td><td class="num"><strong>0.110</strong></td><td class="num">13.54</td><td class="num">123</td></tr>
-          <tr><td class="rank">6</td><td class="name">M Muralitharan</td><td>Sri Lanka</td><td class="num"><strong>0.107</strong></td><td class="num">4.08</td><td class="num">38</td></tr>
-          <tr><td class="rank">7</td><td class="name">HC Brook</td><td>England</td><td class="num"><strong>0.105</strong></td><td class="num">4.00</td><td class="num">38</td></tr>
-          <tr><td class="rank">8</td><td class="name">RA Jadeja</td><td>India</td><td class="num"><strong>0.105</strong></td><td class="num">9.34</td><td class="num">89</td></tr>
-          <tr><td class="rank">9</td><td class="name">CR Woakes</td><td>England</td><td class="num"><strong>0.102</strong></td><td class="num">6.35</td><td class="num">62</td></tr>
-          <tr><td class="rank">10</td><td class="name">NM Lyon</td><td>Australia</td><td class="num"><strong>0.101</strong></td><td class="num">14.38</td><td class="num">142</td></tr>
-          <tr><td class="rank">11</td><td class="name">JR Hazlewood</td><td>Australia</td><td class="num"><strong>0.100</strong></td><td class="num">7.70</td><td class="num">77</td></tr>
-          <tr><td class="rank">12</td><td class="name">JE Root</td><td>England</td><td class="num"><strong>0.097</strong></td><td class="num">16.07</td><td class="num">166</td></tr>
-          <tr><td class="rank">13</td><td class="name">KS Williamson</td><td>New Zealand</td><td class="num"><strong>0.096</strong></td><td class="num">10.55</td><td class="num">110</td></tr>
-          <tr><td class="rank">14</td><td class="name">PL Harris</td><td>South Africa</td><td class="num"><strong>0.093</strong></td><td class="num">3.35</td><td class="num">36</td></tr>
-          <tr><td class="rank">15</td><td class="name">DL Vettori</td><td>New Zealand</td><td class="num"><strong>0.091</strong></td><td class="num">4.93</td><td class="num">54</td></tr>
-          <tr><td class="rank">16</td><td class="name">MA Starc</td><td>Australia</td><td class="num"><strong>0.091</strong></td><td class="num">9.62</td><td class="num">106</td></tr>
-          <tr><td class="rank">17</td><td class="name">V Kohli</td><td>India</td><td class="num"><strong>0.089</strong></td><td class="num">10.77</td><td class="num">121</td></tr>
-          <tr><td class="rank">18</td><td class="name">TG Southee</td><td>New Zealand</td><td class="num"><strong>0.087</strong></td><td class="num">9.27</td><td class="num">107</td></tr>
-          <tr><td class="rank">19</td><td class="name">GP Swann</td><td>England</td><td class="num"><strong>0.085</strong></td><td class="num">5.13</td><td class="num">60</td></tr>
-          <tr><td class="rank">20</td><td class="name">N Wagner</td><td>New Zealand</td><td class="num"><strong>0.085</strong></td><td class="num">5.45</td><td class="num">64</td></tr>
+          <tr><td class="rank">1</td><td class="name">M Muralitharan<sup class="sc-flag" title="includes Tests scored from ESPNcricinfo scorecards, not ball-by-ball data (2001-2008 coverage gap) -- see Measure Twice">&dagger;</sup></td><td>Sri Lanka</td><td class="num"><strong>0.155</strong></td><td class="num">11.63</td><td class="num">75</td></tr>
+          <tr><td class="rank">2</td><td class="name">PJ Cummins</td><td>Australia</td><td class="num"><strong>0.141</strong></td><td class="num">10.32</td><td class="num">73</td></tr>
+          <tr><td class="rank">3</td><td class="name">GD McGrath<sup class="sc-flag" title="includes Tests scored from ESPNcricinfo scorecards, not ball-by-ball data (2001-2008 coverage gap) -- see Measure Twice">&dagger;</sup></td><td>Australia</td><td class="num"><strong>0.139</strong></td><td class="num">8.08</td><td class="num">58</td></tr>
+          <tr><td class="rank">4</td><td class="name">MJ Henry</td><td>New Zealand</td><td class="num"><strong>0.136</strong></td><td class="num">4.76</td><td class="num">35</td></tr>
+          <tr><td class="rank">5</td><td class="name">SK Warne<sup class="sc-flag" title="includes Tests scored from ESPNcricinfo scorecards, not ball-by-ball data (2001-2008 coverage gap) -- see Measure Twice">&dagger;</sup></td><td>Australia</td><td class="num"><strong>0.136</strong></td><td class="num">8.27</td><td class="num">61</td></tr>
+          <tr><td class="rank">6</td><td class="name">A Kumble<sup class="sc-flag" title="includes Tests scored from ESPNcricinfo scorecards, not ball-by-ball data (2001-2008 coverage gap) -- see Measure Twice">&dagger;</sup></td><td>India</td><td class="num"><strong>0.133</strong></td><td class="num">9.43</td><td class="num">71</td></tr>
+          <tr><td class="rank">7</td><td class="name">JJ Bumrah</td><td>India</td><td class="num"><strong>0.124</strong></td><td class="num">6.44</td><td class="num">52</td></tr>
+          <tr><td class="rank">8</td><td class="name">Danish Kaneria<sup class="sc-flag" title="includes Tests scored from ESPNcricinfo scorecards, not ball-by-ball data (2001-2008 coverage gap) -- see Measure Twice">&dagger;</sup></td><td>Pakistan</td><td class="num"><strong>0.118</strong></td><td class="num">6.99</td><td class="num">59</td></tr>
+          <tr><td class="rank">9</td><td class="name">SPD Smith</td><td>Australia</td><td class="num"><strong>0.110</strong></td><td class="num">13.49</td><td class="num">123</td></tr>
+          <tr><td class="rank">10</td><td class="name">HC Brook</td><td>England</td><td class="num"><strong>0.105</strong></td><td class="num">4.00</td><td class="num">38</td></tr>
+          <tr><td class="rank">11</td><td class="name">RA Jadeja</td><td>India</td><td class="num"><strong>0.105</strong></td><td class="num">9.31</td><td class="num">89</td></tr>
+          <tr><td class="rank">12</td><td class="name">CR Woakes</td><td>England</td><td class="num"><strong>0.101</strong></td><td class="num">6.24</td><td class="num">62</td></tr>
+          <tr><td class="rank">13</td><td class="name">NM Lyon</td><td>Australia</td><td class="num"><strong>0.099</strong></td><td class="num">14.07</td><td class="num">142</td></tr>
+          <tr><td class="rank">14</td><td class="name">JR Hazlewood</td><td>Australia</td><td class="num"><strong>0.098</strong></td><td class="num">7.56</td><td class="num">77</td></tr>
+          <tr><td class="rank">15</td><td class="name">JE Root</td><td>England</td><td class="num"><strong>0.097</strong></td><td class="num">16.13</td><td class="num">166</td></tr>
+          <tr><td class="rank">16</td><td class="name">KS Williamson</td><td>New Zealand</td><td class="num"><strong>0.095</strong></td><td class="num">10.49</td><td class="num">110</td></tr>
+          <tr><td class="rank">17</td><td class="name">JN Gillespie<sup class="sc-flag" title="includes Tests scored from ESPNcricinfo scorecards, not ball-by-ball data (2001-2008 coverage gap) -- see Measure Twice">&dagger;</sup></td><td>Australia</td><td class="num"><strong>0.094</strong></td><td class="num">5.08</td><td class="num">54</td></tr>
+          <tr><td class="rank">18</td><td class="name">SM Pollock<sup class="sc-flag" title="includes Tests scored from ESPNcricinfo scorecards, not ball-by-ball data (2001-2008 coverage gap) -- see Measure Twice">&dagger;</sup></td><td>South Africa</td><td class="num"><strong>0.092</strong></td><td class="num">5.44</td><td class="num">59</td></tr>
+          <tr><td class="rank">19</td><td class="name">V Kohli</td><td>India</td><td class="num"><strong>0.089</strong></td><td class="num">10.77</td><td class="num">121</td></tr>
+          <tr><td class="rank">20</td><td class="name">MA Starc</td><td>Australia</td><td class="num"><strong>0.088</strong></td><td class="num">9.35</td><td class="num">106</td></tr>
         </tbody>
       </table>
     </div>
-    <p class="chart-note">There's a real mix here too. Smith, Brook, Root, Williamson and Kohli all sit inside the top 20 on rate, not just on career total. Kumble still cracks the top 5 from a career that, in this dataset, is only 41 Tests long, the last stretch of a much longer real one.</p>
+    <p class="chart-note">Smith, Brook, Root, Williamson and Kohli all make the top 20 on rate as well as on career total. Kumble is sixth on rate from a career that is only 71 Tests long in this dataset (30 of them from the scorecard layer, marked &dagger; in the career table), still well short of a much longer real one.</p>
 
     <h3>The best individual seasons</h3>
 
-    <p>Career and per-game totals answer "who was the best player." This one answers a different question. What's the single best year anyone has had?</p>
+    <p>Career and per-game totals say who the best player was. Which single year was the best anyone has had?</p>
 
     <div class="table-wrap">
       <table>
@@ -695,32 +693,30 @@
           <tr><th>#</th><th>Player</th><th>Year</th><th>Team</th><th class="num">Total</th></tr>
         </thead>
         <tbody>
-          <tr><td class="rank">1</td><td class="name">JJ Bumrah</td><td>2024</td><td>India</td><td class="num"><strong>2.55</strong></td></tr>
-          <tr><td class="rank">2</td><td class="name">Harbhajan Singh</td><td>2008</td><td>India</td><td class="num"><strong>2.39</strong></td></tr>
-          <tr><td class="rank">3</td><td class="name">JE Root</td><td>2021</td><td>England</td><td class="num"><strong>2.32</strong></td></tr>
-          <tr><td class="rank">4</td><td class="name">SCJ Broad</td><td>2023</td><td>England</td><td class="num"><strong>2.31</strong></td></tr>
-          <tr><td class="rank">5</td><td class="name">MJ Henry</td><td>2024</td><td>New Zealand</td><td class="num"><strong>2.30</strong></td></tr>
-          <tr><td class="rank">6</td><td class="name">V Kohli</td><td>2018</td><td>India</td><td class="num"><strong>2.19</strong></td></tr>
-          <tr><td class="rank">7</td><td class="name">JE Root</td><td>2015</td><td>England</td><td class="num"><strong>2.14</strong></td></tr>
-          <tr><td class="rank">8</td><td class="name">YBK Jaiswal</td><td>2024</td><td>India</td><td class="num"><strong>2.10</strong></td></tr>
-          <tr><td class="rank">9</td><td class="name">KS Williamson</td><td>2015</td><td>New Zealand</td><td class="num"><strong>2.08</strong></td></tr>
-          <tr><td class="rank">10</td><td class="name">NM Lyon</td><td>2017</td><td>Australia</td><td class="num"><strong>2.06</strong></td></tr>
-          <tr><td class="rank">11</td><td class="name">V Kohli</td><td>2016</td><td>India</td><td class="num"><strong>1.98</strong></td></tr>
-          <tr><td class="rank">12</td><td class="name">JM Anderson</td><td>2021</td><td>England</td><td class="num"><strong>1.98</strong></td></tr>
-          <tr><td class="rank">13</td><td class="name">V Sehwag</td><td>2010</td><td>India</td><td class="num"><strong>1.98</strong></td></tr>
-          <tr><td class="rank">14</td><td class="name">RA Jadeja</td><td>2017</td><td>India</td><td class="num"><strong>1.97</strong></td></tr>
-          <tr><td class="rank">15</td><td class="name">NM Lyon</td><td>2018</td><td>Australia</td><td class="num"><strong>1.97</strong></td></tr>
+          <tr><td class="rank">1</td><td class="name">SK Warne<sup class="sc-flag" title="includes Tests scored from ESPNcricinfo scorecards, not ball-by-ball data (2001-2008 coverage gap) -- see Measure Twice">&dagger;</sup></td><td>2005</td><td>Australia</td><td class="num"><strong>3.25</strong></td></tr>
+          <tr><td class="rank">2</td><td class="name">A Kumble<sup class="sc-flag" title="includes Tests scored from ESPNcricinfo scorecards, not ball-by-ball data (2001-2008 coverage gap) -- see Measure Twice">&dagger;</sup></td><td>2004</td><td>India</td><td class="num"><strong>3.03</strong></td></tr>
+          <tr><td class="rank">3</td><td class="name">GD McGrath<sup class="sc-flag" title="includes Tests scored from ESPNcricinfo scorecards, not ball-by-ball data (2001-2008 coverage gap) -- see Measure Twice">&dagger;</sup></td><td>2001</td><td>Australia</td><td class="num"><strong>2.77</strong></td></tr>
+          <tr><td class="rank">4</td><td class="name">Harbhajan Singh</td><td>2008</td><td>India</td><td class="num"><strong>2.63</strong></td></tr>
+          <tr><td class="rank">5</td><td class="name">JJ Bumrah</td><td>2024</td><td>India</td><td class="num"><strong>2.48</strong></td></tr>
+          <tr><td class="rank">6</td><td class="name">A Kumble<sup class="sc-flag" title="includes Tests scored from ESPNcricinfo scorecards, not ball-by-ball data (2001-2008 coverage gap) -- see Measure Twice">&dagger;</sup></td><td>2006</td><td>India</td><td class="num"><strong>2.36</strong></td></tr>
+          <tr><td class="rank">7</td><td class="name">JE Root</td><td>2021</td><td>England</td><td class="num"><strong>2.32</strong></td></tr>
+          <tr><td class="rank">8</td><td class="name">GC Smith</td><td>2008</td><td>South Africa</td><td class="num"><strong>2.28</strong></td></tr>
+          <tr><td class="rank">9</td><td class="name">A Kumble</td><td>2007</td><td>India</td><td class="num"><strong>2.27</strong></td></tr>
+          <tr><td class="rank">10</td><td class="name">MJ Henry</td><td>2024</td><td>New Zealand</td><td class="num"><strong>2.25</strong></td></tr>
+          <tr><td class="rank">11</td><td class="name">SCJ Broad</td><td>2023</td><td>England</td><td class="num"><strong>2.23</strong></td></tr>
+          <tr><td class="rank">12</td><td class="name">V Kohli</td><td>2018</td><td>India</td><td class="num"><strong>2.19</strong></td></tr>
+          <tr><td class="rank">13</td><td class="name">SK Warne<sup class="sc-flag" title="includes Tests scored from ESPNcricinfo scorecards, not ball-by-ball data (2001-2008 coverage gap) -- see Measure Twice">&dagger;</sup></td><td>2004</td><td>Australia</td><td class="num"><strong>2.19</strong></td></tr>
+          <tr><td class="rank">14</td><td class="name">A Flintoff<sup class="sc-flag" title="includes Tests scored from ESPNcricinfo scorecards, not ball-by-ball data (2001-2008 coverage gap) -- see Measure Twice">&dagger;</sup></td><td>2005</td><td>England</td><td class="num"><strong>2.15</strong></td></tr>
+          <tr><td class="rank">15</td><td class="name">JE Root</td><td>2015</td><td>England</td><td class="num"><strong>2.15</strong></td></tr>
         </tbody>
       </table>
     </div>
 
-    <p>Bumrah's 2024 tops the whole dataset by a clear margin. The underlying season is one of the more remarkable in the dataset's whole 2001&ndash;2026 window by raw numbers alone. 71 wickets at an average of 14.93 across 13 Tests, spread over five different away and home assignments in a single calendar year, South Africa in January, then home series against England, Bangladesh and New Zealand (the last of those India's shock 0&ndash;3 home whitewash, a series most of India's other bowlers had miserable figures in), before closing the year in Australia for the Border-Gavaskar series.</p>
+    <p>Warne's 2005 tops the table. It spans 90 wickets across the calendar year, over series against Pakistan, New Zealand, England, the West Indies and South Africa, including the five-Test Ashes series Australia lost 2&ndash;1 despite his form. Six of the matches behind that total draw on the scorecard layer rather than ball-by-ball data. It's part of a run of five spin- and pace-heavy seasons that fill most of the top of the list. All five sit in 2001&ndash;2008, the window where coverage is patchier and the replacement level leans on the scorecard layer rather than pure ball-by-ball data (marked &dagger; where the season itself draws on it directly). Bumrah's 2024 is the best season since coverage became complete in 2009, the highest total behind full ball-by-ball data with no coarser layer underneath it anywhere in the chain.</p>
 
-    <p>What makes the model's own read on it interesting is what's <em>not</em> driving the number. Opposition quality across those 13 Tests averaged almost exactly the dataset norm (0.999, against 1.0 for a perfectly average year of opponents), and leverage came in fractionally below average too (0.953&times;), era-typical difficulty rather than a soft year against weak sides in high-stakes moments. Career-best output was layered on top of essentially ordinary conditions, not helped along by them.</p>
+    <p>He took 71 wickets at an average of 14.93 in 13 Tests. The year started in South Africa, ran through home series against England, Bangladesh and New Zealand, and ended in Australia for the Border-Gavaskar series. The New Zealand series was India's 0&ndash;3 home whitewash, in which most of India's other bowlers had miserable figures. Opposition quality across those 13 Tests averaged almost exactly the dataset norm (0.999 against 1.0), and leverage was fractionally below average (0.953&times;); it wasn't a soft year against weak sides in high-stakes moments, his best output came in ordinary conditions. The one dip came in Pune against New Zealand, in the second Test of the whitewash: wicketless for 57 runs, a bowling value of &minus;37.6 runs above replacement and the only negative match of his season.</p>
 
-    <p>The one dip in an otherwise dominant year came in the final match, the Boxing Day Test at the MCG (bowling value of &minus;39.6 runs above replacement, the only negative match of his season), consistent with the back spasm he picked up during that Test, which would go on to rule him out of the series-deciding match in Sydney.</p>
-
-    <p>This list is a good mix of the two disciplines. Six of the fifteen seasons shown are ones where the value came mostly from batting, not bowling. Michael Clarke's 2012 doesn't quite crack it, ranking #22 overall despite being one of the most dominant individual years in the sport's history by reputation (a 106.33 average and four double-centuries in a single calendar year, a feat not even Don Bradman managed, one of them an unbeaten 329 against India). Not for lack of runs or soft conditions either. The bowling he faced and the pitches he batted on that year were both close to average difficulty. Two things explain the gap instead. First, a lot of his runs came in matches that were already decided or heading for a draw, so they counted for less than the same runs would have in a tighter game. Second, the era. It simply took more runs to buy a win back in 2010&ndash;14 than it does in the more recent seasons most of this top-15 list comes from. The same number of runs buys more WAR today than it did in 2012.</p>
+    <p>Michael Clarke's 2012 doesn't make the list. It ranks #32 overall, despite being one of the most dominant years in the sport's history by reputation, with 1,595 runs at an official average of 106.33 and four double-centuries in a calendar year, one of them an unbeaten 329 against India. The dataset reproduces the runs, the double-centuries and the 329 exactly. It isn't a lack of runs or soft conditions, since the bowling he faced and the pitches he batted on were close to average difficulty. Two things explain the gap. A lot of his runs came in matches that were already decided or heading for a draw, so they counted for less than the same runs in a tight game. And it took more runs to buy a win in 2010&ndash;14 than it does in recent seasons, so the same runs earn more WAR today.</p>
 
     <div class="chart-block">
       <p class="chart-title">Runs needed to buy one win's worth of probability, by five-year period</p>
@@ -755,12 +751,12 @@
           <text x="600" y="195" text-anchor="middle" class="chart-axis-label">&rsquo;25&ndash;26</text>
         </svg>
       </div>
-      <p class="chart-note">Fitted separately for each five-year period from team run differentials against match outcomes, the same era buckets behind the draw-rate chart above. A lower number means less scoring is needed to force a result, so the same performance converts to more WAR today than it did at the 2005&ndash;09 peak, or in Clarke's own 2010&ndash;14 window. Hover any point for its exact value.</p>
+      <p class="chart-note">Fitted separately for each five-year period from team run differentials against match outcomes, the same buckets as the draw-rate chart. A lower number means less scoring is needed to force a result, so the same performance converts to more WAR today than at the 2005&ndash;09 peak or in Clarke's 2010&ndash;14 window. Hover any point for its exact value.</p>
     </div>
 
     <h2>A few arguments this settles, sort of</h2>
 
-    <p>Every era of Test cricket has its pub arguments. A few of this one's biggest hold up cleanly enough in the numbers to be worth a look, though most don't come out quite as tidy as either side of the argument would like.</p>
+    <p>Every era of Test cricket has its pub arguments. A few of this one's biggest can be tested against the numbers, and few come out as tidily as either side would like.</p>
 
     <h3>Lyon vs Ashwin</h3>
 
@@ -771,15 +767,15 @@
           <tr><th>Player</th><th>Team</th><th class="num">Tests</th><th class="num">Bat</th><th class="num">Bowl</th><th class="num">Total</th><th class="num">WAR/game</th></tr>
         </thead>
         <tbody>
-          <tr><td class="name">NM Lyon</td><td>Australia</td><td class="num">142</td><td class="num">0.26</td><td class="num">14.13</td><td class="num"><strong>14.38</strong></td><td class="num">0.101</td></tr>
-          <tr><td class="name">R Ashwin</td><td>India</td><td class="num">105</td><td class="num">2.51</td><td class="num">6.36</td><td class="num"><strong>8.87</strong></td><td class="num">0.085</td></tr>
+          <tr><td class="name">NM Lyon</td><td>Australia</td><td class="num">142</td><td class="num">0.26</td><td class="num">13.81</td><td class="num"><strong>14.07</strong></td><td class="num">0.099</td></tr>
+          <tr><td class="name">R Ashwin</td><td>India</td><td class="num">105</td><td class="num">2.52</td><td class="num">5.92</td><td class="num"><strong>8.44</strong></td><td class="num">0.080</td></tr>
         </tbody>
       </table>
     </div>
 
-    <p>Lyon sitting at #2 on the overall leaderboard, above every specialist batter bar Root and above bowlers like Anderson who get talked about as the greats of the era, might come as a surprise on its own. He's never really been discussed in the company of Warne or Murali the way this model now places him. He's a very good, honest, high-volume off-spinner by most reputations, not an all-time-great one.</p>
+    <p>Lyon third on the overall leaderboard, above every specialist batter bar Root and within a win of Anderson, may come as a surprise. He has never been talked about alongside Warne or Murali the way this model places him. His reputation is a very good, high-volume off-spinner, not necessarily an all-time great. A 25-person expert panel ranking <a href="https://www.espn.co.uk/cricket/story/_/id/48802202/the-greatest-cricketers-2000-2025" target="_blank" rel="noopener">the greatest cricketers of 2000 to 2025 for ESPN</a> placed Ashwin 25th and left Lyon off the list entirely, the same gap this model finds, in the opposite direction.</p>
 
-    <p>Lyon leads Ashwin on both total value and rate, though, for a specific, checkable reason, and it's the same reason the model rates him this highly overall. Ashwin's numbers are excellent partly because he bowls a lot in India, where this model's own country-conditions data says spin is easier than almost anywhere else measured (factor 0.91). Lyon's are excellent despite bowling most of his cricket in Australia, which the same data says is the single hardest country for a spinner in world cricket (factor 1.26, well clear of anywhere else). Two spinners with outwardly similar reputations spent their careers in almost opposite conditions, and once that's priced in, it isn't close. Lyon is the best spinner this dataset has seen at succeeding on pitches that are historically brutal for spin.</p>
+    <p>Lyon leads Ashwin on total value and on rate, and there is a checkable reason. Ashwin bowls a lot in India, where this model's country data says spin is easier than almost anywhere measured (factor 0.93). Lyon bowls most of his cricket in Australia, the hardest country for a spinner of any measured (factor 1.19, just ahead of New Zealand's 1.17). Two spinners with similar reputations spent their careers in almost opposite conditions, and once that is priced in it isn't close. Lyon is the best spinner in this dataset at succeeding on pitches that are historically brutal for spin.</p>
 
     <div class="chart-block">
       <p class="chart-title">How pace-friendly or spin-friendly each country's conditions have been, 2001&ndash;2026</p>
@@ -789,17 +785,17 @@
             <tr><th></th><th class="num">Pace</th><th class="num">Spin</th></tr>
           </thead>
           <tbody>
-            <tr><th>Ireland</th><td class="num" style="background: color-mix(in srgb, var(--chart-bowl) 43%, var(--paper-raised));">0.85</td><td class="num" style="background: color-mix(in srgb, var(--chart-bowl) 35%, var(--paper-raised));">0.87</td></tr>
-            <tr><th>South Africa</th><td class="num" style="background: color-mix(in srgb, var(--chart-bowl) 34%, var(--paper-raised));">0.88</td><td class="num" style="background: color-mix(in srgb, var(--chart-bat) 20%, var(--paper-raised));">1.07</td></tr>
-            <tr><th>West Indies</th><td class="num" style="background: color-mix(in srgb, var(--chart-bowl) 32%, var(--paper-raised));">0.89</td><td class="num" style="background: color-mix(in srgb, var(--chart-bat) 4%, var(--paper-raised));">1.01</td></tr>
-            <tr><th>Zimbabwe</th><td class="num" style="background: color-mix(in srgb, var(--chart-bowl) 15%, var(--paper-raised));">0.95</td><td class="num" style="background: color-mix(in srgb, var(--chart-bowl) 6%, var(--paper-raised));">0.98</td></tr>
-            <tr><th>England</th><td class="num" style="background: color-mix(in srgb, var(--chart-bowl) 5%, var(--paper-raised));">0.98</td><td class="num" style="background: color-mix(in srgb, var(--chart-bat) 17%, var(--paper-raised));">1.04</td></tr>
-            <tr><th>Australia</th><td class="num" style="background: var(--paper-raised);">1.00</td><td class="num" style="background: color-mix(in srgb, var(--chart-bat) 100%, var(--paper-raised));"><strong>1.26</strong></td></tr>
-            <tr><th>New Zealand</th><td class="num" style="background: color-mix(in srgb, var(--chart-bat) 5%, var(--paper-raised));">1.01</td><td class="num" style="background: color-mix(in srgb, var(--chart-bat) 60%, var(--paper-raised));">1.15</td></tr>
-            <tr><th>Bangladesh</th><td class="num" style="background: color-mix(in srgb, var(--chart-bat) 35%, var(--paper-raised));">1.10</td><td class="num" style="background: color-mix(in srgb, var(--chart-bowl) 28%, var(--paper-raised));">0.93</td></tr>
-            <tr><th>India</th><td class="num" style="background: color-mix(in srgb, var(--chart-bat) 49%, var(--paper-raised));">1.14</td><td class="num" style="background: color-mix(in srgb, var(--chart-bowl) 37%, var(--paper-raised));">0.91</td></tr>
-            <tr><th>Pakistan</th><td class="num" style="background: color-mix(in srgb, var(--chart-bat) 60%, var(--paper-raised));">1.17</td><td class="num" style="background: color-mix(in srgb, var(--chart-bat) 20%, var(--paper-raised));">1.05</td></tr>
-            <tr><th>Sri Lanka</th><td class="num" style="background: color-mix(in srgb, var(--chart-bat) 63%, var(--paper-raised));">1.18</td><td class="num" style="background: color-mix(in srgb, var(--chart-bowl) 38%, var(--paper-raised));">0.91</td></tr>
+            <tr><th>Ireland</th><td class="num" style="background: color-mix(in srgb, var(--chart-bowl) 95%, var(--paper-raised));">0.82</td><td class="num" style="background: color-mix(in srgb, var(--chart-bowl) 74%, var(--paper-raised));">0.86</td></tr>
+            <tr><th>South Africa</th><td class="num" style="background: color-mix(in srgb, var(--chart-bowl) 63%, var(--paper-raised));">0.88</td><td class="num" style="background: color-mix(in srgb, var(--chart-bat) 21%, var(--paper-raised));">1.04</td></tr>
+            <tr><th>England</th><td class="num" style="background: color-mix(in srgb, var(--chart-bowl) 26%, var(--paper-raised));">0.95</td><td class="num" style="background: color-mix(in srgb, var(--chart-bowl) 5%, var(--paper-raised));">0.99</td></tr>
+            <tr><th>West Indies</th><td class="num" style="background: color-mix(in srgb, var(--chart-bowl) 21%, var(--paper-raised));">0.96</td><td class="num" style="background: color-mix(in srgb, var(--chart-bat) 47%, var(--paper-raised));">1.09</td></tr>
+            <tr><th>Australia</th><td class="num" style="background: color-mix(in srgb, var(--chart-bowl) 5%, var(--paper-raised));">0.99</td><td class="num" style="background: color-mix(in srgb, var(--chart-bat) 100%, var(--paper-raised));"><strong>1.19</strong></td></tr>
+            <tr><th>Zimbabwe</th><td class="num" style="background: color-mix(in srgb, var(--chart-bat) 5%, var(--paper-raised));">1.01</td><td class="num" style="background: color-mix(in srgb, var(--chart-bat) 5%, var(--paper-raised));">1.01</td></tr>
+            <tr><th>New Zealand</th><td class="num" style="background: color-mix(in srgb, var(--chart-bat) 5%, var(--paper-raised));">1.01</td><td class="num" style="background: color-mix(in srgb, var(--chart-bat) 89%, var(--paper-raised));">1.17</td></tr>
+            <tr><th>Bangladesh</th><td class="num" style="background: color-mix(in srgb, var(--chart-bat) 26%, var(--paper-raised));">1.05</td><td class="num" style="background: color-mix(in srgb, var(--chart-bowl) 37%, var(--paper-raised));">0.93</td></tr>
+            <tr><th>Sri Lanka</th><td class="num" style="background: color-mix(in srgb, var(--chart-bat) 74%, var(--paper-raised));">1.14</td><td class="num" style="background: color-mix(in srgb, var(--chart-bowl) 42%, var(--paper-raised));">0.92</td></tr>
+            <tr><th>India</th><td class="num" style="background: color-mix(in srgb, var(--chart-bat) 79%, var(--paper-raised));">1.15</td><td class="num" style="background: color-mix(in srgb, var(--chart-bowl) 37%, var(--paper-raised));">0.93</td></tr>
+            <tr><th>Pakistan</th><td class="num" style="background: color-mix(in srgb, var(--chart-bat) 84%, var(--paper-raised));">1.16</td><td class="num" style="background: color-mix(in srgb, var(--chart-bowl) 11%, var(--paper-raised));">0.98</td></tr>
           </tbody>
         </table>
       </div>
@@ -807,12 +803,12 @@
         <span><span class="swatch" style="background:var(--chart-bowl)"></span>Easier to bowl (below 1.0)</span>
         <span><span class="swatch" style="background:var(--chart-bat)"></span>Harder to bowl (above 1.0)</span>
       </div>
-      <p class="chart-note">Pooled across the full 2001&ndash;2026 window, for one clean summary picture; the model itself refits a separate reading for each five-year era, so a country's true reading for any specific year can sit meaningfully away from this pooled one. Australia's spin column is still the outlier that explains this whole section. Nowhere else comes close to 1.26.</p>
+      <p class="chart-note">This pools the full 2001&ndash;2026 window for one clear picture. The model refits each five-year era separately, so a country's reading for a specific year can sit well away from this one. Australia's spin column, with New Zealand's just behind, is the one that matters for this section. Nothing else measured is above 1.17. Each value is the inverse of that country's raw wicket rate for the bowler type, relative to the global rate for that type.</p>
     </div>
 
     <h3>The Fab Four</h3>
 
-    <p class="table-hint">This is a batting debate, so the table strips out bowling entirely. Root in particular has picked up real value from his part-time off-spin across his career that has nothing to do with the question being asked here.</p>
+    <p class="table-hint">This is a batting debate, so the table strips out bowling entirely. Root's part-time off-spin has a small negative value across his career, which has nothing to do with the question being asked here.</p>
     <div class="table-wrap">
       <table>
         <caption>Root, Smith, Kohli, Williamson &middot; batting only</caption>
@@ -820,19 +816,19 @@
           <tr><th>Player</th><th>Team</th><th class="num">Tests</th><th class="num">Bat WAR</th><th class="num">WAR/game</th></tr>
         </thead>
         <tbody>
-          <tr><td class="name">JE Root</td><td>England</td><td class="num">166</td><td class="num"><strong>16.35</strong></td><td class="num">0.098</td></tr>
-          <tr><td class="name">SPD Smith</td><td>Australia</td><td class="num">123</td><td class="num"><strong>13.89</strong></td><td class="num">0.113</td></tr>
-          <tr><td class="name">V Kohli</td><td>India</td><td class="num">121</td><td class="num"><strong>10.89</strong></td><td class="num">0.090</td></tr>
-          <tr><td class="name">KS Williamson</td><td>New Zealand</td><td class="num">110</td><td class="num"><strong>10.69</strong></td><td class="num">0.097</td></tr>
+          <tr><td class="name">JE Root</td><td>England</td><td class="num">166</td><td class="num"><strong>16.41</strong></td><td class="num">0.099</td></tr>
+          <tr><td class="name">SPD Smith</td><td>Australia</td><td class="num">123</td><td class="num"><strong>13.92</strong></td><td class="num">0.113</td></tr>
+          <tr><td class="name">V Kohli</td><td>India</td><td class="num">121</td><td class="num"><strong>10.90</strong></td><td class="num">0.090</td></tr>
+          <tr><td class="name">KS Williamson</td><td>New Zealand</td><td class="num">110</td><td class="num"><strong>10.68</strong></td><td class="num">0.097</td></tr>
         </tbody>
       </table>
     </div>
 
-    <p>This table settles the Fab Four debate in Tests specifically, not across every format. Kohli's case in particular leans heavily on white-ball numbers this can't speak to at all. Within Tests, Root and Smith sit a clear tier above Kohli and Williamson on career batting value, but that's mostly a function of Tests played, and it doesn't hold on rate.</p>
+    <p>This table settles the Fab Four debate for Tests only. Kohli's case leans heavily on white-ball numbers that this can't speak to. Within Tests, Root and Smith sit a tier above Kohli and Williamson on career batting value, but that is mostly Tests played and it doesn't hold on rate.</p>
 
-    <p>Per Test, Smith (0.113) is out in front of the other three. Root (0.098) and Williamson (0.097) are close enough to call a dead heat. Kohli (0.090) is the one who trails on a per-match basis. Career total and per-match rate tell different stories here, and flattening them into one tier would hide that.</p>
+    <p>Per Test, Smith (0.113) is out in front. Root (0.099) and Williamson (0.097) are a dead heat, and Kohli (0.090) trails. Career total and per-match rate tell different stories, and one tier would hide that.</p>
 
-    <p>Root and Smith are close enough to be the real argument, so it's worth narrowing to just the two of them.</p>
+    <p>Root and Smith are the real argument, so here they are on their own.</p>
 
     <div class="table-wrap">
       <table>
@@ -841,13 +837,13 @@
           <tr><th>Player</th><th>Team</th><th class="num">Tests</th><th class="num">Bat WAR</th><th class="num">WAR/game</th></tr>
         </thead>
         <tbody>
-          <tr><td class="name">JE Root</td><td>England</td><td class="num">166</td><td class="num"><strong>16.35</strong></td><td class="num">0.098</td></tr>
-          <tr><td class="name">SPD Smith</td><td>Australia</td><td class="num">123</td><td class="num"><strong>13.89</strong></td><td class="num">0.113</td></tr>
+          <tr><td class="name">JE Root</td><td>England</td><td class="num">166</td><td class="num"><strong>16.41</strong></td><td class="num">0.099</td></tr>
+          <tr><td class="name">SPD Smith</td><td>Australia</td><td class="num">123</td><td class="num"><strong>13.92</strong></td><td class="num">0.113</td></tr>
         </tbody>
       </table>
     </div>
 
-    <p>Root leads by a wide margin on career batting value, but most of that gap is simply opportunity, not ability. Smith spent his first two seasons in and out of the side as a legspin-bowling allrounder before settling in as a specialist batter from 2013, then lost a full year to the 2018 ball-tampering ban, right in what should have been his peak. Root, picked as a batter from day one for a team that plays more cricket than Australia does, simply got more Tests. Per Test, the picture flips, and Smith's WAR per game (0.113) edges Root's (0.098). Which one you'd call the better player comes down to taste more than anything the numbers alone can settle.</p>
+    <p>Root leads by a wide margin on career batting value, but most of that gap is opportunity. Smith spent his first two seasons in and out of the side as a legspinning allrounder before settling as a specialist batter from 2013. Then he lost a year to the 2018 ball-tampering ban, in what should have been his peak. Root was picked as a batter from day one, for a team that plays more cricket than Australia does. Per Test the picture flips, and Smith's 0.113 edges Root's 0.099. Which of them is better comes down to taste.</p>
 
     <h3>Best modern allrounder</h3>
 
@@ -858,32 +854,29 @@
           <tr><th>Player</th><th>Team</th><th class="num">Tests</th><th class="num">Bat</th><th class="num">Bowl</th><th class="num">Total</th><th class="num">WAR/game</th></tr>
         </thead>
         <tbody>
-          <tr><td class="name">BA Stokes</td><td>England</td><td class="num">121</td><td class="num">6.61</td><td class="num">2.92</td><td class="num"><strong>9.54</strong></td><td class="num">0.079</td></tr>
-          <tr><td class="name">RA Jadeja</td><td>India</td><td class="num">89</td><td class="num">3.06</td><td class="num">6.28</td><td class="num"><strong>9.34</strong></td><td class="num">0.105</td></tr>
+          <tr><td class="name">BA Stokes</td><td>England</td><td class="num">121</td><td class="num">6.64</td><td class="num">2.96</td><td class="num"><strong>9.61</strong></td><td class="num">0.079</td></tr>
+          <tr><td class="name">RA Jadeja</td><td>India</td><td class="num">89</td><td class="num">3.07</td><td class="num">6.24</td><td class="num"><strong>9.31</strong></td><td class="num">0.105</td></tr>
         </tbody>
       </table>
     </div>
 
-    <p>This is close enough now to go either way. Stokes leads on total career value, 9.54 to 9.34, in 32 more Tests, while Jadeja leads clearly on WAR per game, 0.105 to 0.079, 33% higher, in a shorter one. The shape of each score is the more interesting story. For most of his career Jadeja was a bowler who could bat a bit, not a true dual threat. His batting average sat at 31.5 through 2018, only catching up recently (42.4 since 2019, now good enough to be picked on runs alone). Even so, his value here is still overwhelmingly bowling-led, and like Ashwin above, a lot of that bowling comes in conditions this model rates as unusually kind to spin. Stokes' shape is different again. Batting has been the larger of his two contributions in most seasons, but bowling has swung between strong years and quiet or negative ones, rather than growing steadily into a second threat the way Jadeja's did. Pick Stokes if durability is what you value, Jadeja if you only care about the nights he actually played.</p>
+    <p>This is close enough to go either way. Stokes leads on total value, 9.61 to 9.31, in 32 more Tests. Jadeja leads clearly on WAR per game, 0.105 to 0.079, which is 32% higher. Their shapes differ. For most of his career Jadeja was a bowler who could bat a bit. His batting average sat at 31.5 through 2018 and has caught up only recently, at 42.4 since 2019, good enough now to be picked on runs alone. His value is still overwhelmingly bowling, and like Ashwin's, a lot of it comes in conditions this model rates as kind to spin. Stokes is the reverse. Batting has been the larger part of his value in most seasons, while his bowling has swung between strong years and quiet or negative ones.</p>
 
-    <p>One more angle on Stokes. Some of that value is specifically match-winning, in a sense this model can check. Every performance here is leverage-weighted by how much was at stake when it happened, and stripping that weighting back out shows what each player would be worth on raw production alone. Take it out and Stokes' total drops by 5.1%, meaning leverage is a net positive for him, his output skews toward the moments that mattered. Take it out for Jadeja and his total <em>rises</em> by 17.7%, the opposite pattern. A meaningful share of his production came in matches that were already largely decided. That's Stokes' clutch reputation showing up as an actual number, not just a talking point.</p>
+    <p>Leverage adds a further angle. Every performance here is weighted by how much was at stake when it happened, so stripping that out shows what each player is worth on raw production. Take it out and Stokes' total drops 4.7%, so leverage helps him and his output skews toward the moments that mattered. Take it out for Jadeja and his total <em>rises</em> by 22.8%, because a meaningful share of his production came in matches that were already largely decided. That is Stokes' clutch reputation showing up as a number.</p>
 
     <div class="table-wrap">
       <table>
-        <caption>Shakib and Kallis, for context</caption>
+        <caption>Jacques Kallis, for context</caption>
         <thead>
           <tr><th>Player</th><th>Team</th><th class="num">Tests</th><th class="num">Bat</th><th class="num">Bowl</th><th class="num">Total</th><th class="num">WAR/game</th></tr>
         </thead>
         <tbody>
-          <tr><td class="name">Shakib Al Hasan</td><td>Bangladesh</td><td class="num">68</td><td class="num">3.04</td><td class="num">2.55</td><td class="num"><strong>5.59</strong></td><td class="num">0.082</td></tr>
-          <tr><td class="name">JH Kallis</td><td>South Africa</td><td class="num">89</td><td class="num">4.76</td><td class="num">&minus;0.25</td><td class="num"><strong>4.51</strong></td><td class="num">0.051</td></tr>
+          <tr><td class="name">JH Kallis<sup class="sc-flag" title="includes Tests scored from ESPNcricinfo scorecards, not ball-by-ball data (2001-2008 coverage gap) -- see Measure Twice">&dagger;</sup></td><td>South Africa</td><td class="num">123</td><td class="num">9.41</td><td class="num">1.29</td><td class="num"><strong>10.70</strong></td><td class="num">0.087</td></tr>
         </tbody>
       </table>
     </div>
 
-    <p>Shakib Al Hasan belongs in this conversation too, even though he isn't rated as highly as either of these two in Test cricket specifically. A true two-way contributor like Stokes rather than a specialist like Jadeja, his WAR per game still edges Stokes', but he falls short of both on total value, mostly for lack of Tests played (68, against Jadeja's 89 and Stokes' 121).</p>
-
-    <p>Jacques Kallis, the allrounder both of these two inevitably get measured against, barely registers here for two different reasons. The batting is mostly a data problem. This dataset only captures 89 of his 166 Tests, missing the first six years of an 18-year career that began in 1995, before Cricsheet's coverage starts, so a full career would likely rate well above the 4.76 WAR shown. The bowling is more a reputation problem. He's often talked about as a near-frontline third seamer, but nearly half his captured bowling came in South Africa, which this model rates as one of the easier countries for pace, and once that's priced in it nets out to essentially zero, a support seamer who chipped in on helpful days rather than a strike weapon. Judged against replacement level, that's exactly where a role like that should land.</p>
+    <p>Jacques Kallis, the allrounder both of these two get measured against, is a genuine two-way contributor by this model too: 10.70 WAR, 9.41 batting and 1.29 bowling. ESPNcricinfo scorecards cover 34 of his 123 captured Tests, marked &dagger; above. His first six years, 1995 to 2000, are still missing entirely, before either Cricsheet or these scorecards cover him, so 11.40 is a floor on his full 18-year career, not a ceiling. The same ESPN panel ranked him the single best cricketer of 2000 to 2025, ahead of Tendulkar and Kohli, a verdict this model, missing six of his best years, has no way to reach.</p>
 
     <h3>Anderson or Steyn?</h3>
 
@@ -894,37 +887,34 @@
           <tr><th>Player</th><th>Team</th><th class="num">Tests</th><th class="num">Bat</th><th class="num">Bowl</th><th class="num">Total</th><th class="num">WAR/game</th></tr>
         </thead>
         <tbody>
-          <tr><td class="name">JM Anderson</td><td>England</td><td class="num">181</td><td class="num">&minus;0.19</td><td class="num">13.20</td><td class="num"><strong>13.01</strong></td><td class="num">0.072</td></tr>
-          <tr><td class="name">DW Steyn</td><td>South Africa</td><td class="num">90</td><td class="num">0.17</td><td class="num">5.12</td><td class="num"><strong>5.29</strong></td><td class="num">0.059</td></tr>
+          <tr><td class="name">JM Anderson<sup class="sc-flag" title="includes Tests scored from ESPNcricinfo scorecards, not ball-by-ball data (2001-2008 coverage gap) -- see Measure Twice">&dagger;</sup></td><td>England</td><td class="num">187</td><td class="num">&minus;0.11</td><td class="num">14.20</td><td class="num"><strong>14.09</strong></td><td class="num">0.075</td></tr>
+          <tr><td class="name">DW Steyn<sup class="sc-flag" title="includes Tests scored from ESPNcricinfo scorecards, not ball-by-ball data (2001-2008 coverage gap) -- see Measure Twice">&dagger;</sup></td><td>South Africa</td><td class="num">93</td><td class="num">0.21</td><td class="num">6.13</td><td class="num"><strong>6.34</strong></td><td class="num">0.068</td></tr>
         </tbody>
       </table>
     </div>
 
-    <p>The model doesn't just prefer Anderson here. It isn't especially close, more than double on total value (13.01 to 5.29), and ahead on WAR per game too. That's the hardest verdict in this piece to take at face value, because by the numbers most judges look at, Steyn's the better bowler. His bowling average is 22.95 against 26.45, at a faster strike rate, over a career many rate as the more fearsome of the two at its absolute peak.</p>
+    <p>The model puts Anderson ahead on both total value, 14.09 to 6.34, and rate, 0.075 to 0.068, though the rate gap is close. By the numbers most people look at, Steyn appears to be the better pure bowler. His career bowling average is 22.95 against 26.45, at a faster strike rate, over a career many rate as the more fearsome at its peak. That raw edge isn't a home-conditions effect in Steyn's favour either. He took 59% of his wickets in South Africa, one of the easier countries for pace on this model (factor 0.88), while Anderson took 62% of his in the tougher of the two (England, 0.95), so if anything Steyn had the friendlier conditions, not Anderson.</p>
 
-    <p>Part of that is the same mechanism that discounted Ashwin and Jadeja. Steyn took 59% of his wickets in South Africa, which this model rates as one of the easier countries for pace bowling (factor 0.88), against Anderson's 65% in a much less forgiving England (0.98).</p>
-
-    <p>There's a cleaner explanation that doesn't need that caveat at all. Split Steyn's career at the end of his last fully fit season and the gap nearly disappears. 82 Tests of prime Steyn (2006&ndash;2016) produced 0.0722 bowling WAR per Test, within 1% of Anderson's whole-career rate of 0.0730. His last 8 Tests, played after multiple shoulder and heel surgeries, were actively bad (&minus;0.80 WAR), and that alone drags his career figure down to 5.29.</p>
-
-    <p>It wasn't eight evenly mediocre matches, either. He went wicketless twice, one of them a rough 0 for 77 in his highest-stakes match of the run, which is most of why the total looks worse than a steady decline would. At full health, this model rates Steyn and Anderson as the same bowler.</p>
+    <p>Splitting Steyn's career at the end of his last fully fit season shows where the total goes.</p>
 
     <div class="table-wrap">
       <table>
-        <caption>Steyn's bowling WAR, prime vs. injury-hit farewell</caption>
+        <caption>DW Steyn, split at the end of his last fully fit season</caption>
         <thead>
-          <tr><th></th><th class="num">Tests</th><th class="num">Bowl WAR</th><th class="num">WAR/Test</th></tr>
+          <tr><th>Span</th><th class="num">Tests</th><th class="num">Bowl WAR</th><th class="num">WAR/game</th></tr>
         </thead>
         <tbody>
-          <tr><td class="name">Prime (2006&ndash;2016)</td><td class="num">82</td><td class="num">5.92</td><td class="num"><strong>0.0722</strong></td></tr>
-          <tr><td class="name">Injury comeback (2018&ndash;2019)</td><td class="num">8</td><td class="num">&minus;0.80</td><td class="num">&minus;0.0998</td></tr>
-          <tr><td class="name">Anderson, full career (for comparison)</td><td class="num">181</td><td class="num">13.20</td><td class="num"><strong>0.0730</strong></td></tr>
+          <tr><td class="name">Prime, 2006&ndash;2016</td><td class="num">85</td><td class="num">6.89</td><td class="num"><strong>0.081</strong></td></tr>
+          <tr><td class="name">Late, 2017&ndash;2019</td><td class="num">8</td><td class="num">&minus;0.76</td><td class="num"><strong>&minus;0.095</strong></td></tr>
         </tbody>
       </table>
     </div>
 
-    <p>What separates the final numbers, then, isn't peak quality. It's that Anderson's longevity is one of the most remarkable in the sport's history, and it deserves to be said plainly rather than just implied by a number. Twenty-one seasons in this dataset, debuting at 20 and still taking the new ball at 41, with only four of them landing below replacement level, mostly early, growing-pains years. Three of his four best seasons by this model's reckoning (2017, 2021, and 2022) all came after his 34th birthday, and the single best year of his entire career arrived at 39, well clear of anything he produced in his twenties or early thirties. Most fast bowlers are in visible decline a decade before that; Anderson somehow kept getting better. Steyn's body didn't get the chance to age the same way; his injured farewell Tests really were below replacement level, and the model is right to count them.</p>
+    <p>His 85 Tests of prime produced 0.081 bowling WAR per Test, just 7% above Anderson's whole-career rate of 0.076. His last 8 Tests, after multiple shoulder and heel surgeries, were below replacement level (&minus;0.76 WAR, wicketless twice, including a 0 for 77 in the highest-stakes match of the run), and that alone pulls his career bowling total down from 6.89 to 6.13. At full health, this model rates Steyn a shade above Anderson.</p>
 
-    <p>One flagged, unfixed pattern. Steyn took a higher share of his wickets against the tail than Anderson did (40.6% to 34.0%), and this model can't yet price a wicket differently depending on who it was.</p>
+    <p>What separates the totals is mostly longevity. Anderson has 22 seasons in this dataset, debuting at 20 and still taking the new ball at 41, and only three of them (2005, 2007 and 2019) are below replacement level. His four best seasons (2017, 2018, 2021 and 2022) all came after his 34th birthday, and the single best year of his career arrived at 39. Most fast bowlers are in visible decline a decade before that. Steyn's body didn't get the chance to age the same way, and his injured farewell Tests were below replacement level, so the model is right to count them.</p>
+
+    <p>One pattern is flagged and unfixed. Steyn took a higher share of his wickets against the tail than Anderson did (40.6% to 34.0%), and the model can't yet price a wicket differently depending on who it was.</p>
 
     <h3>And Broad, for completeness</h3>
 
@@ -935,79 +925,110 @@
           <tr><th>Player</th><th>Team</th><th class="num">Tests</th><th class="num">Bat</th><th class="num">Bowl</th><th class="num">Total</th><th class="num">WAR/game</th></tr>
         </thead>
         <tbody>
-          <tr><td class="name">SCJ Broad</td><td>England</td><td class="num">166</td><td class="num">1.71</td><td class="num">10.29</td><td class="num"><strong>12.01</strong></td><td class="num">0.072</td></tr>
-          <tr><td class="name">JM Anderson</td><td>England</td><td class="num">181</td><td class="num">&minus;0.19</td><td class="num">13.20</td><td class="num"><strong>13.01</strong></td><td class="num">0.072</td></tr>
+          <tr><td class="name">SCJ Broad</td><td>England</td><td class="num">166</td><td class="num">1.76</td><td class="num">10.48</td><td class="num"><strong>12.24</strong></td><td class="num">0.074</td></tr>
+          <tr><td class="name">JM Anderson<sup class="sc-flag" title="includes Tests scored from ESPNcricinfo scorecards, not ball-by-ball data (2001-2008 coverage gap) -- see Measure Twice">&dagger;</sup></td><td>England</td><td class="num">187</td><td class="num">&minus;0.11</td><td class="num">14.20</td><td class="num"><strong>14.09</strong></td><td class="num">0.075</td></tr>
         </tbody>
       </table>
     </div>
 
-    <p>Broad and Anderson are close to a dead heat, both playing the bulk of their cricket in the same English conditions, so neither gets a discount the other doesn't. It's the tightest gap in this piece. Broad's WAR per game (0.0723) edges Anderson's (0.0719), well inside the margin that shouldn't be read as a real verdict, though the two didn't bowl equally well to get there. Anderson is the better pure bowler by this model's reckoning, 13.20 bowling WAR at a higher rate per ball than Broad's 10.29. What closes the gap is batting. Broad's part-time returns earn credit as a properly useful lower-order bat by his slot's standard, though "useful" mostly describes the first half of his career (average 23.1 through 2015, 11.9 from 2016 on, a real decline). Anderson's own batting is worth essentially nothing across a whole career. Anderson was the better bowler. Broad's bat made up the difference.</p>
+    <p>Broad and Anderson are close. Both played most of their cricket in the same English conditions, so neither gets a discount the other doesn't. Anderson edges it on WAR per game, 0.075 to 0.074, and leads on total value, 14.09 to 12.24. He is the better pure bowler by this model, 14.20 bowling WAR to Broad's 10.48. Broad closes some of the gap with the bat. His part-time returns earn credit as a useful lower-order batter by his slot's standard, though that mostly describes the first half of his career (an average of 23.1 through 2015 and 11.9 from 2016 on). Anderson's batting is worth essentially nothing, so Broad's bat narrows the gap without closing it.</p>
 
     <h2>Two more things worth knowing</h2>
 
     <div class="callout finding">
       <span class="callout-label">The model spotted a doctored pitch</span>
-      <p>R Ashwin's 12 wickets for 98 at Nagpur in 2015, on a pitch controversial enough that the ICC formally investigated it for excessive turn, is exactly the case a pitch-conditions adjustment should catch. Once the model accounted for how helpful that specific surface was to spin, his bowling value for that match dropped from <strong>0.71</strong> WAR to <strong>0.31</strong>, more than halved. It didn't know the pitch had made headlines. It just measured how a replacement spinner would have fared on the same surface, and reached the same conclusion cricket journalism did at the time.</p>
+      <p>R Ashwin's 12 for 98 at Nagpur in 2015 came on a pitch controversial enough that the ICC formally investigated it for excessive turn. A pitch-conditions adjustment should catch that, and it did. Once the model accounted for how helpful the surface was to spin, it marked his figures down sharply. It didn't know the pitch had made headlines. It measured how a replacement spinner would have fared on the same surface and reached the conclusion cricket journalism did at the time.</p>
     </div>
 
     <div class="callout finding">
       <span class="callout-label">Big moments count for more</span>
-      <p>Ben Stokes' unbeaten 135 at Headingley in 2019, England chasing 359 with the last pair at the crease, is worth noticeably more here than a similar score in a match already decided. The model weighs every performance by how much was at stake when it happened, which is a large part of why a player like Stokes, who has a habit of producing his best cricket in the tensest moments, rates well above what a flat runs-based average would say.</p>
+      <p>Ben Stokes' unbeaten 135 at Headingley in 2019, with England chasing 359 and the last pair at the crease, is worth noticeably more here than a similar score in a decided match. The model weighs every performance by what was at stake when it happened. That is a large part of why Stokes, who has a habit of producing his best cricket in the tensest moments, rates above what a flat runs-based average would say.</p>
     </div>
 
     <div class="pull-stat">
       <div class="num">39</div>
-      <div class="cap">Anderson's age during the single best season of his entire career. Three of his four best years came after turning 34.</div>
+      <div class="cap">Anderson's age during the single best season of his entire career. All four of his best years came after turning 34.</div>
     </div>
 
     <h2>Where it still falls short</h2>
 
     <h3>Anything before 2001 barely counts</h3>
 
-    <p>Cricsheet's ball-by-ball coverage starts in 2001, so anyone whose career peaked earlier gets badly undercounted. Jacques Kallis, above, is the clearest case in this piece, missing the first six years of an 18-year career that began in 1995.</p>
+    <p>Cricsheet's coverage starts in 2001, so anyone whose career peaked earlier is badly undercounted. Kallis is the clear case in this piece.</p>
 
-    <h3>Coverage isn't actually complete until 2009</h3>
+    <h3>Coverage isn't complete until 2009</h3>
 
-    <p>The 2001 start date undersells the real problem. Checked against real Test totals for each year, the dataset captures only 176 of the 377 Tests actually played between 2001 and 2008, under half, with the worst of it in 2001 and 2002 (1 match captured out of 55 played, then 2 out of 54). Coverage improves steadily from there and is exactly complete, every single Test, from 2009 onward. That means anyone whose career ran mostly through 2001&ndash;2008 is undercounted too, not just players who retired before 2001. Shane Warne is the clearest example, 24 captured Tests despite playing on for six more years after the window nominally opens.</p>
+    <p>The 2001 start date understates the problem. Checked against real Test totals for each year, Cricsheet's ball-by-ball data alone captures only 176 of the 377 Tests played between 2001 and 2008. That is under half, and the worst years are 2001 and 2002, with 1 match captured out of 55 and 2 out of 54.</p>
+
+    <p>The other 201 are now added from ESPNcricinfo's scorecards. They carry no ball-by-ball detail, so no batting-position adjustment, though leverage is now approximated from the scorecards' own Fall-of-Wickets listings. On the 176 Tests both sources cover, they agree with Cricsheet almost exactly, within a few tenths of a percent on runs, dismissals, wickets, balls bowled and runs conceded. Scored the same way as the rest of the model (pitch, host-country and opposition factors, all rebuilt from the scorecards themselves) and calibrated against the shared matches, player-match value from this coarser method correlates 0.91 with the full model. A player or season marked &dagger; anywhere in this piece gets some or all of its value from this layer rather than ball-by-ball data; the full validation, including what happens with each factor added or removed, is in Measure Twice.</p>
+
+    <p>Widening the population also gives 2001 to 2008 their own replacement level, computed from these scorecard-included years rather than borrowed from later ones. The fuller mechanics are in Measure Twice.</p>
+
+    <p>Anyone whose career ran mostly through 2001&ndash;2008 was undercounted too, not only players who retired before 2001. Shane Warne is the clearest example. He has 61 captured Tests now, 37 of them from the scorecard layer, up from 24 on ball-by-ball data alone. That's still short of the six more years he played after the window opens, but a much fuller picture than before. Seasons before 2012 still lean on a replacement level pooled across 2009 onward wherever even the widened data is too thin on its own, so rankings for careers that ran through 2001 to 2011 carry more uncertainty than the decimals suggest.</p>
+
+    <h3>One setting still moves the top</h3>
+
+    <p>A replacement player here is anyone with 10 or fewer career Tests, the value used from the start. Moving that cut-off to 8, 12 or 15 keeps Root first every time. Second place is more sensitive than the published table suggests. Lyon takes it at 8, 12 and 15, and only at the published cut-off of 10 does Anderson edge back ahead, by a margin that doesn't survive rounding. Smith moves into third at 12 and 15. Held-out match-outcome accuracy barely moves across any of these settings, 0.981 to 0.982, so the data can't choose between them on predictive grounds, and 10 was never picked to favour a particular ranking. It's simply the one setting, of the four checked, where Anderson comes out ahead of Lyon rather than behind.</p>
+
+    <p class="table-hint">Rank by total WAR at each replacement cut-off; the published column is bold.</p>
+    <div class="table-wrap">
+      <table class="fringe-sensitivity">
+        <caption>Top-4 rank sensitivity &middot; replacement cut-off, 8 to 15 career Tests</caption>
+        <thead>
+          <tr><th>Player</th><th class="num">8</th><th class="num">10</th><th class="num">12</th><th class="num">15</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="name">JE Root</td><td class="num">1</td><td class="num"><strong>1</strong></td><td class="num">1</td><td class="num">1</td></tr>
+          <tr><td class="name">JM Anderson</td><td class="num">3</td><td class="num"><strong>2</strong></td><td class="num">4</td><td class="num">4</td></tr>
+          <tr><td class="name">NM Lyon</td><td class="num">2</td><td class="num"><strong>3</strong></td><td class="num">2</td><td class="num">2</td></tr>
+          <tr><td class="name">SPD Smith</td><td class="num">4</td><td class="num"><strong>4</strong></td><td class="num">3</td><td class="num">3</td></tr>
+          </tbody>
+      </table>
+    </div>
 
     <h3>Not every team gets the same number of chances to build one</h3>
 
-    <p>In baseball or basketball, every team plays the same number of games in a season, so a season's WAR total already compares players on level footing without needing a rate stat to correct for it. Test cricket doesn't have that luxury, since teams play wildly different volumes of cricket against each other. Career WAR rewarding a long, consistently good career is exactly what a value-produced stat should do, not a shortcoming to apologise for. The chance to produce that volume, though, isn't evenly shared. Root has played 166 Tests to Kane Williamson's 110, and a good chunk of that gap is national scheduling, not application or fitness. England have played 275 Tests in this window, New Zealand 169, 39% fewer. Williamson's WAR per game (0.097 in the Fab Four table above, batting only) is essentially tied with Root's (0.098), but his team simply doesn't play as much cricket, so he was never going to get the same number of chances to add to a career total. The same logic quietly favours England, Australia and India's stars over Sri Lanka's, New Zealand's and the West Indies', independent of who's better.</p>
+    <p>Baseball and basketball teams play the same number of games a season, so a season's WAR total already compares players on level footing. Test cricket has no such luxury, because teams play very different volumes of cricket. Career WAR rewarding a long, consistently good career is what a value stat should do, and I don't treat it as a flaw. The opportunity to build that career isn't shared evenly, though. Root has played 166 Tests to Kane Williamson's 110, and much of that gap is national scheduling. England have played 275 Tests in this window and New Zealand 169, which is 39% fewer. Williamson's WAR per game (0.097 in the Fab Four table, batting only) is essentially tied with Root's (0.099), but his team plays less, so he never had the same chances to add to a career total. The same logic quietly favours the stars of England, Australia and India over those of Sri Lanka, New Zealand and the West Indies, whoever is better.</p>
 
-    <p>Career WAR answers how much value a player produced. WAR per game answers how much value they produced per chance they got, the fairer lens when the question is really about ability rather than opportunity. A long career spent producing at a high level, like Anderson's or Root's, is real value and deserves credit as such, not treated as a lesser feat than a short, brilliant one. A shorter one shouldn't be read as a lesser player either, just because their team's calendar never gave them the games to build the same total. Williamson's rate is nearly identical to Root's, he just got 39% fewer chances to show it, a different thing from being a smaller player.</p>
+    <p>Career WAR measures how much value a player produced. WAR per game measures it per chance, which is the fairer lens when the question is about ability. A long career spent producing at a high level, like Anderson's or Root's, is real value and deserves credit. A shorter one isn't a lesser career because a team's calendar didn't supply the games. Williamson got 39% fewer chances to show a rate nearly identical to Root's.</p>
 
     <h3>Fielding isn't in here at all</h3>
 
-    <p>I looked hard at adding it, and stopped. Cricsheet records who took a catch, but not who dropped one, so there's no way to distinguish a player who was never given a chance from one who put down every chance they got. Ground fielding (the stops, the saved boundaries, the turned twos) is invisible entirely unless it happens to end in a run out. A player like Ravindra Jadeja, whose fielding reputation rests almost entirely on things this dataset can't see, would come out of a forced "fielding WAR" looking ordinary, which would be a worse outcome than leaving it out and saying so.</p>
+    <p>I looked at adding it and stopped. Cricsheet records who took a catch but not who dropped one, so there is no way to tell a player who was never given a chance from one who put down every chance. Ground fielding (the stops, the saved boundaries, the turned twos) is invisible unless it ends in a run out. Ravindra Jadeja, whose fielding reputation rests almost entirely on things this dataset can't see, came out worse than average when I checked him against a forced, catches-only fielding WAR: 0.43 catches per Test, 137th of the 193 players with 30 or more Tests. Leaving fielding out and saying so is the better outcome.</p>
 
     <h3>The replacement bar is wide, not a single line</h3>
 
-    <p>Bangladesh and Zimbabwe bowlers dominate the bottom of the career table because the model measures performance against a <em>global</em> replacement level, not each team's own bar, working as intended rather than breaking. The model also has no way to see why a wicketkeeper was picked. A keeper-batter's real value is mostly in the gloves, and everything about that is invisible here, leaving only a modest batting record behind.</p>
+    <p>Bangladesh and Zimbabwe bowlers dominate the bottom of the career table because the model measures against a <em>global</em> replacement level, not each team's own bar. That is working as intended.</p>
+
+    <h3>Wicketkeepers are judged on batting alone</h3>
+
+    <p>The model can't see why a wicketkeeper was picked. A keeper-batter's value is mostly in the gloves, which is invisible here, leaving only a modest batting record.</p>
 
     <h3>What I'd fix next</h3>
 
     <ul class="plain">
-      <li><strong>Team scheduling bias compounds the replacement-level issue above.</strong> Not only is the replacement bar global rather than team-relative, but which teams get to accumulate value at all is itself uneven, since the ICC's Full Members don't play remotely similar volumes of Test cricket against each other. I don't think this is fixable by changing the underlying formula. A team that plays less cricket has fewer chances to add to a career total, and that's real, not an error. WAR per game is the honest answer to it, not a correction to career WAR itself.</li>
-      <li><strong>The country-conditions factor is still fairly coarse, and I tested whether that matters.</strong> It's one number per country per bowling type per five-year era, which misses real variation between specific grounds within a country. Sydney's spin wicket rate does run above Australia's average, and the Gabba's runs below it, on samples big enough to trust (14&ndash;25 Tests each). Built a venue-level version anyway, and it made the model worse, not better, on held-out prediction. The reason turned out to be more interesting than "not enough data." Sydney's extra turn isn't there from ball one, it's almost entirely a 4th-innings effect, and a factor built at the venue level smears that flat across a whole match. Country, not venue, is still the right grain, now for a specific, tested reason rather than a guess about sample size. Full story in Measure Twice.</li>
-      <li><strong>Batting position deserves the same scrutiny wicket pricing just got.</strong> Separating how much easier a slot is from which players get sent there is worth doing properly. I've tried it once and the result didn't hold up well enough to trust, so it isn't reflected here yet.</li>
-      <li><strong>The model doesn't know who got dismissed, and I tested fixing that too.</strong> A wicket is priced the same whether it's a recognised top-order batter or a number 11 swinging for the boundary, part of why Steyn's heavier share of tail wickets than Anderson's (40.6% to 34.0%) doesn't show up anywhere in either man's number. Built a version that priced each wicket by the dismissed batter's own quality, found and fixed a real bug in the first attempt (it was inflating almost every bowler's number instead of redistributing credit), and even the corrected version didn't predict real match outcomes any better than pricing every wicket the same. The signal is probably real but too weak, at this level of accuracy, to earn its place. Full story in Measure Twice.</li>
-      <li><strong>An allrounder's value to a team's overall balance probably isn't fully captured.</strong> Summing batting and bowling WAR for one player should, in principle, already measure how much better this player is in this slot than a replacement, but only if a real replacement could cover both jobs as easily as the model assumes. I've checked this for a handful of recognised allrounders and found a clean effect for one of them and nothing consistent for the rest, which isn't enough to build a fix from yet. It still feels like a gap rather than a closed question.</li>
+      <li><strong>Team scheduling bias compounds the replacement-level issue above.</strong> The replacement bar is global rather than team-relative, and which teams get to accumulate value at all is uneven too, since the ICC's Full Members play very different volumes of Test cricket against each other. I don't think changing the formula fixes this. A team that plays less cricket has fewer chances to add to a career total, and that is real, not an error. WAR per game is the answer to it, not a correction to career WAR.</li>
+      <li><strong>The country-conditions factor is coarse, and I tested whether that matters.</strong> It is one number per country per bowling type per five-year era, which misses variation between grounds within a country. Sydney's spin wicket rate runs above Australia's average, on a sample big enough to trust (25 Tests). I built a venue-level version and it made held-out prediction worse. Sydney's extra turn isn't there from ball one. It is almost entirely a 4th-innings effect, and a venue-level factor smears it across the whole match. Country is still the right grain, for a tested reason rather than a guess about sample size. Full story in Measure Twice.</li>
+      <li><strong>Batting position deserves the same scrutiny wicket pricing just got.</strong> Separating how much easier a slot is from which players get sent there needs doing properly. I tried it once and the result didn't hold up well enough to trust, so it isn't reflected here.</li>
+      <li><strong>The model doesn't know who got dismissed, and I tested fixing that too.</strong> A wicket is priced the same whether it is a recognised top-order batter or a number 11 swinging for the boundary. That is part of why Steyn's heavier share of tail wickets than Anderson's (40.6% to 34.0%) doesn't show up in either man's number. I built a version that priced each wicket by the dismissed batter's own quality. The first attempt had a real bug that inflated almost every bowler's number, and the corrected version predicted real match outcomes no better than a flat price. The signal is probably real but too weak to earn its place. Full story in Measure Twice.</li>
+      <li><strong>An allrounder's value to a team's balance probably isn't fully captured.</strong> Summing batting and bowling WAR should already measure how much better a player is in his slot than a replacement, but only if a real replacement could cover both jobs as easily as the model assumes. I ran four checks on a handful of recognised allrounders. One showed a positive effect for Jadeja and mixed results for the rest, one turned out to be a bowling-type artifact, adding an allrounder indicator to the match model changed nothing, and pricing the credit directly as the value of the roster slot an allrounder frees up lost across a full sweep of how that credit could be sized. That isn't enough to build a fix from, and it isn't proof the effect is absent.</li>
     </ul>
 
-    <p>None of this changes what a scorecard already shows. Root has more Test runs than anyone in history, and Lyon has taken more Test wickets than any spinner outside Warne and Murali. What WAR adds is a way to weigh what those numbers meant, against who was faced, what the pitch was doing, and what was at stake. By that measure, Root's place at the top isn't a surprise. Lyon's place right behind him might be.</p>
+    <p>None of this changes what a scorecard already shows. Root has scored more Test runs than anyone since 2001, Anderson has taken more wickets than any other fast bowler in history, and Lyon is one of the most prolific spinners the format has seen. WAR weighs what those numbers meant, against who was faced, what the pitch was doing and what was at stake. On that measure Root and Anderson finish first and second, helped by long careers for a team that plays more Test cricket than most. Lyon is third with far fewer Tests behind him, which suggests he is underrated.</p>
 
     <hr class="divider">
 
     <h2 id="methodology">More on how this was built</h2>
 
-    <p>Ten rebuilds, three real bugs caught and fixed, twelve plausible ideas tested against held-out data and correctly rejected, and one still open. It's a companion piece rather than a section here, since it's a different kind of read, found in <a href="https://sid36252.github.io/measure-twice/"><strong>Measure Twice</strong></a>.</p>
+    <p>How the model was built, what broke along the way, and what was tried and rejected sits in a companion piece, <a href="https://sid36252.github.io/measure-twice/"><strong>Measure Twice</strong></a>, because it is a different kind of read.</p>
 
   </article>
 
   <footer class="colophon">
-    <div>Data &middot; Cricsheet ball-by-ball archive, Test matches 2001&ndash;2026 (914 matches, 1,762,524 deliveries)</div>
+    <div>Data &middot; Cricsheet ball-by-ball archive, Test matches 2001&ndash;2026, men's only (890 matches of the 914 in Cricsheet's raw archive, 24 women's Tests excluded; 1,715,773 deliveries)</div>
     <div>Model &middot; opposition-, pitch-, country- and position-adjusted RAR (eleven individual batting slots, decomposed economy/wicket-rate bowling pitch factor, wickets priced at their win-probability-validated value), leverage weighting, season-level win conversion, with no cross-discipline calibration</div>
-    <div>Known gaps &middot; pre-2001 careers undercounted &middot; fielding excluded &middot; replacement level is global, not team-relative</div>
+    <div>Known gaps &middot; pre-2001 careers undercounted &middot; replacement level noisier before 2012 &middot; fielding excluded &middot; replacement level is global, not team-relative</div>
+    <div>Updated &middot; 23 September 2026</div>
   </footer>
 
 </div>
@@ -1056,6 +1077,3 @@
     });
   });
 </script>
-
-</body>
-</html>
