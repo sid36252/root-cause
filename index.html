@@ -553,7 +553,7 @@
 
     <div class="callout finding">
       <span class="callout-label">A worked example</span>
-      <p>Take Bumrah's Brisbane Test against Australia in 2024. He bowled 204 balls, conceding 94 runs and taking 9 wickets. Over the same 204 balls, against the same batting line-up on that pitch, a replacement bowler would be expected to concede about 157 runs and take about 3.4 wickets. That is 63 runs saved. He took 5.65 more wickets than the replacement would have, and a wicket in that match was worth 27.3 runs once the era's price is adjusted for how the pitch played, so the extra wickets add 154. Together that is 217 runs above replacement. At about 520 runs per win in that era, it is worth 0.42 of a win before the weighting for how much was at stake.</p>
+      <p>Take Bumrah's Brisbane Test against Australia in 2024. He bowled 204 balls, conceding 94 runs and taking 9 wickets. Over the same 204 balls, against the same batting line-up on that pitch, a replacement bowler would be expected to concede about 157 runs and take about 3.4 wickets. That is 63 runs saved. He took 5.65 more wickets than the replacement would have, and a wicket in that match was worth 27.3 runs once the era's price is adjusted for how the pitch played, so the extra wickets add 154. Together that is 217 runs above replacement, or 0.42 of a win at about 520 runs per win in that era. That Test was tighter than average, with a leverage of 1.17, so it counts for about 17% more. That lifts the 217 runs to about 254 and the 0.42 to 0.49 of a win.</p>
     </div>
 
     <h2>Is the data any good?</h2>
@@ -658,11 +658,11 @@
     </div>
     <button type="button" class="show-more" data-table="career-table" aria-expanded="false">Show top 20</button>
 
-    <p>Nine of the top 20 are batting-led, eight are bowling-led and three (Stokes, Jadeja and Ashwin) are allrounders. Bowling dominates right at the top. Lyon and Anderson, in second and third, are both bowlers, with Root the only batter ahead of them. Across everyone in the dataset, not just the top 20, batting has generated about 2.0 times as much value as bowling. That split comes from how a wicket is priced. The model values a wicket at how much it moves a team's chance of winning. That is worth between about 31 and 36 runs depending on the era, and averages about 34. To check that the split holds up, I tested whether each team's combined batting and bowling value predicts who wins a match, using matches the model was not fitted on. It picked the winner in 95% of those matches.</p>
+    <p>Nine of the top 20 are batting-led, eight are bowling-led and three (Stokes, Jadeja and Ashwin) are allrounders. Bowling dominates right at the top. Lyon and Anderson, in second and third, are both bowlers, with Root the only batter ahead of them. Across everyone in the dataset, not just the top 20, batting has generated about 2.0 times as much value as bowling. That doesn't mean batting matters twice as much. Batters and bowlers face the same number of balls, so the gap comes from how far a regular player sits above the replacement they are measured against. A replacement batter averages about 18.6 runs per dismissal against 30.9 for the average batter, a gap of 12.3 runs each time. A replacement bowler concedes about 40.6 runs per wicket against 32.5 for the average bowler, a gap of 8.1. Per ball, a regular batter adds about 2.0 times what a regular bowler does. The price of a wicket matters too, because a bowler is credited for wickets as well as runs saved. The model values a wicket at how much it moves a team's chance of winning. That is worth between about 31 and 36 runs depending on the era, and averages about 34. Across that whole range the batting to bowling ratio only moves between 1.9 and 2.1, so the split isn't an artifact of the price. To check that the split holds up, I tested whether each team's combined batting and bowling value predicts who wins a match, using matches the model was not fitted on. It picked the winner in 95% of those matches.</p>
 
-    <p>The top three are closer than the table suggests. Root and Anderson have long, successful careers for a team that has played more Tests in this window than almost any other. England have played 275. Lyon is second on total value with 24 fewer Tests than Root and 45 fewer than Anderson, and per Test he is worth more than either, 0.101 against Root's 0.097 and Anderson's 0.075. That is why the model suggests he is underrated. His lead over Anderson on career total is 14.40 to 14.03, a gap of under half a win, and it holds at every replacement cut-off I checked, which the limitations section covers.</p>
+    <p>Root and Anderson have long, successful careers for a team that has played more Tests in this window than almost any other. England have played 275. Lyon is second on total value with 24 fewer Tests than Root and 45 fewer than Anderson. Per Test he is worth more than either, 0.101 against Root's 0.097 and Anderson's 0.075. That is why the model suggests he is underrated. His lead over Anderson on career total is 14.40 to 14.03, a gap of under half a win, and it holds at every replacement cut-off I checked, which the limitations section covers.</p>
 
-    <p>That is the career picture. Ask instead who was most valuable every time they played and the answer changes. Root drops to fifteenth, and Pat Cummins leads on a per-match basis despite a much shorter career.</p>
+    <p>That is the career picture. Ask instead who was most valuable every time they played and the answer changes. Root drops to fifteenth, and Muralitharan leads on a per-match basis, with McGrath third and Warne fifth, even though only part of their careers is in the data.</p>
 
     <p class="table-hint">Career WAR rewards a long, durable career; WAR per game asks how much a player was worth <em>every time they took the field</em>, regardless of how many times that was. Minimum 35 Tests, to keep small samples from dominating.</p>
     <div class="table-wrap">
@@ -737,7 +737,7 @@
 
     <p>Kumble's 2004 tops the table. He took 74 wickets in 12 Tests, against Australia, Bangladesh, Pakistan and South Africa, and 5 of those Tests come from the scorecard layer rather than ball-by-ball data. Warne's 2005 (2.93) and McGrath's 2001 (2.86) follow. Four of the top five seasons fall in 2001&ndash;2008, the window where coverage is patchier and the replacement level leans on the scorecard layer rather than pure ball-by-ball data (marked &dagger; where the season itself draws on it directly). Bumrah's 2024 is the best season since coverage became complete in 2009, the highest total behind full ball-by-ball data with no coarser layer underneath it anywhere in the chain.</p>
 
-    <p>He took 71 wickets at an average of 14.93 in 13 Tests. The year started in South Africa, ran through home series against England, Bangladesh and New Zealand, and ended in Australia for the Border-Gavaskar series. The New Zealand series was India's 0&ndash;3 home whitewash, in which most of India's other bowlers had miserable figures. Opposition quality across those 13 Tests averaged almost exactly the dataset norm (0.999 against 1.0), and leverage was fractionally below average (0.953&times;). His three most valuable matches were Brisbane against Australia (9 wickets for 94, worth 217.0 runs above replacement), Melbourne (9 for 156, 213.1) and Visakhapatnam against England (9 for 91, 163.6). The one dip came in Pune against New Zealand, in the second Test of the whitewash: wicketless for 57 runs, a bowling value of &minus;38.0 runs above replacement and the only negative match of his season.</p>
+    <p>Bumrah took 71 wickets at an average of 14.93 in 13 Tests. The year started in South Africa, ran through home series against England, Bangladesh and New Zealand, and ended in Australia for the Border-Gavaskar series. The New Zealand series was India's 0&ndash;3 home whitewash, in which most of India's other bowlers had miserable figures. Opposition quality across those 13 Tests averaged almost exactly the dataset norm (0.999 against 1.0), and leverage was fractionally below average (0.953&times;). His three most valuable matches were Brisbane against Australia (9 wickets for 94, worth 217.0 runs above replacement), Melbourne (9 for 156, 213.1) and Visakhapatnam against England (9 for 91, 163.6). The one dip came in Pune against New Zealand, in the second Test of the whitewash: wicketless for 57 runs, a bowling value of &minus;38.0 runs above replacement and the only negative match of his season.</p>
 
     <p>Michael Clarke's 2012 doesn't make the list. It ranks #31 overall, despite being one of the most dominant years in the sport's history by reputation, with 1,595 runs at an official average of 106.33 and four double-centuries in a calendar year, one of them an unbeaten 329 against India. It isn't a lack of runs or soft conditions, since the bowling he faced and the pitches he batted on were close to average difficulty. Two things explain the gap. A lot of his runs came in matches that were already decided or heading for a draw, so they counted for less than the same runs in a tight game. And it took more runs to buy a win in 2010&ndash;14 than it does in recent seasons, so the same runs earn more WAR today.</p>
 
@@ -796,9 +796,9 @@
       </table>
     </div>
 
-    <p>Lyon second on the overall leaderboard, above every specialist batter bar Root and ahead of Anderson, may come as a surprise. He has never been talked about alongside Warne or Murali the way this model places him. His reputation is a very good, high-volume off-spinner, not necessarily an all-time great. A 25-person expert panel ranking <a href="https://www.espn.co.uk/cricket/story/_/id/48802202/the-greatest-cricketers-2000-2025" target="_blank" rel="noopener">the greatest cricketers of 2000 to 2025 for ESPN</a> placed Ashwin 25th and left Lyon off the list entirely, the same gap this model finds, in the opposite direction.</p>
+    <p>Lyon ranking second on the overall leaderboard, above every specialist batter bar Root and ahead of Anderson, may come as a surprise. He has never been talked about alongside Warne or Murali the way this model places him. His reputation is a very good, high-volume off-spinner, not necessarily an all-time great. A 25-person expert panel ranking <a href="https://www.espn.co.uk/cricket/story/_/id/48802202/the-greatest-cricketers-2000-2025" target="_blank" rel="noopener">the greatest cricketers of 2000 to 2025 for ESPN</a> placed Ashwin 25th and left Lyon off the list entirely.</p>
 
-    <p>His best year was 2017, worth 2.12 WAR, with 63 wickets in 11 Tests, including 13 for 154 against Bangladesh in Chattogram.</p>
+    <p>Lyon's best year was 2017, worth 2.12 WAR, with 63 wickets in 11 Tests, including 13 for 154 against Bangladesh in Chattogram.</p>
 
     <p>Lyon leads Ashwin on total value and on rate, and there is a checkable reason. Ashwin bowls a lot in India, where this model's country data says spin is easier than almost anywhere measured (factor 0.93). Lyon bowls most of his cricket in Australia, the hardest country for a spinner of any measured (factor 1.19, just ahead of New Zealand's 1.17). Two spinners with similar reputations spent their careers in almost opposite conditions, and once that is priced in it isn't close. Lyon is the best spinner in this dataset at succeeding on pitches that are historically brutal for spin.</p>
 
@@ -868,7 +868,7 @@
       </table>
     </div>
 
-    <p>Root leads by a wide margin on career batting value, but most of that gap is opportunity. Smith spent his first two seasons in and out of the side as a legspinning allrounder before settling as a specialist batter from 2013. Then he lost a year to the 2018 ball-tampering ban, in what should have been his peak. Root was picked as a batter from day one, for a team that plays more cricket than Australia does. That opportunity gap is why the picture flips per Test, where Smith's 0.113 edges Root's 0.099.</p>
+    <p>Root leads by a wide margin on career batting value, but most of that gap is opportunity. Smith spent his first two seasons in and out of the side as a legspinning allrounder before settling as a specialist batter from 2013. Then he lost a year to the 2018 ball-tampering ban, in what should have been his peak. Root was picked as a batter from day one, for a team that plays more cricket than Australia does. Per Test, though, Smith's 0.113 is ahead of Root's 0.099.</p>
 
     <h3>Best modern allrounder</h3>
 
@@ -885,7 +885,7 @@
       </table>
     </div>
 
-    <p>This is close enough to go either way. Stokes leads on total value, 9.56 to 9.49, in 32 more Tests. Jadeja leads clearly on WAR per game, 0.107 to 0.079, which is 35% higher. Their shapes differ. For most of his career Jadeja was a bowler who could bat a bit. His batting average sat at 31.5 through 2018 and has caught up only recently, at 42.4 since 2019, good enough now to be picked on runs alone. His value is overwhelmingly bowling, and like Ashwin's, a lot of it comes in conditions this model rates as kind to spin. Stokes is the reverse. Batting was the larger part of his value in most seasons through 2024, while his bowling swung between strong years and quiet or negative ones. Lately that has flipped. In 2025 he added 1.50 bowling WAR against 0.10 batting, the best season of his career (1.60 in total).</p>
+    <p>Stokes leads on total value, 9.56 to 9.49, in 32 more Tests. Jadeja leads clearly on WAR per game, 0.107 to 0.079, which is 35% higher. Their shapes differ. For most of his career Jadeja was a bowler who could bat a bit. His batting average sat at 31.5 through 2018 and has caught up only recently, at 42.4 since 2019, good enough now to be picked on runs alone. His value is overwhelmingly bowling, and like Ashwin's, a lot of it comes in conditions this model rates as kind to spin. Stokes is the reverse. Batting was the larger part of his value in most seasons through 2024, while his bowling swung between strong years and quiet or negative ones. Lately that has flipped. In 2025 he added 1.50 bowling WAR against 0.10 batting, the best season of his career (1.60 in total).</p>
 
     <p>Leverage adds a further angle. Every performance here is weighted by how much was at stake when it happened, so stripping that out shows what each player is worth on raw production. Take it out and Stokes' total drops 4.6%, so leverage helps him and his output skews toward the moments that mattered. Take it out for Jadeja and his total <em>rises</em> by 22.4%, because a meaningful share of his production came in matches that were already largely decided. That is Stokes' clutch reputation showing up as a number.</p>
 
@@ -901,7 +901,7 @@
       </table>
     </div>
 
-    <p>Jacques Kallis, the allrounder both of these two get measured against, is a genuine two-way contributor by this model too: 10.84 WAR, 9.41 batting and 1.42 bowling. ESPNcricinfo scorecards cover 34 of his 123 captured Tests, marked &dagger; above. His first six years, 1995 to 2000, are missing entirely, before either Cricsheet or these scorecards cover him, so 11.40 is a floor on his full 18-year career, not a ceiling. The same ESPN panel ranked him the single best cricketer of 2000 to 2025, ahead of Tendulkar and Kohli, a verdict this model, missing six of his best years, has no way to reach.</p>
+    <p>Jacques Kallis, the allrounder both of these two get measured against, is a genuine two-way contributor by this model too: 10.84 WAR, 9.41 batting and 1.42 bowling. ESPNcricinfo scorecards cover 34 of his 123 captured Tests, marked &dagger; above. His first six years, 1995 to 2000, are missing entirely, before either Cricsheet or these scorecards cover him, so 11.40 is a floor on his full 18-year career, not a ceiling. An ESPN panel ranked him the single best cricketer of 2000 to 2025, ahead of Tendulkar and Kohli. The model covers all of that window except 2000 and places him eighth on career total.</p>
 
     <h3>Anderson or Steyn?</h3>
 
@@ -918,7 +918,7 @@
       </table>
     </div>
 
-    <p>The model puts Anderson ahead on both total value, 14.03 to 5.87, and rate, 0.075 to 0.063, though the rate gap is close. By the numbers most people look at, Steyn appears to be the better pure bowler. His career bowling average is 22.95 against 26.45, at a faster strike rate, over a career many rate as the more fearsome at its peak. So why does the model put Anderson ahead? Not because of where they bowled. Steyn took 59% of his wickets in South Africa, one of the easier countries for pace on this model (factor 0.88), and Anderson took 62% of his in England, a tougher one (0.95). If anything conditions favoured Steyn, and the model adjusts for that. Most of the gap comes from the end of Steyn's career and the length of Anderson's, covered below.</p>
+    <p>The model puts Anderson ahead on both total value, 14.03 to 5.87, and rate, 0.075 to 0.063, though the rate gap is close. By the numbers most people look at, Steyn appears to be the better pure bowler. His career bowling average is 22.95 against 26.45, at a faster strike rate, over a career many rate as the more fearsome at its peak. So why does the model put Anderson ahead? Part of it is where they bowled. Steyn took 59% of his wickets in South Africa, one of the easier countries for pace on this model (factor 0.88), while Anderson took 62% of his in England, a little harder (0.95), and the model adjusts for that. Most of the gap comes from the end of Steyn's career and the length of Anderson's.</p>
 
     <p>Splitting Steyn's career at the end of his last fully fit season shows where the total goes.</p>
 
@@ -937,11 +937,11 @@
 
     <p>At his best, Steyn matched Anderson's career-long rate. His 85 Tests of prime produced 0.076 bowling WAR per Test, the same as Anderson's whole career. His last 8 Tests, after multiple shoulder and heel surgeries, were below replacement level (&minus;0.83 WAR, wicketless twice, including a 0 for 77 in the highest-stakes match of the run), which alone pulls his career bowling total down from 6.50 to 5.67. At full health, this model rates Steyn a shade above Anderson. Steyn's body didn't get the chance to age the way Anderson's did, and the model is right to count his injured farewell Tests.</p>
 
+    <p>One pattern is flagged and unfixed. Steyn took a higher share of his wickets against the tail than Anderson did (40.6% to 34.0%), and the model doesn't price a wicket differently depending on who it was.</p>
+
     <h3>Anderson's longevity</h3>
 
     <p>Anderson has 22 seasons in this dataset, debuting at 20 and still taking the new ball at 41, and only three of them (2005, 2007 and 2019) are below replacement level. His four best seasons (2017, 2018, 2021 and 2022) all came after his 34th birthday, and the single best year of his career arrived at 39. Most fast bowlers are in visible decline a decade before that. Since 2017 alone he added 8.7 WAR, a total that by itself would rank twentieth among every player in the dataset.</p>
-
-    <p>One pattern is flagged and unfixed. Steyn took a higher share of his wickets against the tail than Anderson did (40.6% to 34.0%), and the model doesn't price a wicket differently depending on who it was.</p>
 
     <h3>And Broad, for completeness</h3>
 
@@ -958,7 +958,7 @@
       </table>
     </div>
 
-    <p>Broad and Anderson are close. Both played most of their cricket in the same English conditions, so neither gets a discount the other doesn't. Anderson edges it on WAR per game, 0.075 to 0.074, and leads on total value, 14.03 to 12.26. He is the better pure bowler by this model, 14.15 bowling WAR to Broad's 10.50. Broad closes some of the gap with the bat. His part-time returns earn credit as a useful lower-order batter by his slot's standard, though that mostly describes the first half of his career (an average of 23.1 through 2015 and 11.9 from 2016 on). Anderson's batting is worth essentially nothing.</p>
+    <p>Broad and Anderson are close. Both played most of their cricket in the same English conditions, so neither gets a discount the other doesn't. Anderson edges it on WAR per game, 0.075 to 0.074, and leads on total value, 14.03 to 12.26. He is the better pure bowler by this model, 14.15 bowling WAR to Broad's 10.50. Broad closes some of the gap with the bat. His part-time returns earn credit as a useful lower-order batter by his slot's standard, though that mostly describes the first half of his career (an average of 23.1 through 2015 and 11.9 from 2016 on), while Anderson's batting is worth essentially nothing.</p>
 
     <h2>Two more things worth knowing</h2>
 
@@ -1006,8 +1006,8 @@
         </thead>
         <tbody>
           <tr><td class="name">JE Root</td><td class="num">1</td><td class="num"><strong>1</strong></td><td class="num">1</td><td class="num">1</td></tr>
-          <tr><td class="name">JM Anderson</td><td class="num">3</td><td class="num"><strong>3</strong></td><td class="num">4</td><td class="num">4</td></tr>
           <tr><td class="name">NM Lyon</td><td class="num">2</td><td class="num"><strong>2</strong></td><td class="num">2</td><td class="num">2</td></tr>
+          <tr><td class="name">JM Anderson</td><td class="num">3</td><td class="num"><strong>3</strong></td><td class="num">4</td><td class="num">4</td></tr>
           <tr><td class="name">SPD Smith</td><td class="num">4</td><td class="num"><strong>4</strong></td><td class="num">3</td><td class="num">3</td></tr>
           </tbody>
       </table>
@@ -1037,7 +1037,7 @@
       <li><strong>Team scheduling bias compounds the replacement-level issue above.</strong> The replacement bar is global rather than team-relative, and which teams get to accumulate value at all is uneven too, since the ICC's Full Members play very different volumes of Test cricket against each other. I don't think changing the formula fixes this. A team that plays less cricket has fewer chances to add to a career total, and that is real, not an error. WAR per game is the answer to it, not a correction to career WAR.</li>
       <li><strong>The country-conditions factor is coarse, and I tested whether that matters.</strong> It is one number per country per bowling type per five-year era, which misses variation between grounds within a country. Sydney's spin wicket rate runs above Australia's average, on a sample big enough to trust (25 Tests). I built a venue-level version and it made held-out prediction worse. Sydney's extra turn isn't there from ball one. It is almost entirely a 4th-innings effect, and a venue-level factor smears it across the whole match. Country is the right grain, for a tested reason rather than a guess about sample size. Full story in Measure Twice.</li>
       <li><strong>Opposition strength isn't adjusted for home conditions.</strong> A team's rating comes from its own results over the previous three years, home and away together. Teams bowl noticeably better at home, so an attack that plays on helpful pitches looks a little stronger as an opponent than it would elsewhere. I haven't measured how much this moves the rankings.</li>
-      <li><strong>Batting position deserves the same scrutiny wicket pricing just got.</strong> Separating how much easier a slot is from which players get sent there needs doing properly. I tried it once and the result didn't hold up well enough to trust, so it isn't reflected here.</li>
+      <li><strong>Batting position deserves the same scrutiny as wicket pricing.</strong> Separating how much easier a slot is from which players get sent there needs doing properly. I tried it once and the result didn't hold up well enough to trust, so it isn't reflected here.</li>
       <li><strong>The model doesn't know who got dismissed, and I tested fixing that too.</strong> A wicket is priced the same whether it is a recognised top-order batter or a number 11 swinging for the boundary. That is part of why Steyn's heavier share of tail wickets than Anderson's (40.6% to 34.0%) doesn't show up in either man's number. I built a version that priced each wicket by the dismissed batter's own quality. The first attempt had a real bug that inflated almost every bowler's number, and the corrected version predicted real match outcomes no better than a flat price. The signal is probably real but too weak to earn its place. Full story in Measure Twice.</li>
       <li><strong>An allrounder's value to a team's balance probably isn't fully captured.</strong> Summing batting and bowling WAR should already measure how much better a player is in his slot than a replacement, but only if a real replacement could cover both jobs as easily as the model assumes. I ran four checks on a handful of recognised allrounders. One showed a positive effect for Jadeja and mixed results for the rest, one turned out to be a bowling-type artifact, adding an allrounder indicator to the match model changed nothing, and pricing the credit directly as the value of the roster slot an allrounder frees up lost across a full sweep of how that credit could be sized. That isn't enough to build a fix from, and it isn't proof the effect is absent.</li>
     </ul>
@@ -1055,8 +1055,8 @@
   <footer class="colophon">
     <div>Data &middot; Cricsheet ball-by-ball archive, Test matches 2001&ndash;2026, men's only (890 matches of the 914 in Cricsheet's raw archive, 24 women's Tests excluded; 1,715,773 deliveries)</div>
     <div>Model &middot; opposition-, pitch-, country- and position-adjusted RAR (eleven individual batting slots, decomposed economy/wicket-rate bowling pitch factor, wickets priced at their win-probability-validated value), leverage weighting, season-level win conversion, with no cross-discipline calibration</div>
-    <div>Known gaps &middot; pre-2001 careers undercounted &middot; replacement level noisier before 2012 &middot; fielding excluded &middot; replacement level is global, not team-relative</div>
-    <div>Updated &middot; 23 September 2026</div>
+    <div>Known gaps &middot; pre-2001 careers undercounted &middot; replacement level noisier before 2012 &middot; fielding excluded &middot; replacement level is global, not team-relative &middot; opposition strength not adjusted for home conditions</div>
+    <div>Updated &middot; 7 October 2026</div>
   </footer>
 
 </div>
