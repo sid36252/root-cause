@@ -204,6 +204,7 @@
     color: var(--pitch);
   }
 
+  .toc { font-size: 0.9rem; color: var(--ink-soft); margin: 0 0 2rem; }
   ul.plain, ol.plain { padding-left: 1.3em; margin: 0 0 1.15rem; }
   ul.plain li, ol.plain li { margin-bottom: 0.5rem; }
 
@@ -531,13 +532,15 @@
     </ul>
   </div>
 
+  <p class="toc"><strong>Jump to</strong> <a href="#idea">the idea</a> &middot; <a href="#data">the data</a> &middot; <a href="#leaderboard">the leaderboard</a> &middot; <a href="#arguments">the arguments</a> &middot; <a href="#falls-short">where it falls short</a> &middot; <a href="#australian-spin">the Australian spin number</a> &middot; <a href="#methodology">how it was built</a></p>
+
   <article>
 
     <p><strong>Traditional batting and bowling averages tell you what a player produced, but not what it was worth.</strong> They don't know who you faced, what the pitch was doing, or whether the game was on the line. Wins Above Replacement (WAR) answers that with one question. How many extra <em>wins</em> did a player earn their team compared to a solid, freely available domestic replacement in the exact same matches? Applied across the Tests played since 2001, it puts Joe Root first, with James Anderson and Stuart Broad next.</p>
 
     <p>Everything below comes from one model. The companion piece, <a href="https://sid36252.github.io/measure-twice/"><strong>Measure Twice</strong></a>, covers how it was built and tested.</p>
 
-    <h2>The idea, in plain terms</h2>
+    <h2 id="idea">The idea, in plain terms</h2>
 
     <p>Imagine every Test team keeps a replacement player in reserve. Not a star, just a solid domestic pro who'd slot in if someone got dropped. WAR asks how many extra wins a player earned their team over that replacement, in the same matches.</p>
 
@@ -556,7 +559,7 @@
       <p>Take Bumrah's Brisbane Test against Australia in 2024. He bowled 204 balls, conceding 94 runs and taking 9 wickets. Over the same 204 balls, against the same batting line-up on that pitch, a replacement bowler would be expected to concede about 152 runs and take about 3.3 wickets. That is 58 runs saved. He took 5.70 more wickets than the replacement would have, and a wicket in that match was worth 26.1 runs once the era's price is adjusted for how the pitch played, so the extra wickets add 149. Together that is 206 runs above replacement, or 0.40 of a win at about 520 runs per win in that era. That Test was tighter than average, with a leverage of 1.38, so it counts for about 38% more. That lifts the 206 runs to about 285 and the 0.40 to 0.55 of a win.</p>
     </div>
 
-    <h2>Is the data any good?</h2>
+    <h2 id="data">Is the data any good?</h2>
 
     <p>Everything here comes from <a href="https://cricsheet.org" target="_blank" rel="noopener">Cricsheet</a>, a free ball-by-ball archive of international cricket. Coverage starts in 2001 and runs to the present. The raw archive holds 914 matches, but 24 are women&rsquo;s Tests, so the analysis uses the 890 men&rsquo;s Tests. That is <span class="stat-inline">1.72 million</span> deliveries, each with the batter, the bowler, the runs and the dismissal if there was one.</p>
 
@@ -782,7 +785,7 @@
       <p class="chart-note">Fitted separately for each five-year period from team run differentials against match outcomes, the same buckets as the draw-rate chart. A lower number means less scoring is needed to force a result, so the same performance converts to more WAR today than at the 2005&ndash;09 peak or in Clarke's 2010&ndash;14 window. Hover any point for its exact value.</p>
     </div>
 
-    <h2>A few arguments this settles, sort of</h2>
+    <h2 id="arguments">A few arguments this settles, sort of</h2>
 
     <p>Every era of Test cricket has its pub arguments. A few of this one's biggest can be tested against the numbers, and few come out as tidily as either side would like.</p>
 
@@ -970,7 +973,7 @@
 
     <p>Broad and Anderson are close. Both played most of their cricket in the same English conditions, so neither gets a discount the other doesn't. Broad edges it on WAR per game, 0.083 to 0.082, and Anderson leads on total value, 15.40 to 13.71. He is the better pure bowler by this model, 15.40 bowling WAR to Broad's 12.05. Broad closes some of the gap with the bat. His part-time returns earn credit as a useful lower-order batter by his slot's standard, though that mostly describes the first half of his career (an average of 23.1 through 2015 and 11.9 from 2016 on), while Anderson's batting is worth essentially nothing.</p>
 
-    <h2>Two more things worth knowing</h2>
+    <h2 id="more-things">Two more things worth knowing</h2>
 
     <div class="callout finding">
       <span class="callout-label">The model spotted a doctored pitch</span>
@@ -982,7 +985,7 @@
       <p>Ben Stokes' unbeaten 135 at Headingley in 2019, with England chasing 359 and the last pair at the crease, is worth noticeably more here than a similar score in a decided match. The model weighs every performance by what was at stake when it happened. That is a large part of why Stokes, who has a habit of producing his best cricket in the tensest moments, rates above what a flat runs-based average would say.</p>
     </div>
 
-    <h2>Where it falls short</h2>
+    <h2 id="falls-short">Where it falls short</h2>
 
     <h3>Anything before 2001 barely counts</h3>
 
@@ -1041,12 +1044,36 @@
 
     <p>The model can't see why a wicketkeeper was picked. A keeper-batter's value is mostly in the gloves, which is invisible here, leaving only a modest batting record.</p>
 
+    <h3 id="australian-spin">The Australian spin number</h3>
+
+    <p>This is the least settled number in the model, and it matters because it moves Lyon and Ashwin more than anyone else in the top ten. Two different things get called a country's &ldquo;factor&rdquo; in this piece. The heatmap shows the raw wicket-rate reading, wickets per ball against the world. The model's own factor also uses runs conceded and is fitted by five-year period, and that one decides the ratings.</p>
+
+    <p>The worry is that the factor pools everyone who bowled in Australia, so it mixes the pitch with the strength of Australia's batters against touring spinners. In 2015 to 2019, home spinners, mostly Lyon, took wickets at about the world average, while touring spinners conceded far more runs per wicket. The model already counts a bowler's conditions once, not twice, by keeping only the part of the country factor that the match's own pitch factor does not show. The table reruns the model under each way of settling it.</p>
+
+    <div class="table-wrap">
+      <table id="spin-table">
+        <caption>Career WAR (rank) under each treatment of Australian spin</caption>
+        <thead>
+          <tr><th>Treatment</th><th class="num">Lyon</th><th class="num">Ashwin</th><th class="num">Held-out AUC</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="name"><strong>The model (v18)</strong></td><td class="num"><strong>12.88 (5)</strong></td><td class="num"><strong>11.35 (7)</strong></td><td class="num">0.9844</td></tr>
+          <tr><td class="name">Without the double-count fix</td><td class="num">16.92 (1)</td><td class="num">9.85 (15)</td><td class="num">0.9828</td></tr>
+          <tr><td class="name">Trailing baseline for country factors</td><td class="num">11.22 (6)</td><td class="num">9.93 (15)</td><td class="num">0.9841</td></tr>
+          <tr><td class="name">Home and touring bowlers measured separately</td><td class="num">9.63 (12)</td><td class="num">7.89 (22)</td><td class="num">0.9493</td></tr>
+          <tr><td class="name">Country effect fitted alongside each bowler's own rate</td><td class="num">15.62 (3)</td><td class="num">14.06 (5)</td><td class="num">0.9835</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>Lyon is fifth in the model and ranges from first to twelfth across these treatments, which makes his place the soft spot in the table. The higher AUC is better, and the model scores best or level on it. A second check fits wickets and runs per ball with a match effect, then each bowler, then each batter. It puts the Australian spin factor for 2015 to 2019 at 1.25 from the match effect alone, 1.32 with bowlers held fixed and 1.29 with batters held fixed as well. Dropping Lyon's balls moves it to 1.35, and halving or doubling the penalties gives 1.36 and 1.21. The batters faced do not explain it, and the factor sits between about 1.2 and 1.36. Measure Twice has the full tests.</p>
+
     <h3>What I'd fix next</h3>
 
     <ul class="plain">
       <li><strong>Team scheduling bias compounds the replacement-level issue above.</strong> The replacement bar is global rather than team-relative, and which teams get to accumulate value at all is uneven too, since the ICC's Full Members play very different volumes of Test cricket against each other. I don't think changing the formula fixes this. A team that plays less cricket has fewer chances to add to a career total, and that is real, not an error. WAR per game is the answer to it, not a correction to career WAR.</li>
       <li><strong>The country-conditions factor is coarse, and I tested whether that matters.</strong> It is one number per country per bowling type per five-year era, which misses variation between grounds within a country. Sydney's spin wicket rate runs above Australia's average, on a sample big enough to trust (25 Tests). I built a venue-level version and it made held-out prediction worse. Sydney's extra turn isn't there from ball one. It is almost entirely a 4th-innings effect, and a venue-level factor smears it across the whole match. Country is the right grain, for a tested reason rather than a guess about sample size. Full story in Measure Twice.</li>
-      <li><strong>The Australian spin figure is the least settled number in the model.</strong> The country factor pools everyone who bowled there, so it mixes the pitch with the strength of Australia's batters against touring spinners. In 2015&ndash;19, home spinners, mostly Lyon, took wickets at about the world average, while touring spinners conceded far more runs per wicket. The model already counts a bowler's conditions once, not twice, by keeping only the part of the country factor that the match's own pitch factor does not show. I tried two further fixes. Measuring home and touring bowlers each against their own group's record predicted match outcomes much worse. Fitting each bowler's own quality alongside the country raised the Australian figure instead of lowering it, and fitting each batter as well left it where it was. Neither fix is adopted, so Lyon's place and Ashwin's depend on this one number. Full story in Measure Twice.</li>
+      <li><strong>The Australian spin figure is the least settled number in the model.</strong> It has <a href="#australian-spin">its own section</a> above.</li>
       <li><strong>Batting position deserves the same scrutiny as wicket pricing.</strong> Separating how much easier a slot is from which players get sent there needs doing properly. I tried it once and the result didn't hold up well enough to trust, so it isn't reflected here.</li>
       <li><strong>The model doesn't price who got dismissed, and the data say that costs little.</strong> A wicket is priced the same whether it is a recognised top-order batter or a number 11. Most of the gap in what those wickets are worth comes from when they fall, and leverage already covers that. Holding the match state fixed, the batter dismissed adds about 4% per rating point to a wicket's swing. Pricing it at that rate leaves every ranking where it was, so it is left out. Weighting a wicket by the batter's full rating, the strongest version I tried, moves Anderson and Lyon by more than a win each, about 25 times what the swing data support. Full story in Measure Twice.</li>
       <li><strong>An allrounder's value to a team's balance probably isn't fully captured.</strong> Summing batting and bowling WAR should already measure how much better a player is in his slot than a replacement, but only if a real replacement could cover both jobs as easily as the model assumes. I ran four checks on a handful of recognised allrounders. One showed a positive effect for Jadeja and mixed results for the rest, one was a bowling-type artifact, adding an allrounder indicator to the match model changed nothing, and pricing the credit directly as the value of the roster slot an allrounder frees up lost across a full sweep of how that credit could be sized. That isn't enough to build a fix from, and it isn't proof the effect is absent.</li>
