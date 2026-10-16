@@ -666,9 +666,9 @@
 
     <p>Across everyone in the dataset, not just the top 20, batting has generated about 2.0 times as much value as bowling. That doesn't mean batting matters twice as much. Batters and bowlers face the same number of balls, so the gap comes from how far a regular player sits above the replacement they are measured against. A replacement batter averages about 18.6 runs per dismissal against 30.9 for the average batter, a gap of 12.3 runs each time. A replacement bowler concedes about 40.6 runs per wicket against 32.5 for the average bowler, a gap of 8.1. Per ball, a regular batter adds about 2.0 times what a regular bowler does. The price of a wicket matters too, because a bowler is credited for wickets as well as runs saved. The model values a wicket at how much it moves a team's chance of winning. That is worth between about 31 and 36 runs depending on the era, and averages about 34. Across that whole range the batting to bowling ratio only moves between 1.9 and 2.1, so the split isn't an artifact of the price. </p>
 
-    <p>To check that the split holds up, I tested whether each team's combined batting and bowling value predicts who wins a match, using matches the model was not fitted on. It picked the winner in 93% of those matches.</p>
+    <p>To check that the split holds up, I tested whether each team's combined batting and bowling value predicts who wins a match, using matches the model was not fitted on. It picked the winner in 93% of those matches. That checks that the numbers describe what happened. Rating players only from their earlier matches, with every part of the model refitted on the past, it picks the winner of the next Test 68% of the time.</p>
 
-    <p>Root, Anderson and Broad have long, successful careers for a team that has played more Tests in this window than almost any other, so a career total rewards volume as well as quality. Lyon is fourth on total value, with 24 fewer Tests than Root and 45 fewer than Anderson. Per game he is worth 0.098, against Root's 0.101 and Anderson's 0.086. How much of Lyon's value depends on how the model treats Australian conditions for spin is covered in the limitations section.</p>
+    <p>Root, Anderson and Broad have long, successful careers for a team that has played more Tests in this window than almost any other, so a career total rewards volume as well as quality. Lyon is fourth on total value, with 24 fewer Tests than Root and 45 fewer than Anderson. Per game he is worth 0.098, against Root's 0.101 and Anderson's 0.086. Lyon's exact place is the least certain in the table. Depending on how Australian conditions for spin are priced, he ranges from first to seventh, and <a href="#australian-spin">the Australian spin number</a> below explains why.</p>
 
     <p>That is the career picture. Ask instead who was most valuable every time they played and the answer changes. Root drops to fifteenth, and Cummins leads on WAR per game, with McGrath second and Muralitharan fourth, even though only part of the careers of the second and fourth is in the data.</p>
 
@@ -1050,31 +1050,9 @@
 
     <h3 id="australian-spin">The Australian spin number</h3>
 
-    <p>This is the least settled number in the model, and it matters because it moves Lyon and Ashwin more than anyone else in the top ten. Two different things get called a country's &ldquo;factor&rdquo; in this piece. The heatmap shows the raw wicket-rate reading, wickets per ball against the world. The model's own factor also uses runs conceded and is fitted by five-year period, and that one decides the ratings.</p>
+    <p>This is the least settled number in the model, and it matters because it moves Lyon and Ashwin more than anyone else in the top ten. Lyon bowls most of his cricket in Australia, and how hard the model rates Australia for spin sets how much credit he gets. Depending on how that is priced, he ranges from first to seventh across the settings I tried, and he is fourth in the model.</p>
 
-    <p>The worry is that a country's raw figure mixes the pitch with who bowled there and who batted against them. In 2015 to 2019, home spinners, mostly Lyon, took wickets at about the world average, while touring spinners conceded far more runs per wicket. The model fits each country's factor with an effect for every bowler and every batter faced, which leaves the pitch, and pooling everyone who bowled there is the cruder alternative. It also counts a bowler's conditions once, not twice, by keeping only the part of the country factor that the match's own pitch factor does not show. The table reruns the model under each way of settling it.</p>
-
-    <div class="table-wrap">
-      <table id="spin-table">
-        <caption>Career WAR (rank) under each treatment of Australian spin</caption>
-        <thead>
-          <tr><th>Treatment</th><th class="num">Lyon</th><th class="num">Ashwin</th><th class="num">Held-out AUC</th></tr>
-        </thead>
-        <tbody>
-          <tr><td class="name"><strong>The model</strong></td><td class="num"><strong>13.96 (4)</strong></td><td class="num"><strong>12.99 (6)</strong></td><td class="num">0.9844</td></tr>
-          <tr><td class="name">Pooled country factors</td><td class="num">12.88 (5)</td><td class="num">11.35 (7)</td><td class="num">0.9844</td></tr>
-          <tr><td class="name">Crossed factors with hand-set penalties</td><td class="num">11.91 (7)</td><td class="num">12.95 (5)</td><td class="num">0.9847</td></tr>
-          <tr><td class="name">Country effect fitted alongside each bowler's own rate only</td><td class="num">15.62 (3)</td><td class="num">14.06 (5)</td><td class="num">0.9835</td></tr>
-          <tr><td class="name">Without the double-count fix</td><td class="num">18.09 (1)</td><td class="num">11.35 (8)</td><td class="num">0.9831</td></tr>
-        </tbody>
-      </table>
-    </div>
-
-    <p>Lyon is fourth in the model and ranges from first to seventh across these treatments, which makes his place the soft spot in the table. Higher AUC is better, and none of the treatments beats the model's by more than 0.001. </p>
-
-    <p>One check fits wickets and runs per ball with an effect for the match, then each bowler, then each batter. For 2015 to 2019 it puts the Australian spin factor for 2015 to 2019 at 1.25 from the match effect alone, 1.32 with bowlers held fixed and 1.29 with batters held fixed as well. Dropping Lyon's balls moves it to 1.35, and halving or doubling the penalties gives 1.36 and 1.21. </p>
-
-    <p>Those penalties were set by hand. Choosing them by cross-validation on unseen matches picks weaker ones, and at those the factor is 1.42, with a 90% interval of 1.34 to 1.65. The model uses that fit, and it beat the pooled factors in a walk-forward check in which every factor is fitted only on the past. The batters faced do not explain the figure, and pooling understates how hard Australia is for spin. Measure Twice has the full tests.</p>
+    <p>The model measures Australia's conditions with every bowler and every batter faced held fixed, so the figure is the pitch and not who happened to play there. For 2015 to 2019 that puts the Australian spin factor at 1.42, with a 90% interval of 1.34 to 1.65, against 1.25 when everyone who bowled there is pooled. The batters faced do not explain it, and pooling understates how hard Australia is for spin. The full tests are in <a href="https://sid36252.github.io/measure-twice/#v19">Measure Twice</a>.</p>
 
     <h3>What I'd fix next</h3>
 
