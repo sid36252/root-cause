@@ -664,11 +664,11 @@
 
     <p>Nine of the top 20 are batting-led, eight are bowling-led and three (Stokes, Jadeja and Ashwin) are allrounders. Bowlers hold three of the four places behind Root. Anderson and Broad, in second and third, are both bowlers, with Root the only batter ahead of them. </p>
 
-    <p>Across everyone in the dataset, not just the top 20, batting has generated about 2.0 times as much value as bowling. That doesn't mean batting matters twice as much. Batters and bowlers face the same number of balls, so the gap comes from how far a regular player sits above the replacement they are measured against. A replacement batter averages about 18.6 runs per dismissal against 30.9 for the average batter, a gap of 12.3 runs each time. A replacement bowler concedes about 40.6 runs per wicket against 32.5 for the average bowler, a gap of 8.1. Per ball, a regular batter adds about 2.0 times what a regular bowler does. The price of a wicket matters too, because a bowler is credited for wickets as well as runs saved. The model values a wicket at how much it moves a team's chance of winning. That is worth between about 31 and 36 runs depending on the era, and averages about 34. Across that whole range the batting to bowling ratio only moves between 1.9 and 2.1, so the split isn't an artifact of the price. </p>
+    <p>Across everyone in the dataset, not just the top 20, batting has generated about 2.0 times as much value as bowling. That doesn't mean batting matters twice as much. The gap comes from how far a regular player sits above the replacement they are measured against, 12.3 runs per dismissal for a batter against 8.1 runs per wicket for a bowler, and it stays between 1.9 and 2.1 whatever a wicket is priced at. </p>
 
     <p>To check that the split holds up, I tested whether each team's combined batting and bowling value predicts who wins a match, using matches the model was not fitted on. It picked the winner in 93% of those matches. That checks that the numbers describe what happened. Rating players only from their earlier matches, with every part of the model refitted on the past, it picks the winner of the next Test 68% of the time.</p>
 
-    <p>Root, Anderson and Broad have long, successful careers for a team that has played more Tests in this window than almost any other, so a career total rewards volume as well as quality. Lyon is fourth on total value, with 24 fewer Tests than Root and 45 fewer than Anderson. Per game he is worth 0.098, against Root's 0.101 and Anderson's 0.086. Lyon's exact place is the least certain in the table. Depending on how Australian conditions for spin are priced, he ranges from first to seventh, and <a href="#australian-spin">the Australian spin number</a> below explains why.</p>
+    <p>Lyon is fourth on total value, with 24 fewer Tests than Root and 45 fewer than Anderson. Per game he is worth 0.098, against Root's 0.101 and Anderson's 0.086. Lyon's exact place is the least certain in the table. Depending on how Australian conditions for spin are priced, he ranges from first to seventh, and <a href="#australian-spin">the Australian spin number</a> below explains why.</p>
 
     <p>That is the career picture. Ask instead who was most valuable every time they played and the answer changes. Root drops to fifteenth, and Cummins leads on WAR per game, with McGrath second and Muralitharan fourth, even though only part of the careers of the second and fourth is in the data.</p>
 
@@ -745,11 +745,7 @@
 
     <p>McGrath's 2001 tops the table. He took 68 wickets in 14 Tests at 21.7 apiece, against England, India, New Zealand, South Africa and West Indies, and 14 of those Tests come from the scorecard layer rather than ball-by-ball data. Two of the top five seasons fall in 2001&ndash;2008, the window where coverage is patchier and the replacement level leans on the scorecard layer rather than pure ball-by-ball data (marked &dagger; where the season itself draws on it directly).</p>
 
-    <p>Warne's 2005 (2.64) is second, and it is the heaviest workload of the four. He took 96 wickets in 15 Tests at 22.0 each, against England, an ICC World XI, New Zealand, Pakistan, South Africa and West Indies, and 6 of those Tests come from the scorecard layer.</p>
-
-    <p>Anderson's 2017 (2.60) is third, and the best season since coverage became complete in 2009, the highest total behind full ball-by-ball data with no coarser layer underneath it anywhere in the chain. It is also the best of his 22 seasons. He took 55 wickets in 11 Tests at 17.6 apiece, the cheapest wickets of the three bowlers.</p>
-
-    <p>Root's 2021 (2.58) is fourth, and the only batting season in the top four. He scored 1,708 runs in 15 Tests at 61.0, and 98% of its value came from the bat.</p>
+    <p>Warne's 2005 (2.64) is second, with 96 wickets in 15 Tests at 22.0 each, 6 of those Tests from the scorecard layer. Anderson's 2017 (2.60) is third and the best season since coverage became complete in 2009, and it is also the best of his 22 seasons, with 55 wickets in 11 Tests at 17.6 apiece. Root's 2021 (2.58) is fourth and the only batting season in the top four, with 1,708 runs in 15 Tests at 61.0, and 98% of its value came from the bat.</p>
 
     <p>Michael Clarke's 2012 doesn't make the list. It ranks #41 overall, despite being one of the most dominant years in the sport's history by reputation, with 1,595 runs at an official average of 106.33 and four double-centuries in a calendar year, one of them an unbeaten 329 against India. It isn't a lack of runs or soft conditions, since the bowling he faced and the pitches he batted on were close to average difficulty. Two things explain the gap. A lot of his runs came in matches that were already decided or heading for a draw, so they counted for less than the same runs in a tight game. And it took more runs to buy a win in 2010&ndash;14 than it does in recent seasons, so the same runs earn more WAR today.</p>
 
@@ -1001,9 +997,7 @@
 
     <p>The other 201 come from ESPNcricinfo's scorecards. They carry no ball-by-ball detail, so no batting-position adjustment, though leverage is approximated from the scorecards' own Fall-of-Wickets listings. On the 176 Tests both sources cover, they agree with Cricsheet almost exactly, within a few tenths of a percent on runs, dismissals, wickets, balls bowled and runs conceded. Scored the same way as the rest of the model (pitch, host-country and opposition factors, all rebuilt from the scorecards themselves) and calibrated against the shared matches, player-match value from this coarser method correlates 0.94 with the full model. A player or season marked &dagger; anywhere in this piece gets some or all of its value from this layer rather than ball-by-ball data; the full validation, including what happens with each factor added or removed, is in Measure Twice.</p>
 
-    <p>Widening the population also gives 2001 to 2008 their own replacement level, computed from these scorecard-included years rather than borrowed from later ones. The fuller mechanics are in Measure Twice.</p>
-
-    <p>Anyone whose career ran mostly through 2001&ndash;2008 was undercounted too, not only players who retired before 2001. Shane Warne is the clearest example. He has 61 captured Tests, 37 of them from the scorecard layer and 24 from ball-by-ball data. That is short of the six more years he played after the window opens, though a fuller picture than ball-by-ball data alone gives. Seasons before 2012 lean on a replacement level pooled across 2009 onward wherever even the widened data is too thin on its own, so rankings for careers that ran through 2001 to 2011 carry more uncertainty than the decimals suggest.</p>
+    <p>Anyone whose career ran mostly through 2001&ndash;2008 was undercounted too, not only players who retired before 2001. Shane Warne is the clearest example. He has 61 captured Tests, 37 of them from the scorecard layer and 24 from ball-by-ball data. Seasons before 2012 lean on a replacement level pooled across 2009 onward wherever even the widened data is too thin on its own, so rankings for careers that ran through 2001 to 2011 carry more uncertainty than the decimals suggest.</p>
 
     <h3>One setting moves third place</h3>
 
@@ -1030,8 +1024,6 @@
 
     <p>Baseball and basketball teams play the same number of games a season, so a season's WAR total already compares players on level footing. Test cricket has no such luxury, because teams play very different volumes of cricket. Career WAR rewarding a long, consistently good career is what a value stat should do, and I don't treat it as a flaw. The opportunity to build that career isn't shared evenly, though. Root has played 166 Tests to Kane Williamson's 110, and much of that gap is national scheduling. England have played 275 Tests in this window and New Zealand 169, which is 39% fewer. Williamson's WAR per game (0.094 in the Fab Four table, batting only) is within a tenth of Root's (0.103), but his team plays less, so he never had the same chances to add to a career total. The same logic quietly favours the stars of England, Australia and India over those of Sri Lanka, New Zealand and the West Indies, whoever is better.</p>
 
-    <p>Career WAR measures how much value a player produced. WAR per game measures it per chance, which is the fairer lens when the question is about ability. A long career spent producing at a high level, like Anderson's or Root's, is real value and deserves credit. A shorter one isn't a lesser career because a team's calendar didn't supply the games. Williamson got 39% fewer chances to show a rate close to Root's.</p>
-
     <h3>A Test saved is credited only through its runs</h3>
 
     <p>The model prices runs and wickets and turns them into wins. A long rearguard that saves a Test is credited for the runs it scored and for how much the moment mattered, but not separately for the defeat it avoided. That undervalues the batters who save matches and the bowlers who set them up. I sized it by paying every batter for the change in his side's expected result in the fourth innings of 52 saved Tests. Taken as an upper bound, the largest gain in the career top ten is 0.22 wins, so it would not change who leads. Measure Twice has the test.</p>
@@ -1040,13 +1032,9 @@
 
     <p>I looked at adding it and stopped. Cricsheet records who took a catch but not who dropped one, so there is no way to tell a player who was never given a chance from one who put down every chance. Ground fielding (the stops, the saved boundaries, the turned twos) is invisible unless it ends in a run out. Ravindra Jadeja, whose fielding reputation rests almost entirely on things this dataset can't see, came out worse than average when I checked him against a forced, catches-only fielding WAR: 0.43 catches per Test, 137th of the 193 players with 30 or more Tests. Leaving fielding out and saying so is the better outcome.</p>
 
-    <h3>The replacement bar is wide, not a single line</h3>
+    <h3>Two smaller limits</h3>
 
-    <p>Bangladesh and Zimbabwe bowlers dominate the bottom of the career table because the model measures against a <em>global</em> replacement level, not each team's own bar. That is working as intended.</p>
-
-    <h3>Wicketkeepers are judged on batting alone</h3>
-
-    <p>The model can't see why a wicketkeeper was picked. A keeper-batter's value is mostly in the gloves, which is invisible here, leaving only a modest batting record.</p>
+    <p>Bangladesh and Zimbabwe bowlers dominate the bottom of the career table because the model measures against a <em>global</em> replacement level, not each team's own bar. That is working as intended. The model also can't see why a wicketkeeper was picked, so a keeper-batter is judged on his batting and the value in his gloves is invisible here.</p>
 
     <h3 id="australian-spin">The Australian spin number</h3>
 
@@ -1057,15 +1045,13 @@
     <h3>What I'd fix next</h3>
 
     <ul class="plain">
-      <li><strong>Team scheduling bias compounds the replacement-level issue above.</strong> The replacement bar is global rather than team-relative, and which teams get to accumulate value at all is uneven too, since the ICC's Full Members play very different volumes of Test cricket against each other. I don't think changing the formula fixes this. A team that plays less cricket has fewer chances to add to a career total, and that is real, not an error. WAR per game is the answer to it, not a correction to career WAR.</li>
       <li><strong>The country-conditions factor is coarse, and I tested whether that matters.</strong> It is one number per country per bowling type per five-year era, which misses variation between grounds within a country. Sydney's spin wicket rate runs above Australia's average, on a sample big enough to trust (25 Tests). I built a venue-level version and it made held-out prediction worse. Sydney's extra turn isn't there from ball one. It is almost entirely a 4th-innings effect, and a venue-level factor smears it across the whole match. Country is the right grain, for a tested reason rather than a guess about sample size. Full story in Measure Twice.</li>
-      <li><strong>The Australian spin figure is the least settled number in the model.</strong> It has <a href="#australian-spin">its own section</a> above.</li>
       <li><strong>Batting position deserves the same scrutiny as wicket pricing.</strong> Separating how much easier a slot is from which players get sent there needs doing properly. I tried it once and the result didn't hold up well enough to trust, so it isn't reflected here.</li>
       <li><strong>The model doesn't price who got dismissed, and the data say that costs little.</strong> A wicket is priced the same whether it is a recognised top-order batter or a number 11. Most of the gap in what those wickets are worth comes from when they fall, and leverage already covers that. Holding the match state fixed, the batter dismissed adds about 4% per rating point to a wicket's swing. Pricing it at that rate leaves every ranking where it was, so it is left out. Weighting a wicket by the batter's full rating, the strongest version I tried, moves Anderson and Lyon by more than a win each, about 25 times what the swing data support. Full story in Measure Twice.</li>
       <li><strong>An allrounder's value to a team's balance probably isn't fully captured.</strong> Summing batting and bowling WAR should already measure how much better a player is in his slot than a replacement, but only if a real replacement could cover both jobs as easily as the model assumes. I ran four checks on a handful of recognised allrounders. One showed a positive effect for Jadeja and mixed results for the rest, one was a bowling-type artifact, adding an allrounder indicator to the match model changed nothing, and pricing the credit directly as the value of the roster slot an allrounder frees up lost across a full sweep of how that credit could be sized. That isn't enough to build a fix from, and it isn't proof the effect is absent.</li>
     </ul>
 
-    <p>None of this changes what a scorecard already shows. Root has scored more Test runs than anyone since 2001, Anderson has taken more wickets than any other fast bowler in history, and Lyon is one of the most prolific spinners the format has seen. WAR weighs what those numbers meant, against who was faced, what the pitch was doing and what was at stake. On that measure Root finishes first, with Anderson and Broad next. Both are helped by long careers for a team that plays more Test cricket than most. Lyon is fourth, and how Australian conditions for spin are priced moves Lyon and Ashwin more than anyone else in the top ten.</p>
+    <p>None of this changes what a scorecard already shows. Root has scored more Test runs than anyone since 2001, Anderson has taken more wickets than any other fast bowler in history, and Lyon is one of the most prolific spinners the format has seen. WAR weighs what those numbers meant, against who was faced, what the pitch was doing and what was at stake. On that measure Root finishes first, with Anderson and Broad next. Both are helped by long careers for a team that plays more Test cricket than most.</p>
 
     <hr class="divider">
 
@@ -1079,7 +1065,7 @@
     <div>Data &middot; Cricsheet ball-by-ball archive, Test matches 2001&ndash;2026, men's only (890 matches of the 914 in Cricsheet's raw archive, 24 women's Tests excluded; 1,715,773 deliveries)</div>
     <div>Model &middot; opposition-, pitch-, country- and position-adjusted RAR (eleven individual batting slots, decomposed economy/wicket-rate bowling pitch factor, bowling country factors fitted with the bowler and the batters faced held fixed, wickets priced at their win-probability-validated value), leverage weighting, season-level win conversion, with no cross-discipline calibration</div>
     <div>Known gaps &middot; pre-2001 careers undercounted &middot; replacement level noisier before 2012 &middot; fielding excluded &middot; replacement level is global, not team-relative &middot; the Australian spin conditions factor is the least settled number</div>
-    <div>Updated &middot; 15 October 2026</div>
+    <div>Updated &middot; 18 October 2026</div>
   </footer>
 
 </div>
